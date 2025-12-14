@@ -1,16 +1,18 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
-    Box,
-    Building,
+    AlertCircle,
+    Award,
+    Calendar,
     ChevronDown,
-    Grid3X3,
-    Image,
+    ChevronsRight,
+    CreditCard,
+    FileText,
+    Headphones,
     LayoutDashboard,
     LogOut,
     Package,
     Settings,
-    ShoppingBag,
-    Star,
+    UserCog,
     Users,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
@@ -44,26 +46,48 @@ const menuItems = [
         href: '/admin',
     },
     {
-        title: 'Content Management',
-        icon: Box,
+        title: 'Administration',
+        icon: UserCog,
         items: [
-            { title: 'Hero Slides', icon: Image, href: '/admin/hero-slides' },
-            { title: 'Feature Cards', icon: Star, href: '/admin/features' },
-            { title: 'Trusted Companies', icon: Building, href: '/admin/trusted-companies' },
+            { title: 'Role Management', icon: ChevronsRight, href: '/admin/roles' },
+            { title: 'Right Management', icon: ChevronsRight, href: '/admin/permissions' },
+            { title: 'Member Management', icon: ChevronsRight, href: '/admin/members' },
         ],
     },
     {
-        title: 'Catalog',
-        icon: Grid3X3,
-        items: [
-            { title: 'Categories', icon: Grid3X3, href: '/admin/categories' },
-            { title: 'Products', icon: Package, href: '/admin/products' },
-        ],
+        title: 'Event Management',
+        icon: Calendar,
+        href: '/admin/events',
     },
     {
-        title: 'Orders',
-        icon: ShoppingBag,
-        href: '/admin/orders',
+        title: 'Projects Management',
+        icon: Package,
+        href: '/admin/projects',
+    },
+    {
+        title: 'Blog Management',
+        icon: FileText,
+        href: '/admin/blogs',
+    },
+    {
+        title: 'Payment Management',
+        icon: CreditCard,
+        href: '/admin/payments',
+    },
+    {
+        title: 'Notice',
+        icon: AlertCircle,
+        href: '/admin/notices',
+    },
+    {
+        title: 'Certificate Management',
+        icon: Award,
+        href: '/admin/certificates',
+    },
+    {
+        title: 'Support',
+        icon: Headphones,
+        href: '/admin/support',
     },
     {
         title: 'Settings',
@@ -109,11 +133,10 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                                                 <Link
                                                     key={subItem.href}
                                                     href={subItem.href}
-                                                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
-                                                        currentPath === subItem.href
-                                                            ? 'bg-primary text-primary-foreground'
-                                                            : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                                                    }`}
+                                                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${currentPath === subItem.href
+                                                        ? 'bg-primary text-primary-foreground'
+                                                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                                                        }`}
                                                 >
                                                     <subItem.icon className="h-4 w-4" />
                                                     <span>{subItem.title}</span>
@@ -124,11 +147,10 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                                 ) : (
                                     <Link
                                         href={item.href}
-                                        className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
-                                            currentPath === item.href
+                                        className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${currentPath === item.href
                                             ? 'bg-primary text-primary-foreground'
                                             : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                                        }`}
+                                            }`}
                                     >
                                         <item.icon className="h-5 w-5" />
                                         <span>{item.title}</span>
