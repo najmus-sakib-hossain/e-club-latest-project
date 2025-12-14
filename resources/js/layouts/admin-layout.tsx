@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import {
     AlertCircle,
     Award,
+    Bell,
     Calendar,
     ChevronDown,
     ChevronsRight,
@@ -103,14 +104,15 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
     return (
         <div className="flex h-screen bg-background">
             {/* Sidebar */}
-            <aside className="flex w-64 flex-col bg-foreground text-background">
+            <aside className="flex w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
                 {/* Logo */}
-                <div className="flex h-16 items-center border-b border-border px-6">
-                    <Link href="/admin" className="flex items-center gap-2">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                            <Package className="h-5 w-5" />
-                        </div>
-                        <span className="text-lg font-bold">Fitment CMS</span>
+                <div className="flex h-20 items-center justify-center border-b border-sidebar-border bg-sidebar">
+                    <Link href="/admin">
+                        <img
+                            src="/logo.png"
+                            alt="E-Club"
+                            className="h-12 w-auto object-contain"
+                        />
                     </Link>
                 </div>
 
@@ -121,7 +123,7 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                             <div key={item.title}>
                                 {item.items ? (
                                     <Collapsible defaultOpen>
-                                        <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">
+                                        <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                                             <div className="flex items-center gap-3">
                                                 <item.icon className="h-5 w-5" />
                                                 <span>{item.title}</span>
@@ -134,8 +136,8 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                                                     key={subItem.href}
                                                     href={subItem.href}
                                                     className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${currentPath === subItem.href
-                                                        ? 'bg-primary text-primary-foreground'
-                                                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                                                        ? 'bg-primary text-primary-foreground font-medium shadow-sm'
+                                                        : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
                                                         }`}
                                                 >
                                                     <subItem.icon className="h-4 w-4" />
@@ -147,9 +149,9 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                                 ) : (
                                     <Link
                                         href={item.href}
-                                        className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${currentPath === item.href
-                                            ? 'bg-primary text-primary-foreground'
-                                            : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                                        className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${currentPath === item.href
+                                            ? 'bg-primary text-primary-foreground shadow-sm'
+                                            : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
                                             }`}
                                     >
                                         <item.icon className="h-5 w-5" />
@@ -161,57 +163,67 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                     </nav>
                 </ScrollArea>
 
-                {/* User */}
-                <div className="border-t border-border p-4">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                className="w-full justify-start gap-3 text-background hover:bg-muted"
-                            >
-                                <Avatar className="h-8 w-8">
-                                    <AvatarFallback className="bg-primary text-primary-foreground">
-                                        {auth.user?.name?.charAt(0) || 'A'}
-                                    </AvatarFallback>
-                                </Avatar>
-                                <div className="text-left">
-                                    <p className="text-sm font-medium">{auth.user?.name || 'Admin'}</p>
-                                    <p className="text-xs text-muted-foreground">{auth.user?.email}</p>
-                                </div>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56">
-                            <DropdownMenuItem asChild>
-                                <Link href="/" className="flex items-center gap-2">
-                                    <Users className="h-4 w-4" />
-                                    View Site
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <Link
-                                    href="/admin-logout"
-                                    method="post"
-                                    as="button"
-                                    className="flex w-full items-center gap-2 text-destructive"
-                                >
-                                    <LogOut className="h-4 w-4" />
-                                    Log out
-                                </Link>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+                {/* Sidebar Footer removed (User moved to header) */}
             </aside>
 
             {/* Main Content */}
-            <div className="flex flex-1 flex-col overflow-hidden">
+            <div className="flex flex-1 flex-col overflow-hidden bg-background">
                 {/* Header */}
-                <header className="flex h-16 items-center border-b bg-card px-6">
-                    <h1 className="text-xl font-semibold text-foreground">{title || 'Dashboard'}</h1>
+                <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background px-6 shadow-sm">
+                    {/* Left side empty or Breadcrumbs in future */}
+                    <div />
+
+                    <div className="flex items-center gap-4">
+                        <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+                            <Bell className="h-5 w-5" />
+                            <span className="sr-only">Notifications</span>
+                        </Button>
+
+                        <div className="flex items-center gap-4 pl-4 border-l">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        className="flex items-center gap-3 pl-0 hover:bg-transparent"
+                                    >
+                                        <div className="text-right hidden sm:block">
+                                            <p className="text-sm font-medium leading-none">{auth.user?.name || 'Admin'}</p>
+                                            <p className="text-xs text-muted-foreground mt-1">Administrator</p>
+                                        </div>
+                                        <Avatar className="h-9 w-9 border cursor-pointer">
+                                            <AvatarFallback className="bg-primary/10 text-primary">
+                                                {auth.user?.name?.charAt(0) || 'A'}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-56">
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/" className="flex items-center gap-2">
+                                            <Users className="h-4 w-4" />
+                                            View Site
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link
+                                            href="/admin-logout"
+                                            method="post"
+                                            as="button"
+                                            className="flex w-full items-center gap-2 text-destructive"
+                                        >
+                                            <LogOut className="h-4 w-4" />
+                                            Log out
+                                        </Link>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+                    </div>
                 </header>
 
                 {/* Content */}
-                <main className="flex-1 overflow-auto p-6">
+                <main className="flex-1 overflow-auto p-6 bg-[#F8F9FA]">
                     {children}
                 </main>
             </div>
