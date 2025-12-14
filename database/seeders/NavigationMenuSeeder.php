@@ -68,7 +68,7 @@ class NavigationMenuSeeder extends Seeder
                     'Spring Mattress',
                     'Orthopedic Mattress',
                 ],
-                'Bedroom Furniture' => [
+                'Bedroom E-Club' => [
                     'Wardrobes',
                     'Nightstands',
                     'Dressers',
@@ -143,7 +143,7 @@ class NavigationMenuSeeder extends Seeder
                     'Decor',
                 ],
                 'Outdoor' => [
-                    'Garden Furniture',
+                    'Garden E-Club',
                     'Patio Sets',
                     'Outdoor Chairs',
                 ],

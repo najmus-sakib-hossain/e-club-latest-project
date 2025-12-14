@@ -410,7 +410,7 @@ class NavigationMenuController extends Controller
             'sort_order' => 1,
         ]);
 
-        foreach (['Reception Seating', 'Lounge Furniture', 'Benches', 'Ottomans'] as $index => $name) {
+        foreach (['Reception Seating', 'Lounge E-Club', 'Benches', 'Ottomans'] as $index => $name) {
             NavigationMenu::create([
                 'parent_id' => $officeSeating->id,
                 'name' => $name,

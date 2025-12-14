@@ -73,7 +73,7 @@ const SIDEBAR_COLLAPSED_KEY = "admin_sidebar_collapsed"
 const data = {
   user: {
     name: "Admin",
-    email: "furniture@gmail.com",
+    email: "e-club@gmail.com",
     avatar: "/logo.png",
   },
   navMain: [
@@ -498,7 +498,7 @@ function SimpleNavGroup({ title, items }: { title: string; items: typeof data.na
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { props: pageProps } = usePage()
   const siteLogo = (pageProps as { siteLogo?: string }).siteLogo
-  const siteName = (pageProps as { siteName?: string }).siteName || 'Furniture'
+  const siteName = (pageProps as { siteName?: string }).siteName || 'E-Club'
   const logoSrc = siteLogo ? `/storage/${siteLogo}` : '/logo.png'
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const { state, setOpen } = useSidebar()

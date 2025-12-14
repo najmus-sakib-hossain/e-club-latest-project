@@ -81,7 +81,7 @@ const defaultEligibleItems: EligibilityItem[] = [
 ];
 
 const defaultNonEligibleItems: EligibilityItem[] = [
-    { text: 'Custom-made or personalized furniture' },
+    { text: 'Custom-made or personalized e-club' },
     { text: 'Items with signs of use, damage, or wear' },
     { text: 'Items without original packaging or tags' },
     { text: 'Items returned after 7 days without valid reason' },
@@ -120,7 +120,7 @@ export default function Returns({ settings, categories, page, content }: Returns
     // Get content from database or use defaults
     const heroTitle = content?.hero?.title || 'Returns & Exchanges';
     const heroSubtitle = content?.hero?.subtitle || "We want you to be completely satisfied with your purchase. If you're not happy, we offer hassle-free returns and exchanges.";
-    
+
     const returnSteps = (content?.return_steps?.items as ReturnStep[]) || defaultReturnSteps;
     const eligibleItems = (content?.eligible?.items as EligibilityItem[]) || defaultEligibleItems;
     const nonEligibleItems = (content?.not_eligible?.items as EligibilityItem[]) || defaultNonEligibleItems;
@@ -211,14 +211,13 @@ export default function Returns({ settings, categories, page, content }: Returns
                         <div className="relative">
                             {/* Timeline line */}
                             <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-border" />
-                            
+
                             <div className="space-y-8">
                                 {returnSteps.map((step, index) => (
                                     <div
                                         key={step.step || index}
-                                        className={`relative flex items-center gap-8 ${
-                                            index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                                        }`}
+                                        className={`relative flex items-center gap-8 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                                            }`}
                                     >
                                         <div className={`flex-1 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
                                             <div className="bg-card p-6 rounded-lg shadow-sm">
@@ -298,9 +297,9 @@ export default function Returns({ settings, categories, page, content }: Returns
                         <div>
                             <h3 className="font-semibold text-chart-4 mb-2">Important Notice</h3>
                             <p className="text-chart-4 text-sm">
-                                Please ensure items are returned in their original packaging with all accessories, 
-                                tags, and documentation. Items that don't meet our return criteria may be rejected 
-                                or subject to a restocking fee. For large furniture items, please contact us before 
+                                Please ensure items are returned in their original packaging with all accessories,
+                                tags, and documentation. Items that don't meet our return criteria may be rejected
+                                or subject to a restocking fee. For large e-club items, please contact us before
                                 attempting to move or return the item to avoid damage.
                             </p>
                         </div>

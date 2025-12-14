@@ -32,7 +32,7 @@ export default function Categories({ settings, categories, allCategories }: Cate
                 <div className="container mx-auto px-4 text-center">
                     <h1 className="text-3xl lg:text-4xl font-bold mb-4">Browse Categories</h1>
                     <p className="text-muted-foreground max-w-2xl mx-auto">
-                        Explore our wide range of furniture categories to find the perfect pieces for your home or office.
+                        Explore our wide range of e-club categories to find the perfect pieces for your home or office.
                     </p>
                 </div>
             </div>

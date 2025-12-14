@@ -96,7 +96,7 @@ export default function Schedule({ settings, categories }: ScheduleProps) {
                     <Calendar className="h-12 w-12 text-primary mx-auto mb-4" />
                     <h1 className="text-3xl lg:text-4xl font-bold mb-4">Schedule a Meeting</h1>
                     <p className="text-muted-foreground max-w-2xl mx-auto">
-                        Book a consultation with our furniture experts. Visit our showroom or schedule a video call.
+                        Book a consultation with our e-club experts. Visit our showroom or schedule a video call.
                     </p>
                 </div>
             </div>
@@ -213,9 +213,8 @@ export default function Schedule({ settings, categories }: ScheduleProps) {
                                         >
                                             <Label
                                                 htmlFor="showroom"
-                                                className={`flex items-center gap-3 p-4 border rounded-lg cursor-pointer transition-colors ${
-                                                    data.meeting_type === 'showroom' ? 'border-primary bg-primary/5' : ''
-                                                }`}
+                                                className={`flex items-center gap-3 p-4 border rounded-lg cursor-pointer transition-colors ${data.meeting_type === 'showroom' ? 'border-primary bg-primary/5' : ''
+                                                    }`}
                                             >
                                                 <RadioGroupItem value="showroom" id="showroom" />
                                                 <MapPin className="h-5 w-5 text-primary" />
@@ -226,9 +225,8 @@ export default function Schedule({ settings, categories }: ScheduleProps) {
                                             </Label>
                                             <Label
                                                 htmlFor="video"
-                                                className={`flex items-center gap-3 p-4 border rounded-lg cursor-pointer transition-colors ${
-                                                    data.meeting_type === 'video' ? 'border-primary bg-primary/5' : ''
-                                                }`}
+                                                className={`flex items-center gap-3 p-4 border rounded-lg cursor-pointer transition-colors ${data.meeting_type === 'video' ? 'border-primary bg-primary/5' : ''
+                                                    }`}
                                             >
                                                 <RadioGroupItem value="video" id="video" />
                                                 <Video className="h-5 w-5 text-primary" />
@@ -287,7 +285,7 @@ export default function Schedule({ settings, categories }: ScheduleProps) {
                                                 <SelectValue placeholder="Select purpose" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="consultation">Furniture Consultation</SelectItem>
+                                                <SelectItem value="consultation">E-Club Consultation</SelectItem>
                                                 <SelectItem value="custom">Custom Order Discussion</SelectItem>
                                                 <SelectItem value="bulk">Bulk/Corporate Order</SelectItem>
                                                 <SelectItem value="showroom">Showroom Tour</SelectItem>

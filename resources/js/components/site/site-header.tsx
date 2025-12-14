@@ -112,7 +112,7 @@ const defaultNavigationStructure: Record<string, Record<string, string[]>> = {
             'Spring Mattress',
             'Orthopedic Mattress',
         ],
-        'Bedroom Furniture': [
+        'Bedroom E-Club': [
             'Wardrobes',
             'Nightstands',
             'Dressers',
@@ -187,7 +187,7 @@ const defaultNavigationStructure: Record<string, Record<string, string[]>> = {
             'Decor',
         ],
         'Outdoor': [
-            'Garden Furniture',
+            'Garden E-Club',
             'Patio Sets',
             'Outdoor Chairs',
         ],
@@ -235,7 +235,7 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
     };
 
     // Get values from settings
-    const siteName = getSetting('general', 'site_name', 'Furniture');
+    const siteName = getSetting('general', 'site_name', 'E-Club');
     const siteLogo = getSetting('general', 'site_logo', '');
     const logoSrc = siteLogo ? `/storage/${siteLogo}` : '/logo.png';
     const headerPhone = getSetting('header', 'header_phone') || getSetting('contact', 'contact_phone') || getSetting('contact', 'phone', '');
@@ -389,7 +389,7 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                                             href="/products"
                                             className="text-base font-medium py-2 border-b"
                                         >
-                                            All Furniture
+                                            All E-Club
                                         </Link>
                                         {navItems.map((item) => (
                                             <div key={item} className="border-b pb-2">
@@ -673,12 +673,12 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
             <nav className="bg-primary hidden lg:block relative">
                 <div className="container mx-auto px-4">
                     <div className="flex items-center h-12">
-                        {/* All Furniture */}
+                        {/* All E-Club */}
                         <Link
                             href="/products"
                             className="px-4 h-full flex items-center text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
                         >
-                            All Furniture
+                            All E-Club
                         </Link>
 
                         {/* Navigation Items with Dropdowns */}

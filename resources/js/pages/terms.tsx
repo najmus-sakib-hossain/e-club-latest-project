@@ -27,9 +27,9 @@ interface TermsProps {
 }
 
 export default function Terms({ settings, categories, page, content }: TermsProps) {
-    const siteName = settings?.general?.site_name || 'Furniture Store';
-    const contactEmail = settings?.contact?.email || 'legal@furniturestore.com';
-    
+    const siteName = settings?.general?.site_name || 'E-Club Store';
+    const contactEmail = settings?.contact?.email || 'legal@e-clubstore.com';
+
     // Get content from database or use defaults
     const heroTitle = content?.hero?.title || 'Terms & Conditions';
     const lastUpdated = content?.hero?.subtitle || 'December 1, 2025';
@@ -73,14 +73,14 @@ export default function Terms({ settings, categories, page, content }: TermsProp
                         ) : (
                             <>
                                 <p className="lead">
-                                    Welcome to {siteName}. By accessing and using our website, you agree to be bound 
+                                    Welcome to {siteName}. By accessing and using our website, you agree to be bound
                                     by these Terms and Conditions. Please read them carefully before making any purchases.
                                 </p>
 
                                 <h2>1. Acceptance of Terms</h2>
                                 <p>
-                                    By accessing this website, you confirm that you are at least 18 years old and 
-                                    have the legal capacity to enter into binding contracts. If you do not agree 
+                                    By accessing this website, you confirm that you are at least 18 years old and
+                                    have the legal capacity to enter into binding contracts. If you do not agree
                                     with any part of these terms, you must not use our website.
                                 </p>
 
@@ -129,7 +129,7 @@ export default function Terms({ settings, categories, page, content }: TermsProp
 
                                 <h2>5. Returns and Refunds</h2>
                                 <p>
-                                    Our return policy is governed by our separate Returns & Exchanges Policy. 
+                                    Our return policy is governed by our separate Returns & Exchanges Policy.
                                     Key points include:
                                 </p>
                                 <ul>
@@ -139,7 +139,7 @@ export default function Terms({ settings, categories, page, content }: TermsProp
                                     <li>Refunds are processed within 7 business days of approval</li>
                                 </ul>
                                 <p>
-                                    Please refer to our <Link href="/returns" className="text-primary">Returns & Exchanges</Link> page 
+                                    Please refer to our <Link href="/returns" className="text-primary">Returns & Exchanges</Link> page
                                     for complete details.
                                 </p>
 
@@ -151,7 +151,7 @@ export default function Terms({ settings, categories, page, content }: TermsProp
                                     <li>We may repair or replace defective products at our discretion</li>
                                 </ul>
                                 <p>
-                                    See our <Link href="/warranty" className="text-primary">Warranty Information</Link> page 
+                                    See our <Link href="/warranty" className="text-primary">Warranty Information</Link> page
                                     for complete details.
                                 </p>
 
@@ -182,7 +182,7 @@ export default function Terms({ settings, categories, page, content }: TermsProp
 
                                 <h2>10. Dispute Resolution</h2>
                                 <p>
-                                    Any disputes arising from these terms or your use of our services shall be 
+                                    Any disputes arising from these terms or your use of our services shall be
                                     resolved through:
                                 </p>
                                 <ol>
@@ -191,14 +191,14 @@ export default function Terms({ settings, categories, page, content }: TermsProp
                                     <li>Binding arbitration in accordance with Bangladesh law</li>
                                 </ol>
                                 <p>
-                                    These terms are governed by the laws of Bangladesh. Any legal proceedings 
+                                    These terms are governed by the laws of Bangladesh. Any legal proceedings
                                     shall be conducted in the courts of Dhaka.
                                 </p>
 
                                 <h2>11. Changes to Terms</h2>
                                 <p>
-                                    We reserve the right to modify these terms at any time. Changes will be 
-                                    effective immediately upon posting. Your continued use of the website 
+                                    We reserve the right to modify these terms at any time. Changes will be
+                                    effective immediately upon posting. Your continued use of the website
                                     constitutes acceptance of the modified terms.
                                 </p>
 

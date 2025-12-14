@@ -9,7 +9,7 @@ import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
 import { queryClient } from './lib/query-client';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Furniture';
+const appName = import.meta.env.VITE_APP_NAME || 'E-Club';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),

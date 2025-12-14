@@ -142,7 +142,7 @@ export default function HeaderSettings({ settings }: Props) {
     const form = useForm<HeaderFormValues>({
         resolver: zodResolver(headerSchema),
         defaultValues: {
-            site_name: settings.site_name || 'Furniture Store',
+            site_name: settings.site_name || 'E-Club Store',
             header_announcement: settings.header_announcement || '',
             header_announcement_enabled: toBool(settings.header_announcement_enabled),
             header_phone: settings.header_phone || settings.contact_phone || '',
@@ -351,7 +351,7 @@ export default function HeaderSettings({ settings }: Props) {
                                                 <FormLabel>Site Name</FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder="e.g., Furniture BD, Home Decor Store"
+                                                        placeholder="e.g., E-Club BD, Home Decor Store"
                                                         {...field}
                                                     />
                                                 </FormControl>

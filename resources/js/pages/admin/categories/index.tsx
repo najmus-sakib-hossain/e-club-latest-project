@@ -279,7 +279,7 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Categories</h1>
                         <p className="text-muted-foreground">
-                            Manage your furniture categories and organize your products.
+                            Manage your e-club categories and organize your products.
                         </p>
                     </div>
                     <Button onClick={openAddDialog} className="gap-2">

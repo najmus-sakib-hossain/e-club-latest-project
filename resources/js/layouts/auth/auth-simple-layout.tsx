@@ -23,7 +23,7 @@ export default function AuthSimpleLayout({
                         >
                             <img 
                                 src="/logo.png" 
-                                alt="Furniture" 
+                                alt="E-Club" 
                                 className="h-12 w-auto"
                             />
                             <span className="sr-only">{title}</span>

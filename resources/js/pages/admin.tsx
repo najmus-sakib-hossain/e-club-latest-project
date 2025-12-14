@@ -42,7 +42,7 @@ export default function AdminDashboard() {
 
   return (
     <>
-      <Head title="Admin Dashboard - Furniture Store" />
+      <Head title="Admin Dashboard - E-Club Store" />
       <SidebarProvider
         defaultOpen={defaultOpen}
         style={

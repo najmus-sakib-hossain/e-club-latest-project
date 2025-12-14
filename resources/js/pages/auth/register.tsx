@@ -18,7 +18,7 @@ interface RegisterProps {
 export default function Register({ settings, categories }: RegisterProps) {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    
+
     const form = useForm({
         name: '',
         email: '',
@@ -36,12 +36,12 @@ export default function Register({ settings, categories }: RegisterProps) {
     return (
         <SiteAuthLayout
             title="Create an Account"
-            description="Join us to start shopping for premium furniture"
+            description="Join us to start shopping for premium e-club"
             settings={settings}
             categories={categories}
         >
             <Head title="Create Account" />
-            
+
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                 <div className="grid gap-4">
                     <div className="grid gap-2">

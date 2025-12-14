@@ -56,7 +56,7 @@ const defaultWarrantyTiers: WarrantyTier[] = [
     {
         title: 'Standard Warranty',
         duration: '2 Years',
-        description: 'Included with all furniture purchases',
+        description: 'Included with all e-club purchases',
         color: 'bg-chart-2/10 border-chart-2/30',
         iconColor: 'text-chart-2',
     },
@@ -157,8 +157,8 @@ const defaultFaqs: FAQ[] = [
 export default function Warranty({ settings, categories, page, content }: WarrantyProps) {
     // Get content from database or use defaults
     const heroTitle = content?.hero?.title || 'Warranty Information';
-    const heroSubtitle = content?.hero?.subtitle || 'We stand behind the quality of our furniture. Learn about our comprehensive warranty coverage and how to make a claim.';
-    
+    const heroSubtitle = content?.hero?.subtitle || 'We stand behind the quality of our e-club. Learn about our comprehensive warranty coverage and how to make a claim.';
+
     const warrantyTiers = (content?.warranty_tiers?.items as WarrantyTier[]) || defaultWarrantyTiers;
     const coveredItems = (content?.covered?.items as CoveredItem[]) || defaultCoveredItems;
     const notCoveredItems = (content?.not_covered?.items as CoveredItem[]) || defaultNotCoveredItems;
@@ -320,7 +320,7 @@ export default function Warranty({ settings, categories, page, content }: Warran
                             </div>
                             <h3 className="font-semibold mb-2">Email Us</h3>
                             <p className="text-background/80 text-sm">
-                                warranty@{settings?.general?.site_name?.toLowerCase().replace(/\s+/g, '') || 'furniture'}.com
+                                warranty@{settings?.general?.site_name?.toLowerCase().replace(/\s+/g, '') || 'e-club'}.com
                             </p>
                             <p className="text-background/70 text-xs mt-1">Response within 24 hours</p>
                         </div>

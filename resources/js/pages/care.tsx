@@ -70,7 +70,7 @@ const defaultCareCategories: CareCategory[] = [
     {
         id: 'wood',
         icon: 'tree-pine',
-        title: 'Wood Furniture',
+        title: 'Wood E-Club',
         description: 'Care tips for wooden tables, chairs, cabinets, and more',
         tips: [
             {
@@ -83,7 +83,7 @@ const defaultCareCategories: CareCategory[] = [
             },
             {
                 title: 'Polishing',
-                description: 'Apply furniture polish or wax every 3-6 months. Use products specifically designed for wood.',
+                description: 'Apply e-club polish or wax every 3-6 months. Use products specifically designed for wood.',
             },
             {
                 title: 'Avoid Direct Sunlight',
@@ -102,7 +102,7 @@ const defaultCareCategories: CareCategory[] = [
     {
         id: 'upholstery',
         icon: 'sofa',
-        title: 'Upholstered Furniture',
+        title: 'Upholstered E-Club',
         description: 'Maintain sofas, chairs, and fabric-covered pieces',
         tips: [
             {
@@ -134,7 +134,7 @@ const defaultCareCategories: CareCategory[] = [
     {
         id: 'leather',
         icon: 'armchair',
-        title: 'Leather Furniture',
+        title: 'Leather E-Club',
         description: 'Special care for leather sofas and chairs',
         tips: [
             {
@@ -230,7 +230,7 @@ const defaultCareCategories: CareCategory[] = [
     {
         id: 'dining',
         icon: 'utensils-crossed',
-        title: 'Dining Furniture',
+        title: 'Dining E-Club',
         description: 'Keep your dining sets looking new',
         tips: [
             {
@@ -265,12 +265,12 @@ const defaultGeneralTips: GeneralTip[] = [
     {
         icon: 'sun',
         title: 'Sunlight',
-        tip: 'Keep furniture away from direct sunlight to prevent fading and drying.',
+        tip: 'Keep e-club away from direct sunlight to prevent fading and drying.',
     },
     {
         icon: 'droplets',
         title: 'Moisture',
-        tip: 'Wipe up spills immediately and avoid placing wet items on furniture.',
+        tip: 'Wipe up spills immediately and avoid placing wet items on e-club.',
     },
     {
         icon: 'wind',
@@ -286,12 +286,12 @@ const defaultGeneralTips: GeneralTip[] = [
 
 // Default dos
 const defaultDos = [
-    { text: 'Dust furniture regularly with soft cloth' },
+    { text: 'Dust e-club regularly with soft cloth' },
     { text: 'Use coasters and placemats' },
     { text: 'Clean spills immediately' },
     { text: 'Use proper cleaning products' },
     { text: 'Maintain consistent humidity levels' },
-    { text: 'Lift furniture when moving' },
+    { text: 'Lift e-club when moving' },
     { text: 'Follow manufacturer\'s care instructions' },
     { text: 'Schedule regular professional cleaning' },
 ];
@@ -302,7 +302,7 @@ const defaultDonts = [
     { text: 'Use abrasive cleaners or scrubbers' },
     { text: 'Put hot items directly on surfaces' },
     { text: 'Use harsh chemicals or bleach' },
-    { text: 'Drag furniture across floors' },
+    { text: 'Drag e-club across floors' },
     { text: 'Expose to extreme temperatures' },
     { text: 'Over-wet wood or upholstery' },
     { text: 'Ignore small repairs' },
@@ -315,8 +315,8 @@ interface DoItem {
 export default function Care({ settings, categories, page, content }: CareProps) {
     // Get content from database or use defaults
     const heroTitle = content?.hero?.title || 'Care & Maintenance Guide';
-    const heroSubtitle = content?.hero?.subtitle || 'Proper care extends the life and beauty of your furniture. Follow our expert tips to keep your furniture looking its best for years to come.';
-    
+    const heroSubtitle = content?.hero?.subtitle || 'Proper care extends the life and beauty of your e-club. Follow our expert tips to keep your e-club looking its best for years to come.';
+
     const careCategories = (content?.care_categories?.items as CareCategory[]) || defaultCareCategories;
     const generalTips = (content?.general_tips?.items as GeneralTip[]) || defaultGeneralTips;
     const dos = (content?.dos?.items as DoItem[]) || defaultDos;
@@ -379,7 +379,7 @@ export default function Care({ settings, categories, page, content }: CareProps)
             <div className="bg-muted py-12">
                 <div className="container mx-auto px-4">
                     <h2 className="text-2xl font-bold text-center mb-8">
-                        {content?.care_categories?.title || 'Care by Furniture Type'}
+                        {content?.care_categories?.title || 'Care by E-Club Type'}
                     </h2>
                     <Tabs defaultValue={careCategories[0]?.id || 'wood'} className="max-w-4xl mx-auto">
                         <TabsList className="flex flex-wrap justify-center gap-2 bg-transparent mb-8">
@@ -478,7 +478,7 @@ export default function Care({ settings, categories, page, content }: CareProps)
                 <div className="container mx-auto px-4 text-center">
                     <h2 className="text-2xl font-bold mb-4">Need Professional Help?</h2>
                     <p className="text-background/80 mb-6 max-w-xl mx-auto">
-                        Our team offers professional furniture care and repair services. Contact us to schedule a service.
+                        Our team offers professional e-club care and repair services. Contact us to schedule a service.
                     </p>
                     <Link
                         href="/contact"

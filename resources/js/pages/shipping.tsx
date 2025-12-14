@@ -97,10 +97,10 @@ const defaultFaqs: FAQ[] = [
     },
     {
         question: 'Is assembly included with delivery?',
-        answer: 'Yes, free assembly is included with all furniture deliveries. Our trained technicians will assemble your furniture at your location.',
+        answer: 'Yes, free assembly is included with all e-club deliveries. Our trained technicians will assemble your e-club at your location.',
     },
     {
-        question: 'What happens if my furniture is damaged during delivery?',
+        question: 'What happens if my e-club is damaged during delivery?',
         answer: 'All deliveries are inspected before handover. If any damage is found, we will replace the item free of charge. Please report any issues within 24 hours of delivery.',
     },
 ];
@@ -119,7 +119,7 @@ export default function Shipping({ settings, categories, page, content }: Shippi
     // Get content from database or use defaults
     const heroTitle = content?.hero?.title || 'Shipping & Delivery';
     const heroSubtitle = content?.hero?.subtitle || 'We deliver to all 64 districts of Bangladesh. Learn about our shipping options, delivery times, and policies.';
-    
+
     const shippingMethods = (content?.shipping_methods?.items as ShippingMethod[]) || defaultShippingMethods;
     const deliveryZones = (content?.zones?.items as DeliveryZone[]) || defaultDeliveryZones;
     const faqs = (content?.faqs?.items as FAQ[]) || defaultFaqs;
@@ -229,7 +229,7 @@ export default function Shipping({ settings, categories, page, content }: Shippi
                             <div>
                                 <h3 className="font-semibold mb-1">Free Assembly</h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Professional assembly included with every furniture delivery.
+                                    Professional assembly included with every e-club delivery.
                                 </p>
                             </div>
                         </div>

@@ -49,7 +49,7 @@ const defaultValues = [
     {
         icon: Award,
         title: 'Quality First',
-        description: 'We never compromise on quality. Every piece of furniture goes through rigorous quality checks.',
+        description: 'We never compromise on quality. Every piece of e-club goes through rigorous quality checks.',
     },
     {
         icon: Users,
@@ -59,7 +59,7 @@ const defaultValues = [
     {
         icon: Target,
         title: 'Innovation',
-        description: 'We continuously innovate our designs and processes to bring you the best furniture solutions.',
+        description: 'We continuously innovate our designs and processes to bring you the best e-club solutions.',
     },
     {
         icon: Heart,
@@ -70,18 +70,18 @@ const defaultValues = [
 
 export default function About({ settings, categories, teamMembers = [], pageContent = {} }: AboutProps) {
     // Get dynamic content from settings
-    const siteName = settings?.general?.site_name || 'Furniture';
-    const heroTitle = pageContent.hero?.title || settings?.about?.about_hero_title || 'Crafting Quality Furniture Since 2014';
-    const heroDescription = pageContent.hero?.content || settings?.about?.about_hero_description || 
-        `${siteName} is Bangladesh's leading furniture brand, dedicated to creating beautiful, functional, and affordable furniture for homes and offices. Our journey began with a simple mission: to bring world-class furniture design to every Bangladeshi home.`;
+    const siteName = settings?.general?.site_name || 'E-Club';
+    const heroTitle = pageContent.hero?.title || settings?.about?.about_hero_title || 'Crafting Quality E-Club Since 2014';
+    const heroDescription = pageContent.hero?.content || settings?.about?.about_hero_description ||
+        `${siteName} is Bangladesh's leading e-club brand, dedicated to creating beautiful, functional, and affordable e-club for homes and offices. Our journey began with a simple mission: to bring world-class e-club design to every Bangladeshi home.`;
     const storyTitle = pageContent.story?.title || settings?.about?.about_story_title || 'Our Story';
-    const storyContent = pageContent.story?.content || 'Founded in 2014, Furniture started as a small furniture workshop in Dhaka with a dream to revolutionize the furniture industry in Bangladesh.\nWhat began as a team of 5 passionate craftsmen has now grown into a company of over 200 dedicated professionals, including designers, engineers, craftsmen, and customer service experts.\nOver the years, we have served more than 50,000 happy customers, delivering over 100,000 pieces of furniture across all 64 districts of Bangladesh. Our commitment to quality, innovation, and customer satisfaction has made us a household name.\nToday, we operate from our state-of-the-art 50,000 sq. ft. manufacturing facility, equipped with modern machinery and a team of skilled artisans who bring our designs to life.';
+    const storyContent = pageContent.story?.content || 'Founded in 2014, E-Club started as a small e-club workshop in Dhaka with a dream to revolutionize the e-club industry in Bangladesh.\nWhat began as a team of 5 passionate craftsmen has now grown into a company of over 200 dedicated professionals, including designers, engineers, craftsmen, and customer service experts.\nOver the years, we have served more than 50,000 happy customers, delivering over 100,000 pieces of e-club across all 64 districts of Bangladesh. Our commitment to quality, innovation, and customer satisfaction has made us a household name.\nToday, we operate from our state-of-the-art 50,000 sq. ft. manufacturing facility, equipped with modern machinery and a team of skilled artisans who bring our designs to life.';
     const storyImage = pageContent.story?.image || null;
     const valuesTitle = pageContent.values?.title || settings?.about?.about_values_title || 'Our Values';
     const valuesSubtitle = pageContent.values?.subtitle || settings?.about?.about_values_subtitle || 'These core values guide everything we do and help us deliver the best to our customers.';
     const teamTitle = pageContent.team?.title || settings?.about?.about_team_title || 'Meet Our Team';
     const teamSubtitle = pageContent.team?.subtitle || settings?.about?.about_team_subtitle || `The passionate people behind ${siteName}.`;
-    
+
     // Dynamic stats
     const dynamicStats = [
         { label: 'Years of Experience', value: settings?.about?.about_stats_years || '10+' },
@@ -95,7 +95,7 @@ export default function About({ settings, categories, teamMembers = [], pageCont
     const features = (pageContent.features?.items as typeof defaultFeatures) || defaultFeatures;
     const valueItems = (pageContent.values?.items as Array<{ icon: string; title: string; description: string }>) || defaultValues;
     const ctaTitle = pageContent.cta?.title || 'Ready to Transform Your Space?';
-    const ctaSubtitle = pageContent.cta?.subtitle || 'Browse our collection and find the perfect furniture for your home or office.';
+    const ctaSubtitle = pageContent.cta?.subtitle || 'Browse our collection and find the perfect e-club for your home or office.';
 
     // Get feature icon component
     const getFeatureIcon = (iconName: string) => {
@@ -188,25 +188,25 @@ export default function About({ settings, categories, teamMembers = [], pageCont
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div>
                             <h2 className="text-3xl font-bold mb-6">{storyTitle}</h2>
-                                <div className="space-y-4 text-muted-foreground">
-                                    {(storyContent?.split('\n').filter(Boolean) || []).map((paragraph, index) => (
-                                        <p key={index}>{paragraph}</p>
-                                    ))}
-                                </div>
+                            <div className="space-y-4 text-muted-foreground">
+                                {(storyContent?.split('\n').filter(Boolean) || []).map((paragraph, index) => (
+                                    <p key={index}>{paragraph}</p>
+                                ))}
+                            </div>
                         </div>
                         <div className="relative">
                             <div className="aspect-square bg-muted rounded-lg overflow-hidden">
-                                    <img
-                                        src={storyImage ? `/storage/${storyImage}` : '/images/factory.jpg'}
-                                        alt="Our Factory"
-                                        className="w-full h-full object-cover"
-                                        onError={(e) => {
-                                            e.currentTarget.src = 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600';
-                                        }}
-                                    />
+                                <img
+                                    src={storyImage ? `/storage/${storyImage}` : '/images/factory.jpg'}
+                                    alt="Our Factory"
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                        e.currentTarget.src = 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600';
+                                    }}
+                                />
                             </div>
                             <div className="absolute -bottom-6 -left-6 bg-primary p-6 rounded-lg">
-                                    <div className="text-4xl font-bold text-primary-foreground">{stats[0]?.value || dynamicStats[0].value}</div>
+                                <div className="text-4xl font-bold text-primary-foreground">{stats[0]?.value || dynamicStats[0].value}</div>
                                 <div className="text-primary-foreground/80">Years of Excellence</div>
                             </div>
                         </div>
@@ -248,7 +248,7 @@ export default function About({ settings, categories, teamMembers = [], pageCont
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold mb-4">Why Choose Us?</h2>
                         <p className="text-muted-foreground max-w-2xl mx-auto">
-                            We're committed to providing the best furniture shopping experience in Bangladesh.
+                            We're committed to providing the best e-club shopping experience in Bangladesh.
                         </p>
                     </div>
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

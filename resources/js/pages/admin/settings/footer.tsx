@@ -300,15 +300,15 @@ export default function FooterSettings({ settings }: Props) {
         resolver: zodResolver(footerSchema),
         defaultValues: {
             // Company Info
-            site_name: settings.site_name || 'Furniture Store',
-            site_tagline: settings.site_tagline || 'Quality Furniture for Modern Living',
+            site_name: settings.site_name || 'E-Club Store',
+            site_tagline: settings.site_tagline || 'Quality E-Club for Modern Living',
             footer_about:
                 settings.footer_about ||
-                'Premium quality furniture for your home and office. We bring comfort and style to your living spaces.',
+                'Premium quality e-club for your home and office. We bring comfort and style to your living spaces.',
             footer_text:
                 settings.footer_text ||
-                'Your trusted source for quality furniture. We offer a wide range of modern and classic furniture for every room in your home.',
-            footer_copyright: settings.footer_copyright || `© ${new Date().getFullYear()} ${settings.site_name || 'Furniture Store'}. All rights reserved.`,
+                'Your trusted source for quality e-club. We offer a wide range of modern and classic e-club for every room in your home.',
+            footer_copyright: settings.footer_copyright || `© ${new Date().getFullYear()} ${settings.site_name || 'E-Club Store'}. All rights reserved.`,
             // Copyright section settings
             footer_copyright_left_text: settings.footer_copyright_left_text || '© 2025 Nex Real Estate. All rights reserved.',
             footer_copyright_left_link_text: settings.footer_copyright_left_link_text || 'Nex Real Estate',
@@ -317,7 +317,7 @@ export default function FooterSettings({ settings }: Props) {
             footer_copyright_right_link_text: settings.footer_copyright_right_link_text || 'Alphainno',
             footer_copyright_right_link_url: settings.footer_copyright_right_link_url || 'https://alphainno.com',
             // Contact Info
-            contact_email: settings.contact_email || settings.email || 'info@furniturestore.com',
+            contact_email: settings.contact_email || settings.email || 'info@e-clubstore.com',
             contact_phone: settings.contact_phone || settings.phone || '+880 1234-567890',
             contact_address: settings.contact_address || settings.address || 'Dhaka, Bangladesh',
             contact_hours: settings.contact_hours || 'Sat - Thu: 10:00 AM - 8:00 PM',
@@ -354,7 +354,7 @@ export default function FooterSettings({ settings }: Props) {
             footer_link_care: settings.footer_link_care || 'Care & Maintenance',
             footer_link_stores: settings.footer_link_stores || 'Store Locator',
             // Site Description
-            site_description: settings.site_description || 'Premium quality furniture for your home and office.',
+            site_description: settings.site_description || 'Premium quality e-club for your home and office.',
             // Visibility Toggles
             footer_show_quick_links: toBool(settings.footer_show_quick_links),
             footer_show_customer_service: toBool(settings.footer_show_customer_service),
@@ -519,7 +519,7 @@ export default function FooterSettings({ settings }: Props) {
                                                         <FormItem>
                                                             <FormLabel>Store Name</FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="Your Furniture Store" {...field} />
+                                                                <Input placeholder="Your E-Club Store" {...field} />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -533,7 +533,7 @@ export default function FooterSettings({ settings }: Props) {
                                                         <FormItem>
                                                             <FormLabel>Tagline</FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="Quality Furniture for Modern Living" {...field} />
+                                                                <Input placeholder="Quality E-Club for Modern Living" {...field} />
                                                             </FormControl>
                                                             <FormDescription>
                                                                 A short tagline describing your business
@@ -551,7 +551,7 @@ export default function FooterSettings({ settings }: Props) {
                                                             <FormLabel>About Us (Footer)</FormLabel>
                                                             <FormControl>
                                                                 <Textarea
-                                                                    placeholder="We provide premium quality furniture with exceptional craftsmanship..."
+                                                                    placeholder="We provide premium quality e-club with exceptional craftsmanship..."
                                                                     rows={4}
                                                                     {...field}
                                                                 />
@@ -784,7 +784,7 @@ export default function FooterSettings({ settings }: Props) {
                                                                     <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                                                     <Input
                                                                         className="pl-9"
-                                                                        placeholder="info@furniture.com"
+                                                                        placeholder="info@e-club.com"
                                                                         {...field}
                                                                     />
                                                                 </div>
@@ -806,7 +806,7 @@ export default function FooterSettings({ settings }: Props) {
                                                                 <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                                                 <Textarea
                                                                     className="pl-9"
-                                                                    placeholder="123 Furniture Street, Dhaka, Bangladesh"
+                                                                    placeholder="123 E-Club Street, Dhaka, Bangladesh"
                                                                     rows={2}
                                                                     {...field}
                                                                 />

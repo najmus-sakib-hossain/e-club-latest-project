@@ -55,9 +55,9 @@ interface StoresProps {
 
 // Default store services for fallback
 const defaultStoreServices = [
-    { icon: 'check', title: 'Quality Guarantee', description: 'Inspect furniture quality in person before you buy' },
+    { icon: 'check', title: 'Quality Guarantee', description: 'Inspect e-club quality in person before you buy' },
     { icon: 'users', title: 'Expert Staff', description: 'Get personalized recommendations from our team' },
-    { icon: 'grid', title: 'Room Displays', description: 'See how furniture looks in real room settings' },
+    { icon: 'grid', title: 'Room Displays', description: 'See how e-club looks in real room settings' },
     { icon: 'dollar', title: 'Easy Financing', description: 'Flexible EMI options available at our stores' },
 ];
 
@@ -67,7 +67,7 @@ export default function Stores({ settings, categories, page, storeLocations = []
 
     // Get dynamic content with fallbacks
     const heroTitle = pageContent.hero?.title || 'Find a Store Near You';
-    const heroSubtitle = pageContent.hero?.subtitle || 'Visit one of our showrooms to experience our furniture in person. Our expert staff is ready to help you find the perfect pieces.';
+    const heroSubtitle = pageContent.hero?.subtitle || 'Visit one of our showrooms to experience our e-club in person. Our expert staff is ready to help you find the perfect pieces.';
     const locationsSectionTitle = pageContent.locations_section?.title || 'All Locations';
     const storeServicesTitle = pageContent.store_services?.title || 'What to Expect at Our Stores';
     const storeServices = (pageContent.store_services?.items as typeof defaultStoreServices) || defaultStoreServices;

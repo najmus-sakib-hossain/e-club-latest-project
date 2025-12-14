@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
     {
         // Create admin user with hardcoded credentials
         User::firstOrCreate(
-            ['email' => 'furniture@gmail.com'],
+            ['email' => 'e-club@gmail.com'],
             [
                 'name' => 'Admin',
                 'password' => 'password',
@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Seed Hero Slides with Unsplash images - Furniture style
+        // Seed Hero Slides with Unsplash images - E-Club style
         $heroSlides = [
             [
                 'title' => 'L-Shaped Executive Desk',
@@ -91,7 +91,7 @@ class DatabaseSeeder extends Seeder
         $categories = [
             // Business Collections
             ['name' => 'Office Desks', 'slug' => 'office-desks', 'collection_type' => 'business', 'description' => 'Professional desks for your workspace', 'image' => 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800&q=80', 'order' => 1],
-            ['name' => 'Conference Tables', 'slug' => 'conference-tables', 'collection_type' => 'business', 'description' => 'Meeting and conference room furniture', 'image' => 'https://images.unsplash.com/photo-1431540015161-0bf868a2d407?w=800&q=80', 'order' => 2],
+            ['name' => 'Conference Tables', 'slug' => 'conference-tables', 'collection_type' => 'business', 'description' => 'Meeting and conference room e-club', 'image' => 'https://images.unsplash.com/photo-1431540015161-0bf868a2d407?w=800&q=80', 'order' => 2],
             ['name' => 'Office Chairs', 'slug' => 'office-chairs', 'collection_type' => 'business', 'description' => 'Ergonomic chairs for comfort', 'image' => 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&q=80', 'order' => 3],
             
             // Family Collections
@@ -175,7 +175,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Sarah Johnson',
                 'role' => 'Interior Designer',
-                'review' => 'Absolutely love the quality of furniture from this store! The executive desk I purchased is sturdy, elegant, and perfect for my home office. Customer service was exceptional.',
+                'review' => 'Absolutely love the quality of e-club from this store! The executive desk I purchased is sturdy, elegant, and perfect for my home office. Customer service was exceptional.',
                 'rating' => 5,
                 'image' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80',
                 'order' => 1,
@@ -199,7 +199,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'David Rahman',
                 'role' => 'Architect',
-                'review' => 'Great selection of modern furniture. The dining table set we bought is exactly what we were looking for. Quality craftsmanship!',
+                'review' => 'Great selection of modern e-club. The dining table set we bought is exactly what we were looking for. Quality craftsmanship!',
                 'rating' => 4,
                 'image' => 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80',
                 'order' => 4,
@@ -215,7 +215,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'James Thompson',
                 'role' => 'Real Estate Developer',
-                'review' => 'Premium quality at reasonable prices. The bedroom furniture collection is stunning. Will definitely be a returning customer.',
+                'review' => 'Premium quality at reasonable prices. The bedroom e-club collection is stunning. Will definitely be a returning customer.',
                 'rating' => 5,
                 'image' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80',
                 'order' => 6,
@@ -287,7 +287,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'title' => 'Quality Products',
-                'description' => 'Premium quality furniture with warranty',
+                'description' => 'Premium quality e-club with warranty',
                 'icon' => 'shield-check',
                 'order' => 2,
             ],
@@ -314,35 +314,35 @@ class DatabaseSeeder extends Seeder
 
         // Seed site settings
         $settings = [
-            ['key' => 'site_name', 'value' => 'Furniture', 'group' => 'general'],
-            ['key' => 'site_tagline', 'value' => 'Quality Furniture for Modern Living', 'group' => 'general'],
-            ['key' => 'site_description', 'value' => 'Premium quality furniture for your home and office. We bring comfort and style to your living spaces.', 'group' => 'general'],
-            ['key' => 'email', 'value' => 'contact@furniture.com', 'group' => 'contact'],
+            ['key' => 'site_name', 'value' => 'E-Club', 'group' => 'general'],
+            ['key' => 'site_tagline', 'value' => 'Quality E-Club for Modern Living', 'group' => 'general'],
+            ['key' => 'site_description', 'value' => 'Premium quality e-club for your home and office. We bring comfort and style to your living spaces.', 'group' => 'general'],
+            ['key' => 'email', 'value' => 'contact@e-club.com', 'group' => 'contact'],
             ['key' => 'phone', 'value' => '+880 1234 567890', 'group' => 'contact'],
-            ['key' => 'address', 'value' => '123 Furniture Street, Dhaka, Bangladesh', 'group' => 'contact'],
-            ['key' => 'facebook', 'value' => 'https://facebook.com/furniture', 'group' => 'social'],
-            ['key' => 'instagram', 'value' => 'https://instagram.com/furniture', 'group' => 'social'],
-            ['key' => 'twitter', 'value' => 'https://twitter.com/furniture', 'group' => 'social'],
-            ['key' => 'youtube', 'value' => 'https://youtube.com/furniture', 'group' => 'social'],
+            ['key' => 'address', 'value' => '123 E-Club Street, Dhaka, Bangladesh', 'group' => 'contact'],
+            ['key' => 'facebook', 'value' => 'https://facebook.com/e-club', 'group' => 'social'],
+            ['key' => 'instagram', 'value' => 'https://instagram.com/e-club', 'group' => 'social'],
+            ['key' => 'twitter', 'value' => 'https://twitter.com/e-club', 'group' => 'social'],
+            ['key' => 'youtube', 'value' => 'https://youtube.com/e-club', 'group' => 'social'],
             // Header settings
             ['key' => 'header_announcement', 'value' => '🎉 Free shipping on orders over ৳5,000! Shop Now', 'group' => 'header'],
             ['key' => 'header_announcement_enabled', 'value' => '1', 'group' => 'header'],
             ['key' => 'header_phone', 'value' => '+880 1234 567890', 'group' => 'header'],
-            ['key' => 'header_email', 'value' => 'info@furniture.com', 'group' => 'header'],
+            ['key' => 'header_email', 'value' => 'info@e-club.com', 'group' => 'header'],
             // Homepage settings
             ['key' => 'new_arrivals_title', 'value' => 'New Arrivals', 'group' => 'homepage'],
-            ['key' => 'new_arrivals_subtitle', 'value' => 'Check out our latest furniture collection', 'group' => 'homepage'],
+            ['key' => 'new_arrivals_subtitle', 'value' => 'Check out our latest e-club collection', 'group' => 'homepage'],
             ['key' => 'collection_title', 'value' => 'Our Collections', 'group' => 'homepage'],
-            ['key' => 'collection_subtitle', 'value' => 'Browse furniture by category', 'group' => 'homepage'],
+            ['key' => 'collection_subtitle', 'value' => 'Browse e-club by category', 'group' => 'homepage'],
             ['key' => 'best_sellers_title', 'value' => 'Best Sellers', 'group' => 'homepage'],
             ['key' => 'best_sellers_subtitle', 'value' => 'Our most popular products loved by customers', 'group' => 'homepage'],
             ['key' => 'featured_products_title', 'value' => 'Featured Products', 'group' => 'homepage'],
-            ['key' => 'featured_products_subtitle', 'value' => 'Handpicked furniture for your home', 'group' => 'homepage'],
+            ['key' => 'featured_products_subtitle', 'value' => 'Handpicked e-club for your home', 'group' => 'homepage'],
             ['key' => 'customer_reviews_title', 'value' => 'Customer Reviews', 'group' => 'homepage'],
             ['key' => 'customer_reviews_description', 'value' => 'Real feedback from our valued customers who have experienced our products and services.', 'group' => 'homepage'],
             ['key' => 'trusted_companies_title', 'value' => 'Trusted by Leading Companies', 'group' => 'homepage'],
             // Footer settings - section titles
-            ['key' => 'text', 'value' => 'Your trusted source for quality furniture. We offer a wide range of modern and classic furniture for every room in your home.', 'group' => 'footer'],
+            ['key' => 'text', 'value' => 'Your trusted source for quality e-club. We offer a wide range of modern and classic e-club for every room in your home.', 'group' => 'footer'],
             ['key' => 'follow_us_title', 'value' => 'Follow Us', 'group' => 'footer'],
             ['key' => 'quick_links_title', 'value' => 'Quick Links', 'group' => 'footer'],
             ['key' => 'customer_service_title', 'value' => 'Customer Service', 'group' => 'footer'],
@@ -380,8 +380,8 @@ class DatabaseSeeder extends Seeder
             ['key' => 'no_image_placeholder', 'value' => 'No Image', 'group' => 'labels'],
             ['key' => 'dimensions_label', 'value' => 'Dimensions', 'group' => 'labels'],
             // About page settings
-            ['key' => 'about_hero_title', 'value' => 'Crafting Quality Furniture Since 2014', 'group' => 'about'],
-            ['key' => 'about_hero_description', 'value' => 'Furniture is Bangladesh\'s leading furniture brand, dedicated to creating beautiful, functional, and affordable furniture for homes and offices. Our journey began with a simple mission: to bring world-class furniture design to every Bangladeshi home.', 'group' => 'about'],
+            ['key' => 'about_hero_title', 'value' => 'Crafting Quality E-Club Since 2014', 'group' => 'about'],
+            ['key' => 'about_hero_description', 'value' => 'E-Club is Bangladesh\'s leading e-club brand, dedicated to creating beautiful, functional, and affordable e-club for homes and offices. Our journey began with a simple mission: to bring world-class e-club design to every Bangladeshi home.', 'group' => 'about'],
             ['key' => 'about_story_title', 'value' => 'Our Story', 'group' => 'about'],
             ['key' => 'about_values_title', 'value' => 'Our Values', 'group' => 'about'],
             ['key' => 'about_values_subtitle', 'value' => 'These core values guide everything we do and help us deliver the best to our customers.', 'group' => 'about'],
@@ -393,7 +393,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'about_stats_cities', 'value' => '64', 'group' => 'about'],
             // Contact page settings
             ['key' => 'contact_page_title', 'value' => 'Get in Touch', 'group' => 'contact'],
-            ['key' => 'contact_page_subtitle', 'value' => 'Have questions about our furniture? Need help with your order? We\'re here to help! Reach out to us through any of the channels below.', 'group' => 'contact'],
+            ['key' => 'contact_page_subtitle', 'value' => 'Have questions about our e-club? Need help with your order? We\'re here to help! Reach out to us through any of the channels below.', 'group' => 'contact'],
             ['key' => 'contact_form_title', 'value' => 'Send us a Message', 'group' => 'contact'],
             ['key' => 'contact_form_subtitle', 'value' => 'Fill out the form below and we\'ll get back to you as soon as possible.', 'group' => 'contact'],
             ['key' => 'contact_hours_weekday', 'value' => 'Saturday - Thursday: 10AM - 8PM', 'group' => 'contact'],

@@ -80,8 +80,8 @@ class PageContentSeeder extends Seeder
                     ['question' => 'How do I track my order?', 'answer' => 'Once your order is shipped, you will receive an email with a tracking number. You can use this number on our website or contact our customer service to track your delivery.'],
                     ['question' => 'Do you deliver to all areas of Bangladesh?', 'answer' => 'Yes, we deliver to all 64 districts of Bangladesh. Delivery times and charges may vary based on your location.'],
                     ['question' => 'What if I am not home during delivery?', 'answer' => 'Our delivery team will contact you before delivery. If you are not available, we can reschedule the delivery at no additional cost.'],
-                    ['question' => 'Is assembly included with delivery?', 'answer' => 'Yes, free assembly is included with all furniture deliveries. Our trained technicians will assemble your furniture at your location.'],
-                    ['question' => 'What happens if my furniture is damaged during delivery?', 'answer' => 'All deliveries are inspected before handover. If any damage is found, we will replace the item free of charge. Please report any issues within 24 hours of delivery.'],
+                    ['question' => 'Is assembly included with delivery?', 'answer' => 'Yes, free assembly is included with all e-club deliveries. Our trained technicians will assemble your e-club at your location.'],
+                    ['question' => 'What happens if my e-club is damaged during delivery?', 'answer' => 'All deliveries are inspected before handover. If any damage is found, we will replace the item free of charge. Please report any issues within 24 hours of delivery.'],
                 ],
                 'is_active' => true,
                 'sort_order' => 4,
@@ -138,7 +138,7 @@ class PageContentSeeder extends Seeder
             [
                 'title' => 'Not Eligible',
                 'items' => [
-                    ['text' => 'Custom-made or personalized furniture'],
+                    ['text' => 'Custom-made or personalized e-club'],
                     ['text' => 'Items with signs of use, damage, or wear'],
                     ['text' => 'Items without original packaging or tags'],
                     ['text' => 'Items returned after 7 days without valid reason'],
@@ -174,7 +174,7 @@ class PageContentSeeder extends Seeder
             ['page_slug' => 'warranty', 'section_key' => 'hero'],
             [
                 'title' => 'Warranty Information',
-                'subtitle' => 'We stand behind the quality of our furniture. Learn about our comprehensive warranty coverage and how to make a claim.',
+                'subtitle' => 'We stand behind the quality of our e-club. Learn about our comprehensive warranty coverage and how to make a claim.',
                 'is_active' => true,
                 'sort_order' => 1,
             ]
@@ -185,7 +185,7 @@ class PageContentSeeder extends Seeder
             [
                 'title' => 'Our Warranty Coverage',
                 'items' => [
-                    ['title' => 'Standard Warranty', 'duration' => '2 Years', 'description' => 'Included with all furniture purchases', 'color' => 'bg-blue-50 border-blue-200', 'iconColor' => 'text-blue-600'],
+                    ['title' => 'Standard Warranty', 'duration' => '2 Years', 'description' => 'Included with all e-club purchases', 'color' => 'bg-blue-50 border-blue-200', 'iconColor' => 'text-blue-600'],
                     ['title' => 'Premium Warranty', 'duration' => '5 Years', 'description' => 'For premium and signature collections', 'color' => 'bg-purple-50 border-purple-200', 'iconColor' => 'text-purple-600'],
                     ['title' => 'Lifetime Frame Warranty', 'duration' => 'Lifetime', 'description' => 'On solid wood frames for select sofas', 'color' => 'bg-green-50 border-green-200', 'iconColor' => 'text-green-600'],
                 ],
@@ -273,7 +273,7 @@ class PageContentSeeder extends Seeder
             ['page_slug' => 'care', 'section_key' => 'hero'],
             [
                 'title' => 'Care & Maintenance Guide',
-                'subtitle' => 'Proper care extends the life and beauty of your furniture. Follow our expert tips to keep your furniture looking its best for years to come.',
+                'subtitle' => 'Proper care extends the life and beauty of your e-club. Follow our expert tips to keep your e-club looking its best for years to come.',
                 'is_active' => true,
                 'sort_order' => 1,
             ]
@@ -284,8 +284,8 @@ class PageContentSeeder extends Seeder
             [
                 'title' => 'General Care Tips',
                 'items' => [
-                    ['icon' => 'sun', 'title' => 'Sunlight', 'tip' => 'Keep furniture away from direct sunlight to prevent fading and drying.'],
-                    ['icon' => 'droplets', 'title' => 'Moisture', 'tip' => 'Wipe up spills immediately and avoid placing wet items on furniture.'],
+                    ['icon' => 'sun', 'title' => 'Sunlight', 'tip' => 'Keep e-club away from direct sunlight to prevent fading and drying.'],
+                    ['icon' => 'droplets', 'title' => 'Moisture', 'tip' => 'Wipe up spills immediately and avoid placing wet items on e-club.'],
                     ['icon' => 'wind', 'title' => 'Air Circulation', 'tip' => 'Ensure good air circulation to prevent mold and musty odors.'],
                     ['icon' => 'sparkles', 'title' => 'Regular Cleaning', 'tip' => 'Establish a regular cleaning routine to prevent buildup of dirt and dust.'],
                 ],
@@ -297,24 +297,24 @@ class PageContentSeeder extends Seeder
         PageContent::updateOrCreate(
             ['page_slug' => 'care', 'section_key' => 'care_categories'],
             [
-                'title' => 'Care by Furniture Type',
+                'title' => 'Care by E-Club Type',
                 'items' => [
                     [
                         'id' => 'wood',
                         'icon' => 'tree-pine',
-                        'title' => 'Wood Furniture',
+                        'title' => 'Wood E-Club',
                         'description' => 'Care tips for wooden tables, chairs, cabinets, and more',
                         'tips' => [
                             ['title' => 'Regular Dusting', 'description' => 'Dust weekly with a soft, lint-free cloth.'],
                             ['title' => 'Cleaning', 'description' => 'Use a slightly damp cloth with mild soap. Wipe dry immediately.'],
-                            ['title' => 'Polishing', 'description' => 'Apply furniture polish or wax every 3-6 months.'],
+                            ['title' => 'Polishing', 'description' => 'Apply e-club polish or wax every 3-6 months.'],
                             ['title' => 'Avoid Direct Sunlight', 'description' => 'Position away from windows or use curtains.'],
                         ],
                     ],
                     [
                         'id' => 'upholstery',
                         'icon' => 'sofa',
-                        'title' => 'Upholstered Furniture',
+                        'title' => 'Upholstered E-Club',
                         'description' => 'Maintain sofas, chairs, and fabric-covered pieces',
                         'tips' => [
                             ['title' => 'Vacuum Regularly', 'description' => 'Vacuum weekly using upholstery attachment.'],
@@ -326,7 +326,7 @@ class PageContentSeeder extends Seeder
                     [
                         'id' => 'leather',
                         'icon' => 'armchair',
-                        'title' => 'Leather Furniture',
+                        'title' => 'Leather E-Club',
                         'description' => 'Special care for leather sofas and chairs',
                         'tips' => [
                             ['title' => 'Dust Regularly', 'description' => 'Wipe with dry microfiber cloth weekly.'],
@@ -346,10 +346,10 @@ class PageContentSeeder extends Seeder
             [
                 'title' => 'Do\'s',
                 'items' => [
-                    ['text' => 'Dust furniture regularly with a soft cloth'],
+                    ['text' => 'Dust e-club regularly with a soft cloth'],
                     ['text' => 'Use coasters under drinks and hot dishes'],
                     ['text' => 'Clean spills immediately'],
-                    ['text' => 'Use furniture pads under lamps and decorations'],
+                    ['text' => 'Use e-club pads under lamps and decorations'],
                     ['text' => 'Maintain proper humidity levels in your home'],
                     ['text' => 'Rotate cushions regularly for even wear'],
                 ],
@@ -363,11 +363,11 @@ class PageContentSeeder extends Seeder
             [
                 'title' => 'Don\'ts',
                 'items' => [
-                    ['text' => 'Place furniture in direct sunlight'],
+                    ['text' => 'Place e-club in direct sunlight'],
                     ['text' => 'Use harsh chemicals or abrasive cleaners'],
-                    ['text' => 'Drag furniture across floors'],
+                    ['text' => 'Drag e-club across floors'],
                     ['text' => 'Place hot items directly on surfaces'],
-                    ['text' => 'Sit on furniture arms or backs'],
+                    ['text' => 'Sit on e-club arms or backs'],
                     ['text' => 'Allow pets with sharp claws on upholstery'],
                 ],
                 'is_active' => true,

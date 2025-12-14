@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'siteLogo' => SiteSetting::get('site_logo'),
-            'siteName' => SiteSetting::get('site_name', 'Furniture'),
+            'siteName' => SiteSetting::get('site_name', 'E-Club'),
             'siteSettings' => fn () => SiteSetting::getAllGrouped(),
             'navigation' => fn () => NavigationMenu::getNavigationTree('primary'),
         ];

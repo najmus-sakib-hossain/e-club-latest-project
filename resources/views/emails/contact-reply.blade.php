@@ -59,7 +59,7 @@
 </head>
 <body>
     <div class="header">
-        <h1 style="margin: 0;">{{ config('app.name', 'Furniture Store') }}</h1>
+        <h1 style="margin: 0;">{{ config('app.name', 'E-Club Store') }}</h1>
         <p style="margin: 10px 0 0 0; opacity: 0.9;">Response to Your Inquiry</p>
     </div>
     
@@ -87,12 +87,12 @@
         <p>
             Best regards,<br>
             {{ $repliedBy }}<br>
-            {{ config('app.name', 'Furniture Store') }} Team
+            {{ config('app.name', 'E-Club Store') }} Team
         </p>
     </div>
     
     <div class="footer">
-        <p>&copy; {{ date('Y') }} {{ config('app.name', 'Furniture Store') }}. All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} {{ config('app.name', 'E-Club Store') }}. All rights reserved.</p>
         <p>
             <a href="{{ config('app.url') }}">Visit our website</a> |
             <a href="{{ config('app.url') }}/contact">Contact Us</a>

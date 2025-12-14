@@ -27,9 +27,9 @@ interface PrivacyProps {
 }
 
 export default function Privacy({ settings, categories, page, content }: PrivacyProps) {
-    const siteName = settings?.general?.site_name || 'Furniture Store';
-    const contactEmail = settings?.contact?.email || 'privacy@furniturestore.com';
-    
+    const siteName = settings?.general?.site_name || 'E-Club Store';
+    const contactEmail = settings?.contact?.email || 'privacy@e-clubstore.com';
+
     // Get content from database or use defaults
     const heroTitle = content?.hero?.title || 'Privacy Policy';
     const lastUpdated = content?.hero?.subtitle || 'December 1, 2025';
@@ -73,8 +73,8 @@ export default function Privacy({ settings, categories, page, content }: Privacy
                         ) : (
                             <>
                                 <p className="lead">
-                                    At {siteName}, we are committed to protecting your privacy and ensuring the security 
-                                    of your personal information. This Privacy Policy explains how we collect, use, disclose, 
+                                    At {siteName}, we are committed to protecting your privacy and ensuring the security
+                                    of your personal information. This Privacy Policy explains how we collect, use, disclose,
                                     and safeguard your information when you visit our website or make a purchase.
                                 </p>
 
@@ -122,8 +122,8 @@ export default function Privacy({ settings, categories, page, content }: Privacy
 
                                 <h2>4. Cookies and Tracking</h2>
                                 <p>
-                                    We use cookies and similar technologies to enhance your browsing experience, 
-                                    analyze site traffic, and personalize content. You can control cookies through 
+                                    We use cookies and similar technologies to enhance your browsing experience,
+                                    analyze site traffic, and personalize content. You can control cookies through
                                     your browser settings, but disabling them may affect site functionality.
                                 </p>
                                 <p>Types of cookies we use:</p>
@@ -136,7 +136,7 @@ export default function Privacy({ settings, categories, page, content }: Privacy
 
                                 <h2>5. Data Security</h2>
                                 <p>
-                                    We implement appropriate technical and organizational measures to protect your 
+                                    We implement appropriate technical and organizational measures to protect your
                                     personal information, including:
                                 </p>
                                 <ul>
@@ -146,7 +146,7 @@ export default function Privacy({ settings, categories, page, content }: Privacy
                                     <li>Access controls and employee training</li>
                                 </ul>
                                 <p>
-                                    However, no method of transmission over the Internet is 100% secure, and we 
+                                    However, no method of transmission over the Internet is 100% secure, and we
                                     cannot guarantee absolute security.
                                 </p>
 
@@ -165,28 +165,28 @@ export default function Privacy({ settings, categories, page, content }: Privacy
 
                                 <h2>7. Third-Party Links</h2>
                                 <p>
-                                    Our website may contain links to third-party websites. We are not responsible 
-                                    for the privacy practices of these sites. We encourage you to read the privacy 
+                                    Our website may contain links to third-party websites. We are not responsible
+                                    for the privacy practices of these sites. We encourage you to read the privacy
                                     policies of any third-party sites you visit.
                                 </p>
 
                                 <h2>8. Children's Privacy</h2>
                                 <p>
-                                    Our services are not intended for children under 18 years of age. We do not 
-                                    knowingly collect personal information from children. If you believe we have 
+                                    Our services are not intended for children under 18 years of age. We do not
+                                    knowingly collect personal information from children. If you believe we have
                                     collected information from a child, please contact us immediately.
                                 </p>
 
                                 <h2>9. Changes to This Policy</h2>
                                 <p>
-                                    We may update this Privacy Policy from time to time. Changes will be posted 
-                                    on this page with an updated revision date. We encourage you to review this 
+                                    We may update this Privacy Policy from time to time. Changes will be posted
+                                    on this page with an updated revision date. We encourage you to review this
                                     policy periodically.
                                 </p>
 
                                 <h2>10. Contact Us</h2>
                                 <p>
-                                    If you have questions about this Privacy Policy or our data practices, 
+                                    If you have questions about this Privacy Policy or our data practices,
                                     please contact us at:
                                 </p>
                                 <ul>

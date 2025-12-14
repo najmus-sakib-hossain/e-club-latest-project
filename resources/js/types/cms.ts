@@ -1,4 +1,4 @@
-// CMS Types for Furniture Store
+// CMS Types for E-Club Store
 export interface HeroSlide {
     id: number;
     title: string;

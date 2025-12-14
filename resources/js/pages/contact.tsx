@@ -48,10 +48,10 @@ export default function Contact({ settings, categories, pageContent = {} }: Cont
 
     // Get dynamic content from settings
     const pageTitle = pageContent.hero?.title || settings?.contact?.contact_page_title || 'Get in Touch';
-    const pageSubtitle = pageContent.hero?.subtitle || settings?.contact?.contact_page_subtitle || 
-        "Have questions about our furniture? Need help with your order? We're here to help! Reach out to us through any of the channels below.";
+    const pageSubtitle = pageContent.hero?.subtitle || settings?.contact?.contact_page_subtitle ||
+        "Have questions about our e-club? Need help with your order? We're here to help! Reach out to us through any of the channels below.";
     const formTitle = pageContent.form?.title || settings?.contact?.contact_form_title || 'Send us a Message';
-    const formSubtitle = pageContent.form?.subtitle || settings?.contact?.contact_form_subtitle || 
+    const formSubtitle = pageContent.form?.subtitle || settings?.contact?.contact_form_subtitle ||
         "Fill out the form below and we'll get back to you as soon as possible.";
     const hoursParsed = (() => {
         try {
@@ -300,7 +300,7 @@ export default function Contact({ settings, categories, pageContent = {} }: Cont
                             <CardHeader>
                                 <CardTitle>Our Location</CardTitle>
                                 <CardDescription>
-                                    Visit our showroom to see our furniture collection in person.
+                                    Visit our showroom to see our e-club collection in person.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="p-0">

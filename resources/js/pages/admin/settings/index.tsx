@@ -145,16 +145,16 @@ export default function SettingsIndex({ settings }: Props) {
     const generalForm = useForm({
         resolver: zodResolver(generalSchema),
         defaultValues: {
-            site_name: settings.site_name || 'Luxe Furniture',
-            site_tagline: settings.site_tagline || 'Premium Furniture for Modern Living',
-            site_description: settings.site_description || 'Discover our curated collection of high-quality furniture for your home. From living room to bedroom, we have everything you need.',
+            site_name: settings.site_name || 'Luxe E-Club',
+            site_tagline: settings.site_tagline || 'Premium E-Club for Modern Living',
+            site_description: settings.site_description || 'Discover our curated collection of high-quality e-club for your home. From living room to bedroom, we have everything you need.',
         },
     });
 
     const contactForm = useForm({
         resolver: zodResolver(contactSchema),
         defaultValues: {
-            contact_email: settings.contact_email || 'info@luxefurniture.com',
+            contact_email: settings.contact_email || 'info@luxee-club.com',
             contact_phone: settings.contact_phone || '+1 (555) 123-4567',
             contact_address: settings.contact_address || '123 Design Avenue, Creative District, NY 10001',
             contact_hours: settings.contact_hours || 'Mon-Fri: 9:00 AM - 6:00 PM',
@@ -164,11 +164,11 @@ export default function SettingsIndex({ settings }: Props) {
     const socialForm = useForm({
         resolver: zodResolver(socialSchema),
         defaultValues: {
-            social_facebook: settings.social_facebook || 'https://facebook.com/luxefurniture',
-            social_instagram: settings.social_instagram || 'https://instagram.com/luxefurniture',
-            social_twitter: settings.social_twitter || 'https://twitter.com/luxefurniture',
-            social_linkedin: settings.social_linkedin || 'https://linkedin.com/company/luxefurniture',
-            social_youtube: settings.social_youtube || 'https://youtube.com/c/luxefurniture',
+            social_facebook: settings.social_facebook || 'https://facebook.com/luxee-club',
+            social_instagram: settings.social_instagram || 'https://instagram.com/luxee-club',
+            social_twitter: settings.social_twitter || 'https://twitter.com/luxee-club',
+            social_linkedin: settings.social_linkedin || 'https://linkedin.com/company/luxee-club',
+            social_youtube: settings.social_youtube || 'https://youtube.com/c/luxee-club',
         },
     });
 
@@ -292,7 +292,7 @@ export default function SettingsIndex({ settings }: Props) {
                                                     <FormItem>
                                                         <FormLabel>Site Name</FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="My Furniture Store" {...field} />
+                                                            <Input placeholder="My E-Club Store" {...field} />
                                                         </FormControl>
                                                         <FormDescription>
                                                             The name of your store displayed in the header and title.
@@ -308,7 +308,7 @@ export default function SettingsIndex({ settings }: Props) {
                                                     <FormItem>
                                                         <FormLabel>Tagline</FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Premium Furniture for Modern Living" {...field} />
+                                                            <Input placeholder="Premium E-Club for Modern Living" {...field} />
                                                         </FormControl>
                                                         <FormDescription>
                                                             A short description that appears below your logo.

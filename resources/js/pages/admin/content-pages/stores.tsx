@@ -149,9 +149,9 @@ const commonFeatures = [
 ];
 
 const defaultStoreServices = [
-    { icon: 'check', title: 'Quality Guarantee', description: 'Inspect furniture quality in person before you buy' },
+    { icon: 'check', title: 'Quality Guarantee', description: 'Inspect e-club quality in person before you buy' },
     { icon: 'users', title: 'Expert Staff', description: 'Get personalized recommendations from our team' },
-    { icon: 'grid', title: 'Room Displays', description: 'See how furniture looks in real room settings' },
+    { icon: 'grid', title: 'Room Displays', description: 'See how e-club looks in real room settings' },
     { icon: 'dollar', title: 'Easy Financing', description: 'Flexible EMI options available at our stores' },
 ];
 
@@ -223,7 +223,7 @@ export default function StoresPage({ stores, content }: Props) {
         resolver: zodResolver(contentSchema),
         defaultValues: {
             hero_title: content.hero?.title || 'Find a Store Near You',
-            hero_subtitle: content.hero?.subtitle || 'Visit one of our showrooms to experience our furniture in person. Our expert staff is ready to help you find the perfect pieces.',
+            hero_subtitle: content.hero?.subtitle || 'Visit one of our showrooms to experience our e-club in person. Our expert staff is ready to help you find the perfect pieces.',
             locations_section_title: content.locations_section?.title || 'All Locations',
             store_services: (content.store_services?.items as ContentFormValues['store_services']) || defaultStoreServices,
             cta_title: content.cta?.title || "Can't Visit a Store?",

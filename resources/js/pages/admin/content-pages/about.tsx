@@ -157,7 +157,7 @@ export default function AboutPage({ content, teamMembers }: Props) {
             hero_title: content.hero?.title || 'About Us',
             hero_description: content.hero?.content || 'Learn more about our story, values, and the team behind our success.',
             story_title: content.story?.title || 'Our Story',
-            story_content: content.story?.content || 'Founded with a vision to deliver premium quality furniture, we have grown into a trusted name in the industry. Our commitment to craftsmanship and customer satisfaction drives everything we do.',
+            story_content: content.story?.content || 'Founded with a vision to deliver premium quality e-club, we have grown into a trusted name in the industry. Our commitment to craftsmanship and customer satisfaction drives everything we do.',
             story_image: undefined,
             values_title: content.values?.title || 'Our Values',
             values_subtitle: content.values?.subtitle || 'The principles that guide everything we do',

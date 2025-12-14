@@ -27,7 +27,7 @@ export default function SiteAuthLayout({
                             <Link href="/" className="flex justify-center mb-4">
                                 <img 
                                     src="/logo.png" 
-                                    alt="Furniture" 
+                                    alt="E-Club" 
                                     className="h-12 w-auto"
                                 />
                             </Link>

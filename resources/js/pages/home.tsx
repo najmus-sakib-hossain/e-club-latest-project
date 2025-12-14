@@ -58,16 +58,16 @@ export default function Home() {
             {/* Feature Cards */}
             <FeatureCards cards={data.featureCards} />
 
-            {/* Business Furniture Collections */}
+            {/* Business E-Club Collections */}
             <CollectionGrid
-                title="Business Furniture Collections"
+                title="Business E-Club Collections"
                 categories={data.businessCollections}
                 columns={3}
             />
 
-            {/* Family Furniture Collections */}
+            {/* Family E-Club Collections */}
             <CollectionGrid
-                title="Family Furniture Collections"
+                title="Family E-Club Collections"
                 categories={data.familyCollections}
                 columns={4}
             />

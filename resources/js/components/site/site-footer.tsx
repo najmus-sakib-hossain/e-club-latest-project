@@ -66,12 +66,12 @@ export function SiteFooter({ settings }: SiteFooterProps) {
     };
 
     // Get values from settings
-    const siteName = getSetting('general', 'site_name', 'Furniture Store');
+    const siteName = getSetting('general', 'site_name', 'E-Club Store');
     const siteLogo = getSetting('general', 'site_logo', '');
     const logoSrc = siteLogo ? `/storage/${siteLogo}` : '/logo.png';
-    const siteDescription = getSetting('general', 'site_description', 'Premium quality furniture for your home and office. We bring comfort and style to your living spaces.');
+    const siteDescription = getSetting('general', 'site_description', 'Premium quality e-club for your home and office. We bring comfort and style to your living spaces.');
     const contactPhone = getSetting('contact', 'contact_phone') || getSetting('contact', 'phone', '+880 1234-567890');
-    const contactEmail = getSetting('contact', 'contact_email') || getSetting('contact', 'email', 'info@furniturestore.com');
+    const contactEmail = getSetting('contact', 'contact_email') || getSetting('contact', 'email', 'info@e-clubstore.com');
     const contactAddress = getSetting('contact', 'contact_address') || getSetting('contact', 'address', 'Dhaka, Bangladesh');
     const socialFacebook = getSetting('social', 'social_facebook') || getSetting('social', 'facebook');
     const socialInstagram = getSetting('social', 'social_instagram') || getSetting('social', 'instagram');

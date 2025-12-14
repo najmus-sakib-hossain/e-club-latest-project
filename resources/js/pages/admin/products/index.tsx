@@ -649,7 +649,7 @@ export default function ProductsIndex({ products, categories }: ProductsIndexPro
 
   return (
     <AdminPageLayout>
-      <Head title="Products - Furniture Admin" />
+      <Head title="Products - E-Club Admin" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -661,7 +661,7 @@ export default function ProductsIndex({ products, categories }: ProductsIndexPro
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Products</h1>
             <p className="text-muted-foreground">
-              Manage your furniture inventory
+              Manage your e-club inventory
             </p>
           </div>
           <Button onClick={() => { form.reset(); setSelectedImages([]); setImagePreviews([]); setIsCreateOpen(true); }}>

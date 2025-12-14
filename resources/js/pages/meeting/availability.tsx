@@ -23,14 +23,14 @@ const meetingTypes = [
     {
         icon: MapPin,
         title: 'Showroom Visit',
-        description: 'Visit our showroom to see our furniture collection in person. Our experts will guide you through our products.',
+        description: 'Visit our showroom to see our e-club collection in person. Our experts will guide you through our products.',
         duration: '30-60 minutes',
         availability: 'During business hours',
     },
     {
         icon: Video,
         title: 'Video Consultation',
-        description: 'Can\'t visit us? Schedule a video call with our furniture consultants from the comfort of your home.',
+        description: 'Can\'t visit us? Schedule a video call with our e-club consultants from the comfort of your home.',
         duration: '20-30 minutes',
         availability: '10 AM - 6 PM',
     },
@@ -56,7 +56,7 @@ const defaultSchedule: ScheduleItem[] = [
 
 export default function Availability({ settings, categories, schedule }: AvailabilityProps) {
     const weeklySchedule = schedule && schedule.length > 0 ? schedule : defaultSchedule;
-    
+
     const today = new Date().getDay();
     const daysMap: { [key: number]: string } = {
         0: 'Sunday',
@@ -137,9 +137,8 @@ export default function Availability({ settings, categories, schedule }: Availab
                                 {weeklySchedule.map((schedule) => (
                                     <div
                                         key={schedule.day}
-                                        className={`flex items-center justify-between p-3 rounded-lg ${
-                                            schedule.day === todayName ? 'bg-primary/10 border border-primary/20' : 'bg-gray-50'
-                                        }`}
+                                        className={`flex items-center justify-between p-3 rounded-lg ${schedule.day === todayName ? 'bg-primary/10 border border-primary/20' : 'bg-gray-50'
+                                            }`}
                                     >
                                         <span className={`font-medium ${schedule.day === todayName ? 'text-primary' : ''}`}>
                                             {schedule.day}
@@ -211,7 +210,7 @@ export default function Availability({ settings, categories, schedule }: Availab
                     <CardContent className="pt-6">
                         <h4 className="font-semibold text-amber-800 mb-2">Holiday Schedule</h4>
                         <p className="text-sm text-amber-700">
-                            Please note that we may have modified hours during public holidays. 
+                            Please note that we may have modified hours during public holidays.
                             For the most up-to-date information, please contact us or check our social media pages.
                         </p>
                     </CardContent>

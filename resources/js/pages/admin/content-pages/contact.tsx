@@ -140,7 +140,7 @@ export default function ContactPage({ content }: Props) {
             page_title: content.hero?.title || 'Get in Touch',
             page_subtitle:
                 content.hero?.subtitle ||
-                "Have questions about our furniture? Need help with your order? We're here to help! Reach out to us through any of the channels below.",
+                "Have questions about our e-club? Need help with your order? We're here to help! Reach out to us through any of the channels below.",
             form_title: content.form?.title || 'Send us a Message',
             form_subtitle: content.form?.subtitle || 'Fill out the form below and we\'ll get back to you as soon as possible.',
             hours_weekday: parsedHours.weekday || 'Mon-Fri: 9:00 AM - 6:00 PM',
@@ -148,7 +148,7 @@ export default function ContactPage({ content }: Props) {
             map_embed: content.map?.content || defaultMapEmbed,
             contact_cards: (content.cards?.items as ContactFormValues['contact_cards']) || [
                 { icon: 'phone', title: 'Phone', details: ['+880 1XXX-XXXXXX', '+880 1YYY-YYYYYY'] },
-                { icon: 'email', title: 'Email', details: ['info@furniture.com', 'support@furniture.com'] },
+                { icon: 'email', title: 'Email', details: ['info@e-club.com', 'support@e-club.com'] },
                 { icon: 'location', title: 'Location', details: ['123 Main Street', 'Dhaka 1000, Bangladesh'] },
             ],
             cta_title: content.cta?.title || 'Need Immediate Help?',
@@ -663,7 +663,7 @@ export default function ContactPage({ content }: Props) {
                                                     <FormItem>
                                                         <FormLabel>Email Address</FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="info@furniture.com" {...field} />
+                                                            <Input placeholder="info@e-club.com" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
