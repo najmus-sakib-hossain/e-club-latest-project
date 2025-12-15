@@ -46,6 +46,14 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        // Seed E-Club specific data
+        $this->call([
+            NavigationMenuSeeder::class,
+            FooterSeeder::class,
+            HomePageSeeder::class,
+            MembershipSeeder::class,
+        ]);
+
         // Seed Hero Slides with Unsplash images - E-Club style
         $heroSlides = [
             [

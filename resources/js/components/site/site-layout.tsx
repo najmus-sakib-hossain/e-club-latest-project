@@ -5,19 +5,21 @@ import { Toaster } from '@/components/ui/sonner';
 import { pageVariants } from '@/lib/animations';
 import type { Category, SiteSettings } from '@/types/cms';
 
-import { SiteFooter } from './site-footer';
-import { SiteHeader } from './site-header';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
 
 interface SiteLayoutProps {
     children: ReactNode;
     settings?: SiteSettings;
     categories?: Category[];
+    navigationMenus?: any;
+    footerData?: any;
 }
 
-export function SiteLayout({ children, settings, categories }: SiteLayoutProps) {
+export function SiteLayout({ children, settings, categories, navigationMenus, footerData }: SiteLayoutProps) {
     return (
         <div className="flex min-h-screen flex-col">
-            <SiteHeader settings={settings} categories={categories} />
+            <Header navigationMenus={navigationMenus} />
             <motion.main
                 className="flex-1"
                 initial="initial"
@@ -27,7 +29,7 @@ export function SiteLayout({ children, settings, categories }: SiteLayoutProps) 
             >
                 {children}
             </motion.main>
-            <SiteFooter settings={settings} />
+            <Footer footerData={footerData} />
             <Toaster richColors position="bottom-right" closeButton />
         </div>
     );

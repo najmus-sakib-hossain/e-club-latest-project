@@ -16,6 +16,190 @@ class NavigationMenuSeeder extends Seeder
         // Clear existing navigation
         NavigationMenu::truncate();
 
+        // Home
+        NavigationMenu::create([
+            'name' => 'Home',
+            'slug' => 'home',
+            'url' => '/',
+            'type' => 'single',
+            'location' => 'header',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        // Committee (with dropdown)
+        $committee = NavigationMenu::create([
+            'name' => 'Committee',
+            'slug' => 'committee',
+            'url' => '#',
+            'type' => 'mega',
+            'location' => 'header',
+            'is_active' => true,
+            'sort_order' => 2,
+        ]);
+
+        $committeeItems = [
+            ['name' => 'Advisors', 'url' => '/committee/advisors', 'description' => 'Industry veterans offering strategic guidance to the E-Club.'],
+            ['name' => 'Governing Body', 'url' => '/committee/governing', 'description' => 'The leadership team setting the direction for the E-Club.'],
+            ['name' => 'Executive Body', 'url' => '/committee/executive', 'description' => 'Overseeing the day-to-day operations of the E-Club.'],
+            ['name' => 'Founders', 'url' => '/committee/founders', 'description' => 'The individuals who established the E-Club.'],
+            ['name' => 'Forums', 'url' => '/committee/forums', 'description' => 'Platforms for members to connect and discuss various topics.'],
+            ['name' => 'Standing Committee', 'url' => '/committee/standing', 'description' => 'A permanent committee with ongoing responsibilities.'],
+            ['name' => 'Project Directors', 'url' => '/committee/directors', 'description' => 'Members leading specific E-Club projects.'],
+            ['name' => 'Administrative Team', 'url' => '/committee/admin', 'description' => 'The Team managing daily tasks to ensure smooth operations.'],
+        ];
+
+        foreach ($committeeItems as $index => $item) {
+            NavigationMenu::create([
+                'parent_id' => $committee->id,
+                'name' => $item['name'],
+                'slug' => str_replace('/', '-', str_replace('/committee/', '', $item['url'])),
+                'url' => $item['url'],
+                'description' => $item['description'] ?? '',
+                'type' => 'link',
+                'location' => 'header',
+                'is_active' => true,
+                'sort_order' => $index + 1,
+            ]);
+        }
+
+        // Membership
+        $membership = NavigationMenu::create([
+            'name' => 'Membership',
+            'slug' => 'membership',
+            'url' => '#',
+            'type' => 'dropdown',
+            'location' => 'header',
+            'is_active' => true,
+            'sort_order' => 3,
+        ]);
+
+        $membershipItems = [
+            ['name' => 'Benefits of Membership', 'url' => '/membership/benefits', 'description' => 'Discover the exclusive advantages of being an E-Club member.'],
+            ['name' => 'Renew Membership', 'url' => '/membership/renew', 'description' => 'Continue your E-Club journey and access ongoing benefits.'],
+            ['name' => 'Member Directory', 'url' => '/membership/directory', 'description' => 'Connect and collaborate with fellow E-Club members.'],
+        ];
+
+        foreach ($membershipItems as $index => $item) {
+            NavigationMenu::create([
+                'parent_id' => $membership->id,
+                'name' => $item['name'],
+                'slug' => str_replace('/', '-', str_replace('/membership/', '', $item['url'])),
+                'url' => $item['url'],
+                'description' => $item['description'] ?? '',
+                'type' => 'link',
+                'location' => 'header',
+                'is_active' => true,
+                'sort_order' => $index + 1,
+            ]);
+        }
+
+        // Events
+        $events = NavigationMenu::create([
+            'name' => 'Events',
+            'slug' => 'events',
+            'url' => '#',
+            'type' => 'dropdown',
+            'location' => 'header',
+            'is_active' => true,
+            'sort_order' => 4,
+        ]);
+
+        $eventItems = [
+            ['name' => 'Upcoming Events', 'url' => '/events/upcoming', 'description' => 'Discover inspiring workshops, networking events, and more.'],
+            ['name' => 'Past Events', 'url' => '/events/past', 'description' => 'Relive the highlights and access past event resources.'],
+            ['name' => 'Request for Event', 'url' => '/events/request', 'description' => 'Join or suggest! Shape E-Club events together.'],
+        ];
+
+        foreach ($eventItems as $index => $item) {
+            NavigationMenu::create([
+                'parent_id' => $events->id,
+                'name' => $item['name'],
+                'slug' => str_replace('/', '-', str_replace('/events/', '', $item['url'])),
+                'url' => $item['url'],
+                'description' => $item['description'] ?? '',
+                'type' => 'link',
+                'location' => 'header',
+                'is_active' => true,
+                'sort_order' => $index + 1,
+            ]);
+        }
+
+        // Single menu items
+        $singleItems = [
+            ['name' => 'Projects', 'url' => '/projects', 'order' => 5],
+            ['name' => 'Concerns', 'url' => '/concerns', 'order' => 6],
+            ['name' => 'Partnerships', 'url' => '/partnerships', 'order' => 7],
+        ];
+
+        foreach ($singleItems as $item) {
+            NavigationMenu::create([
+                'name' => $item['name'],
+                'slug' => strtolower($item['name']),
+                'url' => $item['url'],
+                'type' => 'single',
+                'location' => 'header',
+                'is_active' => true,
+                'sort_order' => $item['order'],
+            ]);
+        }
+
+        // Media
+        $media = NavigationMenu::create([
+            'name' => 'Media',
+            'slug' => 'media',
+            'url' => '#',
+            'type' => 'dropdown',
+            'location' => 'header',
+            'is_active' => true,
+            'sort_order' => 8,
+        ]);
+
+        $mediaItems = [
+            ['name' => 'Notice and Updates', 'url' => '/media/notices', 'description' => 'Stay informed on E-Club happenings and industry news.'],
+            ['name' => 'Press Releases', 'url' => '/media/press', 'description' => 'Official announcements and media coverage of the E-Club.'],
+            ['name' => 'Album', 'url' => '/media/album', 'description' => 'Immerse yourself in E-Club events and activities album'],
+            ['name' => 'Newsletter Archive', 'url' => '/media/newsletter', 'description' => 'Catch up on past E-Club news and insights.'],
+            ['name' => 'Blog', 'url' => '/media/blog', 'description' => 'Catch up on past E-Club news and insights.'],
+        ];
+
+        foreach ($mediaItems as $index => $item) {
+            NavigationMenu::create([
+                'parent_id' => $media->id,
+                'name' => $item['name'],
+                'slug' => str_replace('/', '-', str_replace('/media/', '', $item['url'])),
+                'url' => $item['url'],
+                'description' => $item['description'] ?? '',
+                'type' => 'link',
+                'location' => 'header',
+                'is_active' => true,
+                'sort_order' => $index + 1,
+            ]);
+        }
+
+        // Shop & Contact
+        NavigationMenu::create([
+            'name' => 'Shop',
+            'slug' => 'shop',
+            'url' => '/shop',
+            'type' => 'single',
+            'location' => 'header',
+            'is_active' => true,
+            'sort_order' => 9,
+        ]);
+
+        NavigationMenu::create([
+            'name' => 'Contact Us',
+            'slug' => 'contact',
+            'url' => '/contact',
+            'type' => 'single',
+            'location' => 'header',
+            'is_active' => true,
+            'sort_order' => 10,
+        ]);
+
+        return; // Exit early - rest of old furniture data below can remain but won't execute
+
         $navigationStructure = [
             'Tables & Desks' => [
                 'Family Tables & Desks' => [

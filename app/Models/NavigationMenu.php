@@ -189,4 +189,39 @@ class NavigationMenu extends Model
             ->ordered()
             ->get();
     }
+
+    /**
+     * Get header structure for the new E-Club header
+     */
+    public static function getHeaderStructure(): array
+    {
+        $items = self::getNavigationTree('header');
+        
+        return $items->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'slug' => $item->slug,
+                'url' => $item->url,
+                'type' => $item->type, // 'single', 'dropdown', 'mega'
+                'children' => $item->children->map(function ($child) {
+                    return [
+                        'id' => $child->id,
+                        'name' => $child->name,
+                        'slug' => $child->slug,
+                        'url' => $child->url,
+                        'description' => $child->description ?? '',
+                        'children' => $child->children->map(function ($subChild) {
+                            return [
+                                'id' => $subChild->id,
+                                'name' => $subChild->name,
+                                'slug' => $subChild->slug,
+                                'url' => $subChild->url,
+                            ];
+                        })->toArray(),
+                    ];
+                })->toArray(),
+            ];
+        })->toArray();
+    }
 }

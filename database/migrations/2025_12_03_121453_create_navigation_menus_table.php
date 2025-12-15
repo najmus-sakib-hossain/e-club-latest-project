@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->string('url')->nullable();
             $table->string('icon')->nullable();
-            $table->enum('type', ['main', 'category', 'subcategory', 'item'])->default('main');
-            $table->enum('location', ['primary', 'secondary', 'footer', 'mobile'])->default('primary');
+            $table->enum('type', ['main', 'category', 'subcategory', 'item', 'single', 'mega', 'dropdown', 'link'])->default('main');
+            $table->enum('location', ['primary', 'secondary', 'footer', 'mobile', 'header'])->default('primary');
             $table->boolean('is_active')->default(true);
             $table->boolean('open_in_new_tab')->default(false);
             $table->integer('sort_order')->default(0);

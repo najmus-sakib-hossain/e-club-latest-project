@@ -20,6 +20,9 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\StoreLocationController;
 use App\Http\Controllers\Admin\TrustedCompanyController;
+use App\Http\Controllers\Admin\FooterController;
+use App\Http\Controllers\Admin\HomePageController;
+use App\Http\Controllers\Admin\JoinPageController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Category;
@@ -30,13 +33,64 @@ use App\Models\Product;
 use App\Models\SiteSetting;
 use App\Models\StoreLocation;
 use App\Models\TeamMember;
+use App\Models\NavigationMenu;
+use App\Models\FooterSection;
+use App\Models\FooterAddress;
+use App\Models\FooterLink;
+use App\Models\SocialLink;
+use App\Models\HomeSection;
+use App\Models\HomeStat;
+use App\Models\HomeActivity;
+use App\Models\HomeProject;
+use App\Models\HomePartner;
+use App\Models\HomeCoreValue;
+use App\Models\MembershipType;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Public Frontend Routes
 Route::get('/', function () {
-    return Inertia::render('home');
+    return Inertia::render('home', [
+        'navigationMenus' => NavigationMenu::getHeaderStructure(),
+        'footerData' => [
+            'sections' => FooterSection::getAllActive(),
+            'bangladeshAddresses' => FooterAddress::getBangladeshAddresses(),
+            'internationalAddresses' => FooterAddress::getInternationalAddresses(),
+            'links' => FooterLink::getAllGrouped(),
+            'socialLinks' => SocialLink::getAllActive(),
+        ],
+        'homeSections' => HomeSection::getAllActive(),
+        'stats' => HomeStat::getAllActive(),
+        'activities' => HomeActivity::getAllActive(),
+        'projects' => HomeProject::getAllActive(),
+        'partners' => HomePartner::getAllActive(),
+        'coreValues' => HomeCoreValue::getAllActive(),
+    ]);
 })->name('home');
+
+// Join as Member Page
+Route::get('/join', function () {
+    return Inertia::render('join', [
+        'navigationMenus' => NavigationMenu::getHeaderStructure(),
+        'membershipTypes' => MembershipType::getAllActive(),
+    ]);
+})->name('join');
+
+Route::post('/join', function () {
+    // Handle membership application
+    $validated = request()->validate([
+        'membership_type_id' => 'required|exists:membership_types,id',
+        'company_name' => 'required|string|max:255',
+        'rep_email' => 'required|email',
+        'rep_mobile' => 'required|string|max:20',
+        'password' => 'required|string|min:8|confirmed',
+        // Add other validation rules as needed
+    ]);
+    
+    // Store membership application logic here
+    
+    return redirect()->route('join.success')->with('success', 'Your membership application has been submitted successfully!');
+})->name('join.store');
 
 // Admin Authentication Routes (separate from normal user auth)
 // No guest middleware - allow anyone to access admin login page
@@ -598,6 +652,51 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/{message}/reply', [ContactMessageController::class, 'reply'])->name('reply');
         Route::post('/{message}/resolve', [ContactMessageController::class, 'resolve'])->name('resolve');
         Route::delete('/{message}', [ContactMessageController::class, 'destroy'])->name('destroy');
+    });
+    
+    // Footer Management
+    Route::prefix('footer')->name('footer.')->group(function () {
+        Route::get('/', [FooterController::class, 'index'])->name('index');
+        Route::put('/sections/{section}', [FooterController::class, 'updateSection'])->name('sections.update');
+        Route::post('/addresses', [FooterController::class, 'storeAddress'])->name('addresses.store');
+        Route::put('/addresses/{address}', [FooterController::class, 'updateAddress'])->name('addresses.update');
+        Route::delete('/addresses/{address}', [FooterController::class, 'deleteAddress'])->name('addresses.destroy');
+        Route::post('/links', [FooterController::class, 'storeLink'])->name('links.store');
+        Route::put('/links/{link}', [FooterController::class, 'updateLink'])->name('links.update');
+        Route::delete('/links/{link}', [FooterController::class, 'deleteLink'])->name('links.destroy');
+        Route::post('/social', [FooterController::class, 'storeSocial'])->name('social.store');
+        Route::put('/social/{social}', [FooterController::class, 'updateSocial'])->name('social.update');
+        Route::delete('/social/{social}', [FooterController::class, 'deleteSocial'])->name('social.destroy');
+    });
+    
+    // Home Page Management
+    Route::prefix('homepage')->name('homepage.')->group(function () {
+        Route::get('/', [HomePageController::class, 'index'])->name('index');
+        Route::put('/sections/{section}', [HomePageController::class, 'updateSection'])->name('sections.update');
+        Route::post('/stats', [HomePageController::class, 'storeStat'])->name('stats.store');
+        Route::put('/stats/{stat}', [HomePageController::class, 'updateStat'])->name('stats.update');
+        Route::delete('/stats/{stat}', [HomePageController::class, 'deleteStat'])->name('stats.destroy');
+        Route::post('/activities', [HomePageController::class, 'storeActivity'])->name('activities.store');
+        Route::put('/activities/{activity}', [HomePageController::class, 'updateActivity'])->name('activities.update');
+        Route::delete('/activities/{activity}', [HomePageController::class, 'deleteActivity'])->name('activities.destroy');
+        Route::post('/projects', [HomePageController::class, 'storeProject'])->name('projects.store');
+        Route::put('/projects/{project}', [HomePageController::class, 'updateProject'])->name('projects.update');
+        Route::delete('/projects/{project}', [HomePageController::class, 'deleteProject'])->name('projects.destroy');
+        Route::post('/partners', [HomePageController::class, 'storePartner'])->name('partners.store');
+        Route::put('/partners/{partner}', [HomePageController::class, 'updatePartner'])->name('partners.update');
+        Route::delete('/partners/{partner}', [HomePageController::class, 'deletePartner'])->name('partners.destroy');
+        Route::post('/core-values', [HomePageController::class, 'storeCoreValue'])->name('core-values.store');
+        Route::put('/core-values/{coreValue}', [HomePageController::class, 'updateCoreValue'])->name('core-values.update');
+        Route::delete('/core-values/{coreValue}', [HomePageController::class, 'deleteCoreValue'])->name('core-values.destroy');
+    });
+    
+    // Join Page Management
+    Route::prefix('joinpage')->name('joinpage.')->group(function () {
+        Route::get('/', [JoinPageController::class, 'index'])->name('index');
+        Route::post('/settings', [JoinPageController::class, 'updateSettings'])->name('settings.update');
+        Route::post('/memberships', [JoinPageController::class, 'storeMembership'])->name('memberships.store');
+        Route::put('/memberships/{membership}', [JoinPageController::class, 'updateMembership'])->name('memberships.update');
+        Route::delete('/memberships/{membership}', [JoinPageController::class, 'deleteMembership'])->name('memberships.destroy');
     });
     
     // Admin Profile Pages

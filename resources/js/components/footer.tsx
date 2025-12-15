@@ -67,7 +67,23 @@ Separator.displayName = "Separator";
 
 // --- MAIN FOOTER COMPONENT ---
 
-const Footer = () => {
+interface FooterProps {
+  footerData?: {
+    sections?: any[];
+    bangladeshAddresses?: any[];
+    internationalAddresses?: any[];
+    links?: any;
+    socialLinks?: any[];
+  };
+}
+
+const Footer = ({ footerData }: FooterProps) => {
+  // Use default/fallback data if footerData is not provided
+  const sections = footerData?.sections || [];
+  const bangladeshAddresses = footerData?.bangladeshAddresses || [];
+  const internationalAddresses = footerData?.internationalAddresses || [];
+  const links = footerData?.links || {};
+  const socialLinks = footerData?.socialLinks || [];
   // Animation variants
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
