@@ -1,35 +1,40 @@
-import { useState, useRef } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router } from '@inertiajs/react';
 import {
-    Plus,
-    Search,
-    Pencil,
-    Trash2,
     Eye,
     FolderOpen,
     Package,
-    X,
+    Pencil,
+    Plus,
+    Search,
+    Trash2,
     Upload,
-    Image,
+    X,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
@@ -47,7 +52,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -56,17 +61,17 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { toast } from 'sonner';
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import { Textarea } from '@/components/ui/textarea';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { getImageUrl } from '@/lib/utils';
+import { toast } from 'sonner';
 
 // Types
 interface Category {
@@ -98,7 +103,10 @@ interface Props {
 
 // Form Schema
 const categorySchema = z.object({
-    name: z.string().min(1, 'Name is required').max(255, 'Name must be less than 255 characters'),
+    name: z
+        .string()
+        .min(1, 'Name is required')
+        .max(255, 'Name must be less than 255 characters'),
     description: z.string().nullable().optional(),
     image: z.any().optional(),
     is_active: z.boolean(),
@@ -114,7 +122,9 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+        null,
+    );
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const addFileInputRef = useRef<HTMLInputElement>(null);
@@ -131,10 +141,14 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
     });
 
     const handleSearch = () => {
-        router.get('/admin/categories', {
-            search: searchQuery || undefined,
-            status: statusFilter !== 'all' ? statusFilter : undefined,
-        }, { preserveState: true });
+        router.get(
+            '/admin/categories',
+            {
+                search: searchQuery || undefined,
+                status: statusFilter !== 'all' ? statusFilter : undefined,
+            },
+            { preserveState: true },
+        );
     };
 
     const handleClearFilters = () => {
@@ -181,7 +195,8 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
 
         const formData = new FormData();
         formData.append('name', values.name);
-        if (values.description) formData.append('description', values.description);
+        if (values.description)
+            formData.append('description', values.description);
         formData.append('is_active', values.is_active ? '1' : '0');
         formData.append('sort_order', values.sort_order.toString());
 
@@ -211,7 +226,8 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
         const formData = new FormData();
         formData.append('_method', 'PUT');
         formData.append('name', values.name);
-        if (values.description) formData.append('description', values.description);
+        if (values.description)
+            formData.append('description', values.description);
         formData.append('is_active', values.is_active ? '1' : '0');
         formData.append('sort_order', values.sort_order.toString());
 
@@ -245,24 +261,33 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                 setSelectedCategory(null);
             },
             onError: () => {
-                toast.error('Failed to delete category. It may have associated products.');
+                toast.error(
+                    'Failed to delete category. It may have associated products.',
+                );
             },
             onFinish: () => setIsSubmitting(false),
         });
     };
 
     const handlePageChange = (page: number) => {
-        router.get('/admin/categories', {
-            page,
-            search: searchQuery || undefined,
-            status: statusFilter !== 'all' ? statusFilter : undefined,
-        }, { preserveState: true });
+        router.get(
+            '/admin/categories',
+            {
+                page,
+                search: searchQuery || undefined,
+                status: statusFilter !== 'all' ? statusFilter : undefined,
+            },
+            { preserveState: true },
+        );
     };
 
     // Stats
     const totalCategories = categories.total;
-    const activeCategories = categories.data.filter(c => c.is_active).length;
-    const totalProducts = categories.data.reduce((acc, c) => acc + (c.products_count || 0), 0);
+    const activeCategories = categories.data.filter((c) => c.is_active).length;
+    const totalProducts = categories.data.reduce(
+        (acc, c) => acc + (c.products_count || 0),
+        0,
+    );
 
     return (
         <AdminPageLayout>
@@ -277,9 +302,12 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                     transition={{ duration: 0.3 }}
                 >
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Categories</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Categories
+                        </h1>
                         <p className="text-muted-foreground">
-                            Manage your e-club categories and organize your products.
+                            Manage your e-club categories and organize your
+                            products.
                         </p>
                     </div>
                     <Button onClick={openAddDialog} className="gap-2">
@@ -297,11 +325,15 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                 >
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Categories</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Total Categories
+                            </CardTitle>
                             <FolderOpen className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{totalCategories}</div>
+                            <div className="text-2xl font-bold">
+                                {totalCategories}
+                            </div>
                             <p className="text-xs text-muted-foreground">
                                 All category listings
                             </p>
@@ -309,11 +341,17 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Active Categories</CardTitle>
-                            <Badge variant="default" className="text-xs">Active</Badge>
+                            <CardTitle className="text-sm font-medium">
+                                Active Categories
+                            </CardTitle>
+                            <Badge variant="default" className="text-xs">
+                                Active
+                            </Badge>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{activeCategories}</div>
+                            <div className="text-2xl font-bold">
+                                {activeCategories}
+                            </div>
                             <p className="text-xs text-muted-foreground">
                                 Visible on the store
                             </p>
@@ -321,11 +359,15 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Products</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Total Products
+                            </CardTitle>
                             <Package className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{totalProducts}</div>
+                            <div className="text-2xl font-bold">
+                                {totalProducts}
+                            </div>
                             <p className="text-xs text-muted-foreground">
                                 Across all categories
                             </p>
@@ -342,32 +384,50 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                     <Card>
                         <CardHeader>
                             <CardTitle>Filters</CardTitle>
-                            <CardDescription>Search and filter categories</CardDescription>
+                            <CardDescription>
+                                Search and filter categories
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="flex flex-col gap-4 sm:flex-row">
                                 <div className="relative flex-1">
-                                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                     <Input
                                         placeholder="Search categories..."
                                         value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                                        onChange={(e) =>
+                                            setSearchQuery(e.target.value)
+                                        }
+                                        onKeyDown={(e) =>
+                                            e.key === 'Enter' && handleSearch()
+                                        }
                                         className="pl-10"
                                     />
                                 </div>
-                                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                                <Select
+                                    value={statusFilter}
+                                    onValueChange={setStatusFilter}
+                                >
                                     <SelectTrigger className="w-full sm:w-40">
                                         <SelectValue placeholder="Status" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">All Status</SelectItem>
-                                        <SelectItem value="active">Active</SelectItem>
-                                        <SelectItem value="inactive">Inactive</SelectItem>
+                                        <SelectItem value="all">
+                                            All Status
+                                        </SelectItem>
+                                        <SelectItem value="active">
+                                            Active
+                                        </SelectItem>
+                                        <SelectItem value="inactive">
+                                            Inactive
+                                        </SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <Button onClick={handleSearch}>Search</Button>
-                                <Button variant="outline" onClick={handleClearFilters}>
+                                <Button
+                                    variant="outline"
+                                    onClick={handleClearFilters}
+                                >
                                     <X className="mr-2 h-4 w-4" />
                                     Clear
                                 </Button>
@@ -390,96 +450,161 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="overflow-x-auto -mx-4 md:mx-0">
+                            <div className="-mx-4 overflow-x-auto md:mx-0">
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead>Image</TableHead>
                                             <TableHead>Name</TableHead>
-                                            <TableHead className="hidden md:table-cell">Slug</TableHead>
-                                            <TableHead className="hidden sm:table-cell">Products</TableHead>
-                                            <TableHead className="hidden lg:table-cell">Order</TableHead>
+                                            <TableHead className="hidden md:table-cell">
+                                                Slug
+                                            </TableHead>
+                                            <TableHead className="hidden sm:table-cell">
+                                                Products
+                                            </TableHead>
+                                            <TableHead className="hidden lg:table-cell">
+                                                Order
+                                            </TableHead>
                                             <TableHead>Status</TableHead>
-                                            <TableHead className="text-right">Actions</TableHead>
+                                            <TableHead className="text-right">
+                                                Actions
+                                            </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {categories.data.length === 0 ? (
                                             <TableRow>
-                                                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                                                    No categories found. Create your first category!
+                                                <TableCell
+                                                    colSpan={7}
+                                                    className="py-8 text-center text-muted-foreground"
+                                                >
+                                                    No categories found. Create
+                                                    your first category!
                                                 </TableCell>
                                             </TableRow>
                                         ) : (
-                                            categories.data.map((category, index) => (
-                                                <motion.tr
-                                                    key={category.id}
-                                                    initial={{ opacity: 0, x: -20 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ duration: 0.2, delay: index * 0.05 }}
-                                                    className="border-b transition-colors hover:bg-muted/50"
-                                                >
-                                                    <TableCell>
-                                                        {category.image ? (
-                                                            <img
-                                                                src={getImageUrl(category.image) || ''}
-                                                                alt={category.name}
-                                                                className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg object-cover"
-                                                            />
-                                                        ) : (
-                                                            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-muted flex items-center justify-center">
-                                                                <FolderOpen className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                                            categories.data.map(
+                                                (category, index) => (
+                                                    <motion.tr
+                                                        key={category.id}
+                                                        initial={{
+                                                            opacity: 0,
+                                                            x: -20,
+                                                        }}
+                                                        animate={{
+                                                            opacity: 1,
+                                                            x: 0,
+                                                        }}
+                                                        transition={{
+                                                            duration: 0.2,
+                                                            delay: index * 0.05,
+                                                        }}
+                                                        className="border-b transition-colors hover:bg-muted/50"
+                                                    >
+                                                        <TableCell>
+                                                            {category.image ? (
+                                                                <img
+                                                                    src={
+                                                                        getImageUrl(
+                                                                            category.image,
+                                                                        ) || ''
+                                                                    }
+                                                                    alt={
+                                                                        category.name
+                                                                    }
+                                                                    className="h-10 w-10 rounded-lg object-cover sm:h-12 sm:w-12"
+                                                                />
+                                                            ) : (
+                                                                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted sm:h-12 sm:w-12">
+                                                                    <FolderOpen className="h-5 w-5 text-muted-foreground sm:h-6 sm:w-6" />
+                                                                </div>
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <div className="flex flex-col">
+                                                                <span className="font-medium">
+                                                                    {
+                                                                        category.name
+                                                                    }
+                                                                </span>
+                                                                <span className="text-xs text-muted-foreground md:hidden">
+                                                                    {
+                                                                        category.slug
+                                                                    }
+                                                                </span>
                                                             </div>
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <div className="flex flex-col">
-                                                            <span className="font-medium">{category.name}</span>
-                                                            <span className="text-xs text-muted-foreground md:hidden">{category.slug}</span>
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell className="hidden md:table-cell text-muted-foreground">{category.slug}</TableCell>
-                                                    <TableCell className="hidden sm:table-cell">
-                                                        <Badge variant="secondary">
-                                                            {category.products_count || 0} products
-                                                        </Badge>
-                                                    </TableCell>
-                                                    <TableCell className="hidden lg:table-cell">{category.sort_order}</TableCell>
-                                                    <TableCell>
-                                                        <Badge variant={category.is_active ? 'default' : 'secondary'}>
-                                                            {category.is_active ? 'Active' : 'Inactive'}
-                                                        </Badge>
-                                                    </TableCell>
-                                                    <TableCell className="text-right">
-                                                        <div className="flex justify-end gap-1 sm:gap-2">
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                className="h-8 w-8 sm:h-9 sm:w-9"
-                                                                onClick={() => openViewDialog(category)}
+                                                        </TableCell>
+                                                        <TableCell className="hidden text-muted-foreground md:table-cell">
+                                                            {category.slug}
+                                                        </TableCell>
+                                                        <TableCell className="hidden sm:table-cell">
+                                                            <Badge variant="secondary">
+                                                                {category.products_count ||
+                                                                    0}{' '}
+                                                                products
+                                                            </Badge>
+                                                        </TableCell>
+                                                        <TableCell className="hidden lg:table-cell">
+                                                            {
+                                                                category.sort_order
+                                                            }
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <Badge
+                                                                variant={
+                                                                    category.is_active
+                                                                        ? 'default'
+                                                                        : 'secondary'
+                                                                }
                                                             >
-                                                                <Eye className="h-4 w-4" />
-                                                            </Button>
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                className="h-8 w-8 sm:h-9 sm:w-9"
-                                                                onClick={() => openEditDialog(category)}
-                                                            >
-                                                                <Pencil className="h-4 w-4" />
-                                                            </Button>
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                className="h-8 w-8 sm:h-9 sm:w-9 text-destructive hover:text-destructive"
-                                                                onClick={() => openDeleteDialog(category)}
-                                                            >
-                                                                <Trash2 className="h-4 w-4" />
-                                                            </Button>
-                                                        </div>
-                                                    </TableCell>
-                                                </motion.tr>
-                                            ))
+                                                                {category.is_active
+                                                                    ? 'Active'
+                                                                    : 'Inactive'}
+                                                            </Badge>
+                                                        </TableCell>
+                                                        <TableCell className="text-right">
+                                                            <div className="flex justify-end gap-1 sm:gap-2">
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="h-8 w-8 sm:h-9 sm:w-9"
+                                                                    onClick={() =>
+                                                                        openViewDialog(
+                                                                            category,
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Eye className="h-4 w-4" />
+                                                                </Button>
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="h-8 w-8 sm:h-9 sm:w-9"
+                                                                    onClick={() =>
+                                                                        openEditDialog(
+                                                                            category,
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Pencil className="h-4 w-4" />
+                                                                </Button>
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="h-8 w-8 text-destructive hover:text-destructive sm:h-9 sm:w-9"
+                                                                    onClick={() =>
+                                                                        openDeleteDialog(
+                                                                            category,
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </Button>
+                                                            </div>
+                                                        </TableCell>
+                                                    </motion.tr>
+                                                ),
+                                            )
                                         )}
                                     </TableBody>
                                 </Table>
@@ -487,26 +612,47 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
 
                             {/* Pagination */}
                             {categories.last_page > 1 && (
-                                <div className="flex items-center justify-between mt-4">
+                                <div className="mt-4 flex items-center justify-between">
                                     <p className="text-sm text-muted-foreground">
-                                        Showing {((categories.current_page - 1) * categories.per_page) + 1} to{' '}
-                                        {Math.min(categories.current_page * categories.per_page, categories.total)} of{' '}
-                                        {categories.total} categories
+                                        Showing{' '}
+                                        {(categories.current_page - 1) *
+                                            categories.per_page +
+                                            1}{' '}
+                                        to{' '}
+                                        {Math.min(
+                                            categories.current_page *
+                                                categories.per_page,
+                                            categories.total,
+                                        )}{' '}
+                                        of {categories.total} categories
                                     </p>
                                     <div className="flex gap-2">
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            onClick={() => handlePageChange(categories.current_page - 1)}
-                                            disabled={categories.current_page === 1}
+                                            onClick={() =>
+                                                handlePageChange(
+                                                    categories.current_page - 1,
+                                                )
+                                            }
+                                            disabled={
+                                                categories.current_page === 1
+                                            }
                                         >
                                             Previous
                                         </Button>
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            onClick={() => handlePageChange(categories.current_page + 1)}
-                                            disabled={categories.current_page === categories.last_page}
+                                            onClick={() =>
+                                                handlePageChange(
+                                                    categories.current_page + 1,
+                                                )
+                                            }
+                                            disabled={
+                                                categories.current_page ===
+                                                categories.last_page
+                                            }
                                         >
                                             Next
                                         </Button>
@@ -528,7 +674,10 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleCreate)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleCreate)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={form.control}
                                 name="name"
@@ -536,7 +685,10 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                                     <FormItem>
                                         <FormLabel>Name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., Living Room" {...field} />
+                                            <Input
+                                                placeholder="e.g., Living Room"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -562,26 +714,36 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                             <FormField
                                 control={form.control}
                                 name="image"
-                                render={({ field: { onChange, value, ...field } }) => (
+                                render={({
+                                    field: { onChange, value, ...field },
+                                }) => (
                                     <FormItem>
                                         <FormLabel>Image</FormLabel>
                                         <FormControl>
                                             <div className="space-y-3">
                                                 {imagePreview && (
-                                                    <div className="relative w-32 h-32 rounded-lg overflow-hidden border">
+                                                    <div className="relative h-32 w-32 overflow-hidden rounded-lg border">
                                                         <img
                                                             src={imagePreview}
                                                             alt="Preview"
-                                                            className="w-full h-full object-cover"
+                                                            className="h-full w-full object-cover"
                                                         />
                                                         <button
                                                             type="button"
                                                             onClick={() => {
-                                                                setImagePreview(null);
-                                                                onChange(undefined);
-                                                                if (addFileInputRef.current) addFileInputRef.current.value = '';
+                                                                setImagePreview(
+                                                                    null,
+                                                                );
+                                                                onChange(
+                                                                    undefined,
+                                                                );
+                                                                if (
+                                                                    addFileInputRef.current
+                                                                )
+                                                                    addFileInputRef.current.value =
+                                                                        '';
                                                             }}
-                                                            className="absolute top-1 right-1 p-1 bg-destructive text-destructive-foreground rounded-full hover:bg-destructive/90"
+                                                            className="absolute top-1 right-1 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90"
                                                         >
                                                             <X className="h-3 w-3" />
                                                         </button>
@@ -594,21 +756,31 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                                                         accept="image/*"
                                                         className="hidden"
                                                         onChange={(e) => {
-                                                            const file = e.target.files?.[0];
+                                                            const file =
+                                                                e.target
+                                                                    .files?.[0];
                                                             if (file) {
                                                                 onChange(file);
-                                                                setImagePreview(URL.createObjectURL(file));
+                                                                setImagePreview(
+                                                                    URL.createObjectURL(
+                                                                        file,
+                                                                    ),
+                                                                );
                                                             }
                                                         }}
                                                     />
                                                     <Button
                                                         type="button"
                                                         variant="outline"
-                                                        onClick={() => addFileInputRef.current?.click()}
+                                                        onClick={() =>
+                                                            addFileInputRef.current?.click()
+                                                        }
                                                         className="gap-2"
                                                     >
                                                         <Upload className="h-4 w-4" />
-                                                        {imagePreview ? 'Change Image' : 'Upload Image'}
+                                                        {imagePreview
+                                                            ? 'Change Image'
+                                                            : 'Upload Image'}
                                                     </Button>
                                                 </div>
                                             </div>
@@ -648,8 +820,14 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                                     <FormItem>
                                         <FormLabel>Status</FormLabel>
                                         <Select
-                                            value={field.value ? 'active' : 'inactive'}
-                                            onValueChange={(val) => field.onChange(val === 'active')}
+                                            value={
+                                                field.value
+                                                    ? 'active'
+                                                    : 'inactive'
+                                            }
+                                            onValueChange={(val) =>
+                                                field.onChange(val === 'active')
+                                            }
                                         >
                                             <FormControl>
                                                 <SelectTrigger>
@@ -657,8 +835,12 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="active">Active</SelectItem>
-                                                <SelectItem value="inactive">Inactive</SelectItem>
+                                                <SelectItem value="active">
+                                                    Active
+                                                </SelectItem>
+                                                <SelectItem value="inactive">
+                                                    Inactive
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -666,11 +848,17 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                                 )}
                             />
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsAddDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Creating...' : 'Create Category'}
+                                    {isSubmitting
+                                        ? 'Creating...'
+                                        : 'Create Category'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -688,7 +876,10 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleUpdate)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleUpdate)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={form.control}
                                 name="name"
@@ -696,7 +887,10 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                                     <FormItem>
                                         <FormLabel>Name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., Living Room" {...field} />
+                                            <Input
+                                                placeholder="e.g., Living Room"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -722,26 +916,36 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                             <FormField
                                 control={form.control}
                                 name="image"
-                                render={({ field: { onChange, value, ...field } }) => (
+                                render={({
+                                    field: { onChange, value, ...field },
+                                }) => (
                                     <FormItem>
                                         <FormLabel>Image</FormLabel>
                                         <FormControl>
                                             <div className="space-y-3">
                                                 {imagePreview && (
-                                                    <div className="relative w-32 h-32 rounded-lg overflow-hidden border">
+                                                    <div className="relative h-32 w-32 overflow-hidden rounded-lg border">
                                                         <img
                                                             src={imagePreview}
                                                             alt="Preview"
-                                                            className="w-full h-full object-cover"
+                                                            className="h-full w-full object-cover"
                                                         />
                                                         <button
                                                             type="button"
                                                             onClick={() => {
-                                                                setImagePreview(null);
-                                                                onChange(undefined);
-                                                                if (editFileInputRef.current) editFileInputRef.current.value = '';
+                                                                setImagePreview(
+                                                                    null,
+                                                                );
+                                                                onChange(
+                                                                    undefined,
+                                                                );
+                                                                if (
+                                                                    editFileInputRef.current
+                                                                )
+                                                                    editFileInputRef.current.value =
+                                                                        '';
                                                             }}
-                                                            className="absolute top-1 right-1 p-1 bg-destructive text-destructive-foreground rounded-full hover:bg-destructive/90"
+                                                            className="absolute top-1 right-1 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90"
                                                         >
                                                             <X className="h-3 w-3" />
                                                         </button>
@@ -754,27 +958,38 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                                                         accept="image/*"
                                                         className="hidden"
                                                         onChange={(e) => {
-                                                            const file = e.target.files?.[0];
+                                                            const file =
+                                                                e.target
+                                                                    .files?.[0];
                                                             if (file) {
                                                                 onChange(file);
-                                                                setImagePreview(URL.createObjectURL(file));
+                                                                setImagePreview(
+                                                                    URL.createObjectURL(
+                                                                        file,
+                                                                    ),
+                                                                );
                                                             }
                                                         }}
                                                     />
                                                     <Button
                                                         type="button"
                                                         variant="outline"
-                                                        onClick={() => editFileInputRef.current?.click()}
+                                                        onClick={() =>
+                                                            editFileInputRef.current?.click()
+                                                        }
                                                         className="gap-2"
                                                     >
                                                         <Upload className="h-4 w-4" />
-                                                        {imagePreview ? 'Change Image' : 'Upload Image'}
+                                                        {imagePreview
+                                                            ? 'Change Image'
+                                                            : 'Upload Image'}
                                                     </Button>
                                                 </div>
                                             </div>
                                         </FormControl>
                                         <FormDescription>
-                                            Upload a new image to replace the current one
+                                            Upload a new image to replace the
+                                            current one
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -805,8 +1020,14 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                                     <FormItem>
                                         <FormLabel>Status</FormLabel>
                                         <Select
-                                            value={field.value ? 'active' : 'inactive'}
-                                            onValueChange={(val) => field.onChange(val === 'active')}
+                                            value={
+                                                field.value
+                                                    ? 'active'
+                                                    : 'inactive'
+                                            }
+                                            onValueChange={(val) =>
+                                                field.onChange(val === 'active')
+                                            }
                                         >
                                             <FormControl>
                                                 <SelectTrigger>
@@ -814,8 +1035,12 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="active">Active</SelectItem>
-                                                <SelectItem value="inactive">Inactive</SelectItem>
+                                                <SelectItem value="active">
+                                                    Active
+                                                </SelectItem>
+                                                <SelectItem value="inactive">
+                                                    Inactive
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -823,11 +1048,17 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                                 )}
                             />
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsEditDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                    {isSubmitting
+                                        ? 'Saving...'
+                                        : 'Save Changes'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -845,57 +1076,100 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
                         <div className="space-y-4">
                             {selectedCategory.image && (
                                 <img
-                                    src={getImageUrl(selectedCategory.image) || ''}
+                                    src={
+                                        getImageUrl(selectedCategory.image) ||
+                                        ''
+                                    }
                                     alt={selectedCategory.name}
-                                    className="w-full h-48 object-cover rounded-lg"
+                                    className="h-48 w-full rounded-lg object-cover"
                                 />
                             )}
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Name</p>
-                                    <p className="font-medium">{selectedCategory.name}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Name
+                                    </p>
+                                    <p className="font-medium">
+                                        {selectedCategory.name}
+                                    </p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Slug</p>
-                                    <p className="font-medium">{selectedCategory.slug}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Slug
+                                    </p>
+                                    <p className="font-medium">
+                                        {selectedCategory.slug}
+                                    </p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Products</p>
-                                    <p className="font-medium">{selectedCategory.products_count || 0}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Products
+                                    </p>
+                                    <p className="font-medium">
+                                        {selectedCategory.products_count || 0}
+                                    </p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Sort Order</p>
-                                    <p className="font-medium">{selectedCategory.sort_order}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Sort Order
+                                    </p>
+                                    <p className="font-medium">
+                                        {selectedCategory.sort_order}
+                                    </p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Status</p>
-                                    <Badge variant={selectedCategory.is_active ? 'default' : 'secondary'}>
-                                        {selectedCategory.is_active ? 'Active' : 'Inactive'}
+                                    <p className="text-sm text-muted-foreground">
+                                        Status
+                                    </p>
+                                    <Badge
+                                        variant={
+                                            selectedCategory.is_active
+                                                ? 'default'
+                                                : 'secondary'
+                                        }
+                                    >
+                                        {selectedCategory.is_active
+                                            ? 'Active'
+                                            : 'Inactive'}
                                     </Badge>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Created</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Created
+                                    </p>
                                     <p className="font-medium">
-                                        {new Date(selectedCategory.created_at).toLocaleDateString()}
+                                        {new Date(
+                                            selectedCategory.created_at,
+                                        ).toLocaleDateString()}
                                     </p>
                                 </div>
                             </div>
                             {selectedCategory.description && (
                                 <div>
-                                    <p className="text-sm text-muted-foreground">Description</p>
-                                    <p className="mt-1">{selectedCategory.description}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Description
+                                    </p>
+                                    <p className="mt-1">
+                                        {selectedCategory.description}
+                                    </p>
                                 </div>
                             )}
                         </div>
                     )}
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsViewDialogOpen(false)}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setIsViewDialogOpen(false)}
+                        >
                             Close
                         </Button>
-                        <Button onClick={() => {
-                            setIsViewDialogOpen(false);
-                            if (selectedCategory) openEditDialog(selectedCategory);
-                        }}>
+                        <Button
+                            onClick={() => {
+                                setIsViewDialogOpen(false);
+                                if (selectedCategory)
+                                    openEditDialog(selectedCategory);
+                            }}
+                        >
                             Edit Category
                         </Button>
                     </DialogFooter>
@@ -903,15 +1177,22 @@ export default function CategoriesIndex({ categories, filters = {} }: Props) {
             </Dialog>
 
             {/* Delete Confirmation Dialog */}
-            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <AlertDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Category</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete "{selectedCategory?.name}"? This action cannot be undone.
+                            Are you sure you want to delete "
+                            {selectedCategory?.name}"? This action cannot be
+                            undone.
                             {(selectedCategory?.products_count ?? 0) > 0 && (
-                                <span className="block mt-2 text-destructive">
-                                    Warning: This category has {selectedCategory?.products_count} products associated with it.
+                                <span className="mt-2 block text-destructive">
+                                    Warning: This category has{' '}
+                                    {selectedCategory?.products_count} products
+                                    associated with it.
                                 </span>
                             )}
                         </AlertDialogDescription>

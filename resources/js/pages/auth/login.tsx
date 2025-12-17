@@ -5,10 +5,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import SiteAuthLayout from '@/layouts/auth/site-auth-layout';
-import { Head, useForm, Link } from '@inertiajs/react';
-import { Mail, Eye, EyeOff } from 'lucide-react';
-import { useState, FormEventHandler } from 'react';
 import type { Category, SiteSettings } from '@/types/cms';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { Eye, EyeOff, Mail } from 'lucide-react';
+import { FormEventHandler, useState } from 'react';
 
 interface LoginProps {
     status?: string;
@@ -26,7 +26,7 @@ export default function Login({
     categories,
 }: LoginProps) {
     const [showPassword, setShowPassword] = useState(false);
-    
+
     const form = useForm({
         email: '',
         password: '',
@@ -58,7 +58,9 @@ export default function Login({
                                 id="email"
                                 type="email"
                                 value={form.data.email}
-                                onChange={(e) => form.setData('email', e.target.value)}
+                                onChange={(e) =>
+                                    form.setData('email', e.target.value)
+                                }
                                 required
                                 autoFocus
                                 tabIndex={1}
@@ -66,7 +68,7 @@ export default function Login({
                                 className="pr-9"
                                 placeholder="you@example.com"
                             />
-                            <Mail className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                            <Mail className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         </div>
                         <InputError message={form.errors.email} />
                     </div>
@@ -87,9 +89,11 @@ export default function Login({
                         <div className="relative">
                             <Input
                                 id="password"
-                                type={showPassword ? "text" : "password"}
+                                type={showPassword ? 'text' : 'password'}
                                 value={form.data.password}
-                                onChange={(e) => form.setData('password', e.target.value)}
+                                onChange={(e) =>
+                                    form.setData('password', e.target.value)
+                                }
                                 required
                                 tabIndex={2}
                                 autoComplete="current-password"
@@ -99,7 +103,7 @@ export default function Login({
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                                className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
                                 tabIndex={-1}
                             >
                                 {showPassword ? (
@@ -116,7 +120,9 @@ export default function Login({
                         <Checkbox
                             id="remember"
                             checked={form.data.remember}
-                            onCheckedChange={(checked) => form.setData('remember', checked as boolean)}
+                            onCheckedChange={(checked) =>
+                                form.setData('remember', checked as boolean)
+                            }
                             tabIndex={3}
                         />
                         <Label htmlFor="remember">Remember me</Label>
@@ -143,7 +149,11 @@ export default function Login({
             {canRegister && (
                 <div className="mt-6 text-center text-sm text-muted-foreground">
                     Don't have an account?{' '}
-                    <Link href="/register" className="font-medium text-primary hover:underline" tabIndex={6}>
+                    <Link
+                        href="/register"
+                        className="font-medium text-primary hover:underline"
+                        tabIndex={6}
+                    >
                         Create one
                     </Link>
                 </div>

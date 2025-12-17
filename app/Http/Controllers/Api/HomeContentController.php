@@ -62,7 +62,7 @@ class HomeContentController extends Controller
     public function categories(?string $type = null): JsonResponse
     {
         $query = Category::active()->ordered();
-        
+
         if ($type) {
             $query->collection($type);
         }

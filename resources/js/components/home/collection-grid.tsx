@@ -2,7 +2,11 @@ import { Link } from '@inertiajs/react';
 import { motion } from 'motion/react';
 
 import { Card, CardContent } from '@/components/ui/card';
-import { imageHoverVariants, staggerContainerVariants, staggerItemVariants } from '@/lib/animations';
+import {
+    imageHoverVariants,
+    staggerContainerVariants,
+    staggerItemVariants,
+} from '@/lib/animations';
 import { getImageUrl } from '@/lib/utils';
 import type { Category } from '@/types/cms';
 
@@ -12,7 +16,11 @@ interface CollectionGridProps {
     columns?: 2 | 3 | 4;
 }
 
-export function CollectionGrid({ title, categories, columns = 3 }: CollectionGridProps) {
+export function CollectionGrid({
+    title,
+    categories,
+    columns = 3,
+}: CollectionGridProps) {
     if (categories.length === 0) return null;
 
     const gridCols = {
@@ -54,8 +62,13 @@ export function CollectionGrid({ title, categories, columns = 3 }: CollectionGri
                     viewport={{ once: true }}
                 >
                     {categories.map((category) => (
-                        <motion.div key={category.id} variants={staggerItemVariants}>
-                            <Link href={`/products?category=${encodeURIComponent(category.slug)}`}>
+                        <motion.div
+                            key={category.id}
+                            variants={staggerItemVariants}
+                        >
+                            <Link
+                                href={`/products?category=${encodeURIComponent(category.slug)}`}
+                            >
                                 <Card className="group overflow-hidden py-0">
                                     <CardContent className="p-0">
                                         <motion.div
@@ -66,13 +79,23 @@ export function CollectionGrid({ title, categories, columns = 3 }: CollectionGri
                                         >
                                             {getImageUrl(category.image) ? (
                                                 <img
-                                                    src={getImageUrl(category.image)!}
+                                                    src={
+                                                        getImageUrl(
+                                                            category.image,
+                                                        )!
+                                                    }
                                                     alt={category.name}
                                                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                                 />
                                             ) : (
-                                                <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${getPlaceholderGradient(category.name)}`}>
-                                                    <span className="text-2xl font-bold text-muted-foreground/50">{category.name.charAt(0)}</span>
+                                                <div
+                                                    className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${getPlaceholderGradient(category.name)}`}
+                                                >
+                                                    <span className="text-2xl font-bold text-muted-foreground/50">
+                                                        {category.name.charAt(
+                                                            0,
+                                                        )}
+                                                    </span>
                                                 </div>
                                             )}
                                         </motion.div>

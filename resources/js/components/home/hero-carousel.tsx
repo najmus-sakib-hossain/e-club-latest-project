@@ -1,5 +1,5 @@
-import { AnimatePresence, motion } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -23,7 +23,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                 setCurrentIndex([newIndex, newDirection]);
             }
         },
-        [currentIndex, slides.length]
+        [currentIndex, slides.length],
     );
 
     // Auto-play
@@ -63,20 +63,20 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
     const slideVariants = {
         enter: (direction: number) => ({
             x: direction > 0 ? '100%' : '-100%',
-            opacity: 0
+            opacity: 0,
         }),
         center: {
             x: 0,
-            opacity: 1
+            opacity: 1,
         },
         exit: (direction: number) => ({
             x: direction < 0 ? '100%' : '-100%',
-            opacity: 0
-        })
+            opacity: 0,
+        }),
     };
 
     return (
-        <div className="relative h-[450px] md:h-[550px] lg:h-[650px] overflow-hidden bg-gray-100">
+        <div className="relative h-[450px] overflow-hidden bg-gray-100 md:h-[550px] lg:h-[650px]">
             <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
                     key={currentIndex}
@@ -86,8 +86,8 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                     animate="center"
                     exit="exit"
                     transition={{
-                        x: { type: "spring", stiffness: 300, damping: 30 },
-                        opacity: { duration: 0.2 }
+                        x: { type: 'spring', stiffness: 300, damping: 30 },
+                        opacity: { duration: 0.2 },
                     }}
                     className="absolute inset-0"
                 >
@@ -95,8 +95,11 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                     <div
                         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                         style={{
-                            backgroundImage: imageUrl ? `url(${imageUrl})` : undefined,
-                            backgroundColor: currentSlide.background_color || '#f5f5f5',
+                            backgroundImage: imageUrl
+                                ? `url(${imageUrl})`
+                                : undefined,
+                            backgroundColor:
+                                currentSlide.background_color || '#f5f5f5',
                         }}
                     >
                         {/* Subtle overlay for better text readability */}
@@ -104,20 +107,20 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                     </div>
 
                     {/* Content - Centered */}
-                    <div className="relative h-full flex items-center justify-center">
-                        <div className="text-center px-4 max-w-3xl mx-auto">
+                    <div className="relative flex h-full items-center justify-center">
+                        <div className="mx-auto max-w-3xl px-4 text-center">
                             <motion.h1
-                                className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 drop-shadow-lg"
+                                className="mb-4 text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl xl:text-6xl"
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.2, duration: 0.5 }}
                             >
                                 {currentSlide.title}
                             </motion.h1>
-                            
+
                             {currentSlide.subtitle && (
                                 <motion.p
-                                    className="text-base md:text-lg lg:text-xl text-white/90 mb-8 drop-shadow-md max-w-xl mx-auto"
+                                    className="mx-auto mb-8 max-w-xl text-base text-white/90 drop-shadow-md md:text-lg lg:text-xl"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.3, duration: 0.5 }}
@@ -125,24 +128,28 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                                     {currentSlide.subtitle}
                                 </motion.p>
                             )}
-                            
-                            {currentSlide.button_text && currentSlide.button_link && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.4, duration: 0.5 }}
-                                >
-                                    <Button
-                                        size="lg"
-                                        className="bg-primary text-gray-900 hover:bg-primary/90 font-semibold px-8 py-6 text-base uppercase tracking-wide rounded-sm shadow-lg"
-                                        asChild
+
+                            {currentSlide.button_text &&
+                                currentSlide.button_link && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{
+                                            delay: 0.4,
+                                            duration: 0.5,
+                                        }}
                                     >
-                                        <a href={currentSlide.button_link}>
-                                            {currentSlide.button_text}
-                                        </a>
-                                    </Button>
-                                </motion.div>
-                            )}
+                                        <Button
+                                            size="lg"
+                                            className="rounded-sm bg-primary px-8 py-6 text-base font-semibold tracking-wide text-gray-900 uppercase shadow-lg hover:bg-primary/90"
+                                            asChild
+                                        >
+                                            <a href={currentSlide.button_link}>
+                                                {currentSlide.button_text}
+                                            </a>
+                                        </Button>
+                                    </motion.div>
+                                )}
                         </div>
                     </div>
                 </motion.div>
@@ -152,13 +159,13 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
             {slides.length > 1 && (
                 <>
                     <button
-                        className="border bg-primary text-primary-foreground hover:bg-primary/50 rounded-full absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center backdrop-blur-sm transition-colors"
+                        className="absolute top-1/2 left-4 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border bg-primary text-primary-foreground backdrop-blur-sm transition-colors hover:bg-primary/50 md:h-12 md:w-12"
                         onClick={() => paginate(-1)}
                     >
                         <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
                     </button>
                     <button
-                        className="border bg-primary text-primary-foreground hover:bg-primary/50 rounded-full absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center transition-colors"
+                        className="absolute top-1/2 right-4 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border bg-primary text-primary-foreground transition-colors hover:bg-primary/50 md:h-12 md:w-12"
                         onClick={() => paginate(1)}
                     >
                         <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
@@ -177,7 +184,12 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                                     ? 'w-8 bg-primary'
                                     : 'w-2 bg-white/60 hover:bg-white'
                             }`}
-                            onClick={() => setCurrentIndex([index, index > currentIndex ? 1 : -1])}
+                            onClick={() =>
+                                setCurrentIndex([
+                                    index,
+                                    index > currentIndex ? 1 : -1,
+                                ])
+                            }
                         />
                     ))}
                 </div>

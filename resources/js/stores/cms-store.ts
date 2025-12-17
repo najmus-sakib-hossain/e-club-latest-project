@@ -3,17 +3,25 @@ import { devtools } from 'zustand/middleware';
 
 // Import types from the central types file
 import type {
-    HeroSlide,
     Category,
-    Product,
     FeatureCard,
-    TrustedCompany,
-    SiteSettings,
     FeaturedProduct,
+    HeroSlide,
+    Product,
+    SiteSettings,
+    TrustedCompany,
 } from '@/types/cms';
 
 // Re-export types for convenience
-export type { HeroSlide, Category, Product, FeatureCard, TrustedCompany, SiteSettings, FeaturedProduct };
+export type {
+    Category,
+    FeatureCard,
+    FeaturedProduct,
+    HeroSlide,
+    Product,
+    SiteSettings,
+    TrustedCompany,
+};
 
 interface CMSState {
     // Data
@@ -27,7 +35,7 @@ interface CMSState {
 
     // Loading states
     isLoading: boolean;
-    
+
     // Invalidation trigger - increment to trigger refetch
     invalidationTrigger: number;
 
@@ -40,7 +48,7 @@ interface CMSState {
     setSiteSettings: (settings: SiteSettings) => void;
     setFeaturedProduct: (featured: FeaturedProduct | null) => void;
     setLoading: (loading: boolean) => void;
-    
+
     // Trigger refetch across all queries
     invalidateAll: () => void;
 }
@@ -64,28 +72,32 @@ export const useCMSStore = create<CMSState>()(
             setCategories: (categories) => set({ categories }),
             setProducts: (products) => set({ products }),
             setFeatureCards: (cards) => set({ featureCards: cards }),
-            setTrustedCompanies: (companies) => set({ trustedCompanies: companies }),
+            setTrustedCompanies: (companies) =>
+                set({ trustedCompanies: companies }),
             setSiteSettings: (settings) => set({ siteSettings: settings }),
-            setFeaturedProduct: (featured) => set({ featuredProduct: featured }),
+            setFeaturedProduct: (featured) =>
+                set({ featuredProduct: featured }),
             setLoading: (loading) => set({ isLoading: loading }),
-            
-            invalidateAll: () => set((state) => ({ 
-                invalidationTrigger: state.invalidationTrigger + 1 
-            })),
+
+            invalidateAll: () =>
+                set((state) => ({
+                    invalidationTrigger: state.invalidationTrigger + 1,
+                })),
         }),
-        { name: 'cms-store' }
-    )
+        { name: 'cms-store' },
+    ),
 );
 
 // Selectors for better performance
 export const selectHeroSlides = (state: CMSState) => state.heroSlides;
 export const selectCategories = (state: CMSState) => state.categories;
 export const selectProducts = (state: CMSState) => state.products;
-export const selectNewArrivals = (state: CMSState) => 
+export const selectNewArrivals = (state: CMSState) =>
     state.products.filter((p) => p.is_new_arrival && p.is_active);
-export const selectFeaturedProducts = (state: CMSState) => 
+export const selectFeaturedProducts = (state: CMSState) =>
     state.products.filter((p) => p.is_featured && p.is_active);
 export const selectFeatureCards = (state: CMSState) => state.featureCards;
-export const selectTrustedCompanies = (state: CMSState) => state.trustedCompanies;
+export const selectTrustedCompanies = (state: CMSState) =>
+    state.trustedCompanies;
 export const selectSiteSettings = (state: CMSState) => state.siteSettings;
 export const selectFeaturedProduct = (state: CMSState) => state.featuredProduct;

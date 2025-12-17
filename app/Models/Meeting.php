@@ -54,7 +54,7 @@ class Meeting extends Model
     public function scopeUpcoming($query)
     {
         return $query->where('date', '>=', now()->toDateString())
-                     ->whereIn('status', ['pending', 'confirmed']);
+            ->whereIn('status', ['pending', 'confirmed']);
     }
 
     /**
@@ -70,7 +70,7 @@ class Meeting extends Model
      */
     public function getFormattedDateTimeAttribute()
     {
-        return $this->date->format('M d, Y') . ' at ' . $this->time;
+        return $this->date->format('M d, Y').' at '.$this->time;
     }
 
     /**

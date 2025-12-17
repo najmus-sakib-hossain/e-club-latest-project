@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -36,9 +35,9 @@ class CustomerController extends Controller
         // Apply search filter
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
 
@@ -47,8 +46,8 @@ class CustomerController extends Controller
             'total_customers' => User::count(),
             'new_this_month' => User::where('created_at', '>=', now()->startOfMonth())->count(),
             'total_orders' => Order::count(),
-            'avg_orders_per_customer' => User::count() > 0 
-                ? round(Order::count() / User::count(), 1) 
+            'avg_orders_per_customer' => User::count() > 0
+                ? round(Order::count() / User::count(), 1)
                 : 0,
         ];
 
@@ -73,7 +72,7 @@ class CustomerController extends Controller
             ->latest()
             ->limit(10)
             ->get();
-        
+
         $ordersCount = Order::where('customer_email', $customer->email)->count();
         $ordersTotal = Order::where('customer_email', $customer->email)->sum('total_amount');
 

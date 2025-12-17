@@ -83,7 +83,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:products,slug,' . $product->id,
+            'slug' => 'nullable|string|max:255|unique:products,slug,'.$product->id,
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
@@ -102,11 +102,11 @@ class ProductController extends Controller
 
         // Handle existing images
         $existingImages = $request->input('existing_images', []);
-        
+
         // Delete removed images
         if ($product->images) {
             foreach ($product->images as $oldImage) {
-                if (!in_array($oldImage, $existingImages) && !str_starts_with($oldImage, 'http')) {
+                if (! in_array($oldImage, $existingImages) && ! str_starts_with($oldImage, 'http')) {
                     Storage::disk('public')->delete($oldImage);
                 }
             }
@@ -135,7 +135,7 @@ class ProductController extends Controller
         // Delete all images
         if ($product->images) {
             foreach ($product->images as $image) {
-                if (!str_starts_with($image, 'http')) {
+                if (! str_starts_with($image, 'http')) {
                     Storage::disk('public')->delete($image);
                 }
             }

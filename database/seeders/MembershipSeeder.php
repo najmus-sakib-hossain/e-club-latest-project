@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\MembershipType;
 use App\Models\JoinPageSetting;
+use App\Models\MembershipType;
+use Illuminate\Database\Seeder;
 
 class MembershipSeeder extends Seeder
 {
@@ -68,7 +68,7 @@ class MembershipSeeder extends Seeder
         JoinPageSetting::set('page_subtitle', 'Become part of Bangladesh\'s leading entrepreneur network', 'text');
         JoinPageSetting::set('welcome_message', 'Want to be a member of ECLUB?', 'text');
         JoinPageSetting::set('welcome_subtitle', 'Select a membership plan that suits your business needs', 'text');
-        
+
         // Payment methods
         JoinPageSetting::set('payment_methods', [
             'card' => ['name' => 'Credit/Debit Card', 'enabled' => true],

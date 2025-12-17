@@ -1,10 +1,23 @@
 import { Head, Link } from '@inertiajs/react';
-import { ChevronRight, Clock, Calendar, MapPin, Phone, Video } from 'lucide-react';
+import {
+    Calendar,
+    ChevronRight,
+    Clock,
+    MapPin,
+    Phone,
+    Video,
+} from 'lucide-react';
 
 import { SiteLayout } from '@/components/site';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import type { Category, SiteSettings } from '@/types/cms';
 
 interface ScheduleItem {
@@ -23,21 +36,24 @@ const meetingTypes = [
     {
         icon: MapPin,
         title: 'Showroom Visit',
-        description: 'Visit our showroom to see our e-club collection in person. Our experts will guide you through our products.',
+        description:
+            'Visit our showroom to see our e-club collection in person. Our experts will guide you through our products.',
         duration: '30-60 minutes',
         availability: 'During business hours',
     },
     {
         icon: Video,
         title: 'Video Consultation',
-        description: 'Can\'t visit us? Schedule a video call with our e-club consultants from the comfort of your home.',
+        description:
+            "Can't visit us? Schedule a video call with our e-club consultants from the comfort of your home.",
         duration: '20-30 minutes',
         availability: '10 AM - 6 PM',
     },
     {
         icon: Phone,
         title: 'Phone Consultation',
-        description: 'Quick questions? Request a phone callback and our team will assist you within a few hours.',
+        description:
+            'Quick questions? Request a phone callback and our team will assist you within a few hours.',
         duration: '10-15 minutes',
         availability: '10 AM - 7 PM',
     },
@@ -54,8 +70,13 @@ const defaultSchedule: ScheduleItem[] = [
     { day: 'Friday', hours: 'Closed', isOpen: false },
 ];
 
-export default function Availability({ settings, categories, schedule }: AvailabilityProps) {
-    const weeklySchedule = schedule && schedule.length > 0 ? schedule : defaultSchedule;
+export default function Availability({
+    settings,
+    categories,
+    schedule,
+}: AvailabilityProps) {
+    const weeklySchedule =
+        schedule && schedule.length > 0 ? schedule : defaultSchedule;
 
     const today = new Date().getDay();
     const daysMap: { [key: number]: string } = {
@@ -69,7 +90,7 @@ export default function Availability({ settings, categories, schedule }: Availab
     };
     const todayName = daysMap[today];
 
-    const currentSchedule = weeklySchedule.find(s => s.day === todayName);
+    const currentSchedule = weeklySchedule.find((s) => s.day === todayName);
 
     return (
         <SiteLayout settings={settings} categories={categories}>
@@ -79,11 +100,20 @@ export default function Availability({ settings, categories, schedule }: Availab
             <div className="bg-gray-50 py-4">
                 <div className="container mx-auto px-4">
                     <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Link href="/" className="hover:text-primary">Home</Link>
+                        <Link href="/" className="hover:text-primary">
+                            Home
+                        </Link>
                         <ChevronRight className="h-4 w-4" />
-                        <Link href="/meeting/schedule" className="hover:text-primary">Meeting</Link>
+                        <Link
+                            href="/meeting/schedule"
+                            className="hover:text-primary"
+                        >
+                            Meeting
+                        </Link>
                         <ChevronRight className="h-4 w-4" />
-                        <span className="text-gray-900 font-medium">Check Availability</span>
+                        <span className="font-medium text-gray-900">
+                            Check Availability
+                        </span>
                     </div>
                 </div>
             </div>
@@ -91,28 +121,37 @@ export default function Availability({ settings, categories, schedule }: Availab
             {/* Hero */}
             <div className="bg-primary/10 py-12">
                 <div className="container mx-auto px-4 text-center">
-                    <Clock className="h-12 w-12 text-primary mx-auto mb-4" />
-                    <h1 className="text-3xl lg:text-4xl font-bold mb-4">Check Our Availability</h1>
-                    <p className="text-gray-600 max-w-2xl mx-auto">
-                        See our working hours and available meeting slots. Plan your visit or consultation with us.
+                    <Clock className="mx-auto mb-4 h-12 w-12 text-primary" />
+                    <h1 className="mb-4 text-3xl font-bold lg:text-4xl">
+                        Check Our Availability
+                    </h1>
+                    <p className="mx-auto max-w-2xl text-gray-600">
+                        See our working hours and available meeting slots. Plan
+                        your visit or consultation with us.
                     </p>
                 </div>
             </div>
 
             <div className="container mx-auto px-4 py-12">
                 {/* Current Status */}
-                <Card className="max-w-2xl mx-auto mb-8">
+                <Card className="mx-auto mb-8 max-w-2xl">
                     <CardContent className="pt-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <h3 className="font-semibold text-lg">Today's Status</h3>
+                                <h3 className="text-lg font-semibold">
+                                    Today's Status
+                                </h3>
                                 <p className="text-gray-600">{todayName}</p>
                             </div>
                             <div className="text-right">
                                 {currentSchedule?.isOpen ? (
                                     <>
-                                        <Badge className="bg-green-500">Open</Badge>
-                                        <p className="text-sm text-gray-600 mt-1">{currentSchedule.hours}</p>
+                                        <Badge className="bg-green-500">
+                                            Open
+                                        </Badge>
+                                        <p className="mt-1 text-sm text-gray-600">
+                                            {currentSchedule.hours}
+                                        </p>
                                     </>
                                 ) : (
                                     <Badge variant="destructive">Closed</Badge>
@@ -122,7 +161,7 @@ export default function Availability({ settings, categories, schedule }: Availab
                     </CardContent>
                 </Card>
 
-                <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-2">
                     {/* Weekly Schedule */}
                     <Card>
                         <CardHeader>
@@ -130,23 +169,38 @@ export default function Availability({ settings, categories, schedule }: Availab
                                 <Calendar className="h-5 w-5 text-primary" />
                                 Weekly Schedule
                             </CardTitle>
-                            <CardDescription>Our regular business hours</CardDescription>
+                            <CardDescription>
+                                Our regular business hours
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-3">
                                 {weeklySchedule.map((schedule) => (
                                     <div
                                         key={schedule.day}
-                                        className={`flex items-center justify-between p-3 rounded-lg ${schedule.day === todayName ? 'bg-primary/10 border border-primary/20' : 'bg-gray-50'
-                                            }`}
+                                        className={`flex items-center justify-between rounded-lg p-3 ${
+                                            schedule.day === todayName
+                                                ? 'border border-primary/20 bg-primary/10'
+                                                : 'bg-gray-50'
+                                        }`}
                                     >
-                                        <span className={`font-medium ${schedule.day === todayName ? 'text-primary' : ''}`}>
+                                        <span
+                                            className={`font-medium ${schedule.day === todayName ? 'text-primary' : ''}`}
+                                        >
                                             {schedule.day}
                                             {schedule.day === todayName && (
-                                                <span className="text-xs ml-2">(Today)</span>
+                                                <span className="ml-2 text-xs">
+                                                    (Today)
+                                                </span>
                                             )}
                                         </span>
-                                        <span className={schedule.isOpen ? 'text-gray-600' : 'text-red-500'}>
+                                        <span
+                                            className={
+                                                schedule.isOpen
+                                                    ? 'text-gray-600'
+                                                    : 'text-red-500'
+                                            }
+                                        >
                                             {schedule.hours}
                                         </span>
                                     </div>
@@ -159,19 +213,28 @@ export default function Availability({ settings, categories, schedule }: Availab
                     <Card>
                         <CardHeader>
                             <CardTitle>Meeting Options</CardTitle>
-                            <CardDescription>Choose how you'd like to connect with us</CardDescription>
+                            <CardDescription>
+                                Choose how you'd like to connect with us
+                            </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             {meetingTypes.map((type, index) => (
-                                <div key={index} className="p-4 border rounded-lg">
+                                <div
+                                    key={index}
+                                    className="rounded-lg border p-4"
+                                >
                                     <div className="flex items-start gap-4">
-                                        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
                                             <type.icon className="h-5 w-5 text-primary" />
                                         </div>
                                         <div className="flex-1">
-                                            <h4 className="font-semibold">{type.title}</h4>
-                                            <p className="text-sm text-gray-600 mt-1">{type.description}</p>
-                                            <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                                            <h4 className="font-semibold">
+                                                {type.title}
+                                            </h4>
+                                            <p className="mt-1 text-sm text-gray-600">
+                                                {type.description}
+                                            </p>
+                                            <div className="mt-2 flex items-center gap-4 text-xs text-gray-500">
                                                 <span className="flex items-center gap-1">
                                                     <Clock className="h-3 w-3" />
                                                     {type.duration}
@@ -187,18 +250,20 @@ export default function Availability({ settings, categories, schedule }: Availab
                 </div>
 
                 {/* Call to Action */}
-                <div className="text-center mt-12">
-                    <h3 className="text-xl font-bold mb-4">Ready to Schedule?</h3>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className="mt-12 text-center">
+                    <h3 className="mb-4 text-xl font-bold">
+                        Ready to Schedule?
+                    </h3>
+                    <div className="flex flex-col justify-center gap-4 sm:flex-row">
                         <Button size="lg" asChild>
                             <Link href="/meeting/schedule">
-                                <Calendar className="h-4 w-4 mr-2" />
+                                <Calendar className="mr-2 h-4 w-4" />
                                 Schedule a Meeting
                             </Link>
                         </Button>
                         <Button size="lg" variant="outline" asChild>
                             <Link href="/meeting/callback">
-                                <Phone className="h-4 w-4 mr-2" />
+                                <Phone className="mr-2 h-4 w-4" />
                                 Request Callback
                             </Link>
                         </Button>
@@ -206,12 +271,16 @@ export default function Availability({ settings, categories, schedule }: Availab
                 </div>
 
                 {/* Holiday Notice */}
-                <Card className="max-w-2xl mx-auto mt-8 bg-amber-50 border-amber-200">
+                <Card className="mx-auto mt-8 max-w-2xl border-amber-200 bg-amber-50">
                     <CardContent className="pt-6">
-                        <h4 className="font-semibold text-amber-800 mb-2">Holiday Schedule</h4>
+                        <h4 className="mb-2 font-semibold text-amber-800">
+                            Holiday Schedule
+                        </h4>
                         <p className="text-sm text-amber-700">
-                            Please note that we may have modified hours during public holidays.
-                            For the most up-to-date information, please contact us or check our social media pages.
+                            Please note that we may have modified hours during
+                            public holidays. For the most up-to-date
+                            information, please contact us or check our social
+                            media pages.
                         </p>
                     </CardContent>
                 </Card>

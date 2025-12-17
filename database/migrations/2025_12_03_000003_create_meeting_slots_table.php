@@ -18,7 +18,7 @@ return new class extends Migration
             $table->time('end_time');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-            
+
             $table->index('day_of_week');
             $table->index('is_active');
         });

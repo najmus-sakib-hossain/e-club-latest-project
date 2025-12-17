@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\HomeActivity;
+use App\Models\HomeCoreValue;
+use App\Models\HomePartner;
+use App\Models\HomeProject;
 use App\Models\HomeSection;
 use App\Models\HomeStat;
-use App\Models\HomeActivity;
-use App\Models\HomeProject;
-use App\Models\HomePartner;
-use App\Models\HomeCoreValue;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -33,7 +33,7 @@ class HomePageController extends Controller
     }
 
     // ===== HOME SECTIONS =====
-    
+
     /**
      * Update home section
      */
@@ -50,7 +50,7 @@ class HomePageController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($section->image && !str_starts_with($section->image, 'http')) {
+            if ($section->image && ! str_starts_with($section->image, 'http')) {
                 Storage::disk('public')->delete($section->image);
             }
             $validated['image'] = $request->file('image')->store('home-sections', 'public');
@@ -62,7 +62,7 @@ class HomePageController extends Controller
     }
 
     // ===== STATS =====
-    
+
     /**
      * Store stat
      */
@@ -108,7 +108,7 @@ class HomePageController extends Controller
     }
 
     // ===== ACTIVITIES =====
-    
+
     /**
      * Store activity
      */
@@ -147,7 +147,7 @@ class HomePageController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($activity->image && !str_starts_with($activity->image, 'http')) {
+            if ($activity->image && ! str_starts_with($activity->image, 'http')) {
                 Storage::disk('public')->delete($activity->image);
             }
             $validated['image'] = $request->file('image')->store('activities', 'public');
@@ -163,17 +163,17 @@ class HomePageController extends Controller
      */
     public function deleteActivity(HomeActivity $activity): RedirectResponse
     {
-        if ($activity->image && !str_starts_with($activity->image, 'http')) {
+        if ($activity->image && ! str_starts_with($activity->image, 'http')) {
             Storage::disk('public')->delete($activity->image);
         }
-        
+
         $activity->delete();
 
         return redirect()->back()->with('success', 'Activity deleted successfully');
     }
 
     // ===== PROJECTS =====
-    
+
     /**
      * Store project
      */
@@ -212,7 +212,7 @@ class HomePageController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($project->image && !str_starts_with($project->image, 'http')) {
+            if ($project->image && ! str_starts_with($project->image, 'http')) {
                 Storage::disk('public')->delete($project->image);
             }
             $validated['image'] = $request->file('image')->store('projects', 'public');
@@ -228,17 +228,17 @@ class HomePageController extends Controller
      */
     public function deleteProject(HomeProject $project): RedirectResponse
     {
-        if ($project->image && !str_starts_with($project->image, 'http')) {
+        if ($project->image && ! str_starts_with($project->image, 'http')) {
             Storage::disk('public')->delete($project->image);
         }
-        
+
         $project->delete();
 
         return redirect()->back()->with('success', 'Project deleted successfully');
     }
 
     // ===== PARTNERS =====
-    
+
     /**
      * Store partner
      */
@@ -275,7 +275,7 @@ class HomePageController extends Controller
         ]);
 
         if ($request->hasFile('logo')) {
-            if ($partner->logo && !str_starts_with($partner->logo, 'http')) {
+            if ($partner->logo && ! str_starts_with($partner->logo, 'http')) {
                 Storage::disk('public')->delete($partner->logo);
             }
             $validated['logo'] = $request->file('logo')->store('partners', 'public');
@@ -291,17 +291,17 @@ class HomePageController extends Controller
      */
     public function deletePartner(HomePartner $partner): RedirectResponse
     {
-        if ($partner->logo && !str_starts_with($partner->logo, 'http')) {
+        if ($partner->logo && ! str_starts_with($partner->logo, 'http')) {
             Storage::disk('public')->delete($partner->logo);
         }
-        
+
         $partner->delete();
 
         return redirect()->back()->with('success', 'Partner deleted successfully');
     }
 
     // ===== CORE VALUES =====
-    
+
     /**
      * Store core value
      */

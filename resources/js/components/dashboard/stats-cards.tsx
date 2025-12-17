@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 interface StatsCardProps {
     title: string;
@@ -9,9 +9,11 @@ interface StatsCardProps {
 
 function StatsCard({ title, count, className }: StatsCardProps) {
     return (
-        <Card className={cn("text-white border-0 shadow-md", className)}>
+        <Card className={cn('border-0 text-white shadow-md', className)}>
             <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium opacity-90">{title}</CardTitle>
+                <CardTitle className="text-sm font-medium opacity-90">
+                    {title}
+                </CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="text-2xl font-bold">{count}</div>

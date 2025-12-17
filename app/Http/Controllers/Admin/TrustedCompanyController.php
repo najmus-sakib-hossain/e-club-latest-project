@@ -47,7 +47,7 @@ class TrustedCompanyController extends Controller
         ]);
 
         // Handle sort_order alias for order
-        if (isset($validated['sort_order']) && !isset($validated['order'])) {
+        if (isset($validated['sort_order']) && ! isset($validated['order'])) {
             $validated['order'] = $validated['sort_order'];
         }
         unset($validated['sort_order']);
@@ -81,7 +81,7 @@ class TrustedCompanyController extends Controller
         ]);
 
         // Handle sort_order alias for order
-        if (isset($validated['sort_order']) && !isset($validated['order'])) {
+        if (isset($validated['sort_order']) && ! isset($validated['order'])) {
             $validated['order'] = $validated['sort_order'];
         }
         unset($validated['sort_order']);
@@ -89,13 +89,13 @@ class TrustedCompanyController extends Controller
         // Handle logo - either file upload or URL
         if ($request->hasFile('logo')) {
             // Delete old file if it was a stored file (not URL)
-            if ($trustedCompany->logo && !str_starts_with($trustedCompany->logo, 'http')) {
+            if ($trustedCompany->logo && ! str_starts_with($trustedCompany->logo, 'http')) {
                 Storage::disk('public')->delete($trustedCompany->logo);
             }
             $validated['logo'] = $request->file('logo')->store('trusted-companies', 'public');
         } elseif ($request->filled('logo_url')) {
             // Delete old file if it was a stored file
-            if ($trustedCompany->logo && !str_starts_with($trustedCompany->logo, 'http')) {
+            if ($trustedCompany->logo && ! str_starts_with($trustedCompany->logo, 'http')) {
                 Storage::disk('public')->delete($trustedCompany->logo);
             }
             $validated['logo'] = $validated['logo_url'];
@@ -112,7 +112,7 @@ class TrustedCompanyController extends Controller
      */
     public function destroy(TrustedCompany $trustedCompany): RedirectResponse
     {
-        if ($trustedCompany->logo && !str_starts_with($trustedCompany->logo, 'http')) {
+        if ($trustedCompany->logo && ! str_starts_with($trustedCompany->logo, 'http')) {
             Storage::disk('public')->delete($trustedCompany->logo);
         }
 

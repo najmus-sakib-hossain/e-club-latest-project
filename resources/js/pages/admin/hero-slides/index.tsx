@@ -1,25 +1,39 @@
-import { useState, useRef } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router } from '@inertiajs/react';
 import {
-    Plus,
-    Pencil,
-    Trash2,
+    ExternalLink,
     Eye,
     Image as ImageIcon,
-    ExternalLink,
+    Pencil,
+    Plus,
+    Trash2,
     Upload,
     X,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
@@ -37,7 +51,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -45,18 +59,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { toast } from 'sonner';
+import { Textarea } from '@/components/ui/textarea';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { getImageUrl } from '@/lib/utils';
+import { toast } from 'sonner';
 
 // Types
 interface HeroSlide {
@@ -159,9 +165,12 @@ export default function HeroSlidesIndex({ slides }: Props) {
         const formData = new FormData();
         formData.append('title', values.title);
         if (values.subtitle) formData.append('subtitle', values.subtitle);
-        if (values.description) formData.append('description', values.description);
-        if (values.button_text) formData.append('button_text', values.button_text);
-        if (values.button_link) formData.append('button_link', values.button_link);
+        if (values.description)
+            formData.append('description', values.description);
+        if (values.button_text)
+            formData.append('button_text', values.button_text);
+        if (values.button_link)
+            formData.append('button_link', values.button_link);
         formData.append('is_active', values.is_active ? '1' : '0');
         formData.append('sort_order', values.sort_order.toString());
 
@@ -192,9 +201,12 @@ export default function HeroSlidesIndex({ slides }: Props) {
         formData.append('_method', 'PUT');
         formData.append('title', values.title);
         if (values.subtitle) formData.append('subtitle', values.subtitle);
-        if (values.description) formData.append('description', values.description);
-        if (values.button_text) formData.append('button_text', values.button_text);
-        if (values.button_link) formData.append('button_link', values.button_link);
+        if (values.description)
+            formData.append('description', values.description);
+        if (values.button_text)
+            formData.append('button_text', values.button_text);
+        if (values.button_link)
+            formData.append('button_link', values.button_link);
         formData.append('is_active', values.is_active ? '1' : '0');
         formData.append('sort_order', values.sort_order.toString());
 
@@ -234,7 +246,7 @@ export default function HeroSlidesIndex({ slides }: Props) {
         });
     };
 
-    const activeSlides = slides.filter(s => s.is_active).length;
+    const activeSlides = slides.filter((s) => s.is_active).length;
 
     return (
         <AdminPageLayout>
@@ -249,7 +261,9 @@ export default function HeroSlidesIndex({ slides }: Props) {
                     transition={{ duration: 0.3 }}
                 >
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Hero Slides</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Hero Slides
+                        </h1>
                         <p className="text-muted-foreground">
                             Manage the hero banner slides on your homepage.
                         </p>
@@ -269,11 +283,15 @@ export default function HeroSlidesIndex({ slides }: Props) {
                 >
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Slides</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Total Slides
+                            </CardTitle>
                             <ImageIcon className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{slides.length}</div>
+                            <div className="text-2xl font-bold">
+                                {slides.length}
+                            </div>
                             <p className="text-xs text-muted-foreground">
                                 All hero slides
                             </p>
@@ -281,11 +299,17 @@ export default function HeroSlidesIndex({ slides }: Props) {
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Active Slides</CardTitle>
-                            <Badge variant="default" className="text-xs">Active</Badge>
+                            <CardTitle className="text-sm font-medium">
+                                Active Slides
+                            </CardTitle>
+                            <Badge variant="default" className="text-xs">
+                                Active
+                            </Badge>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{activeSlides}</div>
+                            <div className="text-2xl font-bold">
+                                {activeSlides}
+                            </div>
                             <p className="text-xs text-muted-foreground">
                                 Visible on homepage
                             </p>
@@ -303,53 +327,85 @@ export default function HeroSlidesIndex({ slides }: Props) {
                         <CardHeader>
                             <CardTitle>All Slides</CardTitle>
                             <CardDescription>
-                                Manage your hero carousel slides. Lower order numbers appear first.
+                                Manage your hero carousel slides. Lower order
+                                numbers appear first.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             {slides.length === 0 ? (
-                                <div className="text-center py-12 text-muted-foreground">
-                                    <ImageIcon className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                                    <p>No hero slides yet. Create your first slide!</p>
+                                <div className="py-12 text-center text-muted-foreground">
+                                    <ImageIcon className="mx-auto mb-4 h-12 w-12 opacity-50" />
+                                    <p>
+                                        No hero slides yet. Create your first
+                                        slide!
+                                    </p>
                                 </div>
                             ) : (
                                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                                     {slides
-                                        .sort((a, b) => a.sort_order - b.sort_order)
+                                        .sort(
+                                            (a, b) =>
+                                                a.sort_order - b.sort_order,
+                                        )
                                         .map((slide, index) => (
                                             <motion.div
                                                 key={slide.id}
-                                                initial={{ opacity: 0, scale: 0.95 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ duration: 0.2, delay: index * 0.05 }}
+                                                initial={{
+                                                    opacity: 0,
+                                                    scale: 0.95,
+                                                }}
+                                                animate={{
+                                                    opacity: 1,
+                                                    scale: 1,
+                                                }}
+                                                transition={{
+                                                    duration: 0.2,
+                                                    delay: index * 0.05,
+                                                }}
                                                 className="group relative overflow-hidden rounded-lg border bg-card"
                                             >
                                                 {/* Image */}
-                                                <div className="aspect-video relative">
+                                                <div className="relative aspect-video">
                                                     <img
-                                                        src={getImageUrl(slide.image) || ''}
+                                                        src={
+                                                            getImageUrl(
+                                                                slide.image,
+                                                            ) || ''
+                                                        }
                                                         alt={slide.title}
                                                         className="h-full w-full object-cover"
                                                     />
                                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
                                                     {/* Order Badge */}
-                                                    <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/50 text-white px-2 py-1 rounded text-xs font-medium">
+                                                    <div className="absolute top-2 left-2 flex items-center gap-1 rounded bg-black/50 px-2 py-1 text-xs font-medium text-white">
                                                         #{index + 1}
                                                     </div>
 
                                                     {/* Status Badge */}
-                                                    <div className="absolute bottom-14 right-2">
-                                                        <Badge variant={slide.is_active ? 'default' : 'secondary'}>
-                                                            {slide.is_active ? 'Active' : 'Inactive'}
+                                                    <div className="absolute right-2 bottom-14">
+                                                        <Badge
+                                                            variant={
+                                                                slide.is_active
+                                                                    ? 'default'
+                                                                    : 'secondary'
+                                                            }
+                                                        >
+                                                            {slide.is_active
+                                                                ? 'Active'
+                                                                : 'Inactive'}
                                                         </Badge>
                                                     </div>
 
                                                     {/* Title Overlay */}
-                                                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                                                        <h3 className="font-semibold line-clamp-1">{slide.title}</h3>
+                                                    <div className="absolute right-0 bottom-0 left-0 p-4 text-white">
+                                                        <h3 className="line-clamp-1 font-semibold">
+                                                            {slide.title}
+                                                        </h3>
                                                         {slide.subtitle && (
-                                                            <p className="text-sm opacity-80 line-clamp-1">{slide.subtitle}</p>
+                                                            <p className="line-clamp-1 text-sm opacity-80">
+                                                                {slide.subtitle}
+                                                            </p>
                                                         )}
                                                     </div>
 
@@ -359,7 +415,11 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                                             size="icon"
                                                             variant="secondary"
                                                             className="h-7 w-7"
-                                                            onClick={() => openViewDialog(slide)}
+                                                            onClick={() =>
+                                                                openViewDialog(
+                                                                    slide,
+                                                                )
+                                                            }
                                                         >
                                                             <Eye className="h-3.5 w-3.5" />
                                                         </Button>
@@ -367,7 +427,11 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                                             size="icon"
                                                             variant="secondary"
                                                             className="h-7 w-7"
-                                                            onClick={() => openEditDialog(slide)}
+                                                            onClick={() =>
+                                                                openEditDialog(
+                                                                    slide,
+                                                                )
+                                                            }
                                                         >
                                                             <Pencil className="h-3.5 w-3.5" />
                                                         </Button>
@@ -375,7 +439,11 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                                             size="icon"
                                                             variant="destructive"
                                                             className="h-7 w-7"
-                                                            onClick={() => openDeleteDialog(slide)}
+                                                            onClick={() =>
+                                                                openDeleteDialog(
+                                                                    slide,
+                                                                )
+                                                            }
                                                         >
                                                             <Trash2 className="h-3.5 w-3.5" />
                                                         </Button>
@@ -384,13 +452,20 @@ export default function HeroSlidesIndex({ slides }: Props) {
 
                                                 {/* Button Info */}
                                                 {slide.button_text && (
-                                                    <div className="p-3 border-t bg-muted/50">
+                                                    <div className="border-t bg-muted/50 p-3">
                                                         <div className="flex items-center gap-2 text-sm">
                                                             <ExternalLink className="h-4 w-4 text-muted-foreground" />
-                                                            <span className="font-medium">{slide.button_text}</span>
+                                                            <span className="font-medium">
+                                                                {
+                                                                    slide.button_text
+                                                                }
+                                                            </span>
                                                             {slide.button_link && (
-                                                                <span className="text-muted-foreground truncate flex-1">
-                                                                    → {slide.button_link}
+                                                                <span className="flex-1 truncate text-muted-foreground">
+                                                                    →{' '}
+                                                                    {
+                                                                        slide.button_link
+                                                                    }
                                                                 </span>
                                                             )}
                                                         </div>
@@ -407,7 +482,7 @@ export default function HeroSlidesIndex({ slides }: Props) {
 
             {/* Add Slide Dialog */}
             <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-                <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>Add New Hero Slide</DialogTitle>
                         <DialogDescription>
@@ -415,7 +490,10 @@ export default function HeroSlidesIndex({ slides }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleCreate)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleCreate)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={form.control}
                                 name="title"
@@ -423,7 +501,10 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                     <FormItem>
                                         <FormLabel>Title *</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., Summer Collection" {...field} />
+                                            <Input
+                                                placeholder="e.g., Summer Collection"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -436,7 +517,11 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                     <FormItem>
                                         <FormLabel>Subtitle</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., Up to 50% Off" {...field} value={field.value || ''} />
+                                            <Input
+                                                placeholder="e.g., Up to 50% Off"
+                                                {...field}
+                                                value={field.value || ''}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -462,26 +547,36 @@ export default function HeroSlidesIndex({ slides }: Props) {
                             <FormField
                                 control={form.control}
                                 name="image"
-                                render={({ field: { onChange, value, ...field } }) => (
+                                render={({
+                                    field: { onChange, value, ...field },
+                                }) => (
                                     <FormItem>
                                         <FormLabel>Image *</FormLabel>
                                         <FormControl>
                                             <div className="space-y-3">
                                                 {imagePreview && (
-                                                    <div className="relative w-full h-32 rounded-lg overflow-hidden border">
+                                                    <div className="relative h-32 w-full overflow-hidden rounded-lg border">
                                                         <img
                                                             src={imagePreview}
                                                             alt="Preview"
-                                                            className="w-full h-full object-cover"
+                                                            className="h-full w-full object-cover"
                                                         />
                                                         <button
                                                             type="button"
                                                             onClick={() => {
-                                                                setImagePreview(null);
-                                                                onChange(undefined);
-                                                                if (fileInputRef.current) fileInputRef.current.value = '';
+                                                                setImagePreview(
+                                                                    null,
+                                                                );
+                                                                onChange(
+                                                                    undefined,
+                                                                );
+                                                                if (
+                                                                    fileInputRef.current
+                                                                )
+                                                                    fileInputRef.current.value =
+                                                                        '';
                                                             }}
-                                                            className="absolute top-1 right-1 p-1 bg-destructive text-destructive-foreground rounded-full hover:bg-destructive/90"
+                                                            className="absolute top-1 right-1 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90"
                                                         >
                                                             <X className="h-3 w-3" />
                                                         </button>
@@ -494,21 +589,31 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                                         accept="image/*"
                                                         className="hidden"
                                                         onChange={(e) => {
-                                                            const file = e.target.files?.[0];
+                                                            const file =
+                                                                e.target
+                                                                    .files?.[0];
                                                             if (file) {
                                                                 onChange(file);
-                                                                setImagePreview(URL.createObjectURL(file));
+                                                                setImagePreview(
+                                                                    URL.createObjectURL(
+                                                                        file,
+                                                                    ),
+                                                                );
                                                             }
                                                         }}
                                                     />
                                                     <Button
                                                         type="button"
                                                         variant="outline"
-                                                        onClick={() => fileInputRef.current?.click()}
+                                                        onClick={() =>
+                                                            fileInputRef.current?.click()
+                                                        }
                                                         className="gap-2"
                                                     >
                                                         <Upload className="h-4 w-4" />
-                                                        {imagePreview ? 'Change Image' : 'Upload Image'}
+                                                        {imagePreview
+                                                            ? 'Change Image'
+                                                            : 'Upload Image'}
                                                     </Button>
                                                 </div>
                                             </div>
@@ -528,7 +633,11 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                         <FormItem>
                                             <FormLabel>Button Text</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="e.g., Shop Now" {...field} value={field.value || ''} />
+                                                <Input
+                                                    placeholder="e.g., Shop Now"
+                                                    {...field}
+                                                    value={field.value || ''}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -541,7 +650,11 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                         <FormItem>
                                             <FormLabel>Button Link</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="/products" {...field} value={field.value || ''} />
+                                                <Input
+                                                    placeholder="/products"
+                                                    {...field}
+                                                    value={field.value || ''}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -556,7 +669,12 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                         <FormItem>
                                             <FormLabel>Sort Order</FormLabel>
                                             <FormControl>
-                                                <Input type="number" min="0" placeholder="0" {...field} />
+                                                <Input
+                                                    type="number"
+                                                    min="0"
+                                                    placeholder="0"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -569,8 +687,16 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                         <FormItem>
                                             <FormLabel>Status</FormLabel>
                                             <Select
-                                                value={field.value ? 'active' : 'inactive'}
-                                                onValueChange={(val) => field.onChange(val === 'active')}
+                                                value={
+                                                    field.value
+                                                        ? 'active'
+                                                        : 'inactive'
+                                                }
+                                                onValueChange={(val) =>
+                                                    field.onChange(
+                                                        val === 'active',
+                                                    )
+                                                }
                                             >
                                                 <FormControl>
                                                     <SelectTrigger>
@@ -578,8 +704,12 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value="active">Active</SelectItem>
-                                                    <SelectItem value="inactive">Inactive</SelectItem>
+                                                    <SelectItem value="active">
+                                                        Active
+                                                    </SelectItem>
+                                                    <SelectItem value="inactive">
+                                                        Inactive
+                                                    </SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />
@@ -588,11 +718,17 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsAddDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Creating...' : 'Create Slide'}
+                                    {isSubmitting
+                                        ? 'Creating...'
+                                        : 'Create Slide'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -602,7 +738,7 @@ export default function HeroSlidesIndex({ slides }: Props) {
 
             {/* Edit Slide Dialog */}
             <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>Edit Hero Slide</DialogTitle>
                         <DialogDescription>
@@ -610,7 +746,10 @@ export default function HeroSlidesIndex({ slides }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleUpdate)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleUpdate)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={form.control}
                                 name="title"
@@ -618,7 +757,10 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                     <FormItem>
                                         <FormLabel>Title *</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., Summer Collection" {...field} />
+                                            <Input
+                                                placeholder="e.g., Summer Collection"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -631,7 +773,11 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                     <FormItem>
                                         <FormLabel>Subtitle</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., Up to 50% Off" {...field} value={field.value || ''} />
+                                            <Input
+                                                placeholder="e.g., Up to 50% Off"
+                                                {...field}
+                                                value={field.value || ''}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -657,26 +803,36 @@ export default function HeroSlidesIndex({ slides }: Props) {
                             <FormField
                                 control={form.control}
                                 name="image"
-                                render={({ field: { onChange, value, ...field } }) => (
+                                render={({
+                                    field: { onChange, value, ...field },
+                                }) => (
                                     <FormItem>
                                         <FormLabel>Image</FormLabel>
                                         <FormControl>
                                             <div className="space-y-3">
                                                 {imagePreview && (
-                                                    <div className="relative w-full h-32 rounded-lg overflow-hidden border">
+                                                    <div className="relative h-32 w-full overflow-hidden rounded-lg border">
                                                         <img
                                                             src={imagePreview}
                                                             alt="Preview"
-                                                            className="w-full h-full object-cover"
+                                                            className="h-full w-full object-cover"
                                                         />
                                                         <button
                                                             type="button"
                                                             onClick={() => {
-                                                                setImagePreview(null);
-                                                                onChange(undefined);
-                                                                if (fileInputRef.current) fileInputRef.current.value = '';
+                                                                setImagePreview(
+                                                                    null,
+                                                                );
+                                                                onChange(
+                                                                    undefined,
+                                                                );
+                                                                if (
+                                                                    fileInputRef.current
+                                                                )
+                                                                    fileInputRef.current.value =
+                                                                        '';
                                                             }}
-                                                            className="absolute top-1 right-1 p-1 bg-destructive text-destructive-foreground rounded-full hover:bg-destructive/90"
+                                                            className="absolute top-1 right-1 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90"
                                                         >
                                                             <X className="h-3 w-3" />
                                                         </button>
@@ -689,21 +845,31 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                                         accept="image/*"
                                                         className="hidden"
                                                         onChange={(e) => {
-                                                            const file = e.target.files?.[0];
+                                                            const file =
+                                                                e.target
+                                                                    .files?.[0];
                                                             if (file) {
                                                                 onChange(file);
-                                                                setImagePreview(URL.createObjectURL(file));
+                                                                setImagePreview(
+                                                                    URL.createObjectURL(
+                                                                        file,
+                                                                    ),
+                                                                );
                                                             }
                                                         }}
                                                     />
                                                     <Button
                                                         type="button"
                                                         variant="outline"
-                                                        onClick={() => fileInputRef.current?.click()}
+                                                        onClick={() =>
+                                                            fileInputRef.current?.click()
+                                                        }
                                                         className="gap-2"
                                                     >
                                                         <Upload className="h-4 w-4" />
-                                                        {imagePreview ? 'Change Image' : 'Upload Image'}
+                                                        {imagePreview
+                                                            ? 'Change Image'
+                                                            : 'Upload Image'}
                                                     </Button>
                                                 </div>
                                             </div>
@@ -723,7 +889,11 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                         <FormItem>
                                             <FormLabel>Button Text</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="e.g., Shop Now" {...field} value={field.value || ''} />
+                                                <Input
+                                                    placeholder="e.g., Shop Now"
+                                                    {...field}
+                                                    value={field.value || ''}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -736,7 +906,11 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                         <FormItem>
                                             <FormLabel>Button Link</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="/products" {...field} value={field.value || ''} />
+                                                <Input
+                                                    placeholder="/products"
+                                                    {...field}
+                                                    value={field.value || ''}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -751,7 +925,12 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                         <FormItem>
                                             <FormLabel>Sort Order</FormLabel>
                                             <FormControl>
-                                                <Input type="number" min="0" placeholder="0" {...field} />
+                                                <Input
+                                                    type="number"
+                                                    min="0"
+                                                    placeholder="0"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -764,8 +943,16 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                         <FormItem>
                                             <FormLabel>Status</FormLabel>
                                             <Select
-                                                value={field.value ? 'active' : 'inactive'}
-                                                onValueChange={(val) => field.onChange(val === 'active')}
+                                                value={
+                                                    field.value
+                                                        ? 'active'
+                                                        : 'inactive'
+                                                }
+                                                onValueChange={(val) =>
+                                                    field.onChange(
+                                                        val === 'active',
+                                                    )
+                                                }
                                             >
                                                 <FormControl>
                                                     <SelectTrigger>
@@ -773,8 +960,12 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value="active">Active</SelectItem>
-                                                    <SelectItem value="inactive">Inactive</SelectItem>
+                                                    <SelectItem value="active">
+                                                        Active
+                                                    </SelectItem>
+                                                    <SelectItem value="inactive">
+                                                        Inactive
+                                                    </SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />
@@ -783,11 +974,17 @@ export default function HeroSlidesIndex({ slides }: Props) {
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsEditDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                    {isSubmitting
+                                        ? 'Saving...'
+                                        : 'Save Changes'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -803,20 +1000,26 @@ export default function HeroSlidesIndex({ slides }: Props) {
                     </DialogHeader>
                     {selectedSlide && (
                         <div className="space-y-4">
-                            <div className="aspect-video relative rounded-lg overflow-hidden">
+                            <div className="relative aspect-video overflow-hidden rounded-lg">
                                 <img
                                     src={getImageUrl(selectedSlide.image) || ''}
                                     alt={selectedSlide.title}
                                     className="h-full w-full object-cover"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                                    <h2 className="text-2xl font-bold">{selectedSlide.title}</h2>
+                                <div className="absolute right-0 bottom-0 left-0 p-6 text-white">
+                                    <h2 className="text-2xl font-bold">
+                                        {selectedSlide.title}
+                                    </h2>
                                     {selectedSlide.subtitle && (
-                                        <p className="text-lg opacity-90 mt-1">{selectedSlide.subtitle}</p>
+                                        <p className="mt-1 text-lg opacity-90">
+                                            {selectedSlide.subtitle}
+                                        </p>
                                     )}
                                     {selectedSlide.description && (
-                                        <p className="mt-2 opacity-80">{selectedSlide.description}</p>
+                                        <p className="mt-2 opacity-80">
+                                            {selectedSlide.description}
+                                        </p>
                                     )}
                                     {selectedSlide.button_text && (
                                         <Button className="mt-4" size="lg">
@@ -827,32 +1030,56 @@ export default function HeroSlidesIndex({ slides }: Props) {
                             </div>
                             <div className="grid grid-cols-3 gap-4 text-sm">
                                 <div>
-                                    <p className="text-muted-foreground">Status</p>
-                                    <Badge variant={selectedSlide.is_active ? 'default' : 'secondary'}>
-                                        {selectedSlide.is_active ? 'Active' : 'Inactive'}
+                                    <p className="text-muted-foreground">
+                                        Status
+                                    </p>
+                                    <Badge
+                                        variant={
+                                            selectedSlide.is_active
+                                                ? 'default'
+                                                : 'secondary'
+                                        }
+                                    >
+                                        {selectedSlide.is_active
+                                            ? 'Active'
+                                            : 'Inactive'}
                                     </Badge>
                                 </div>
                                 <div>
-                                    <p className="text-muted-foreground">Sort Order</p>
-                                    <p className="font-medium">{selectedSlide.sort_order}</p>
+                                    <p className="text-muted-foreground">
+                                        Sort Order
+                                    </p>
+                                    <p className="font-medium">
+                                        {selectedSlide.sort_order}
+                                    </p>
                                 </div>
                                 <div>
-                                    <p className="text-muted-foreground">Created</p>
+                                    <p className="text-muted-foreground">
+                                        Created
+                                    </p>
                                     <p className="font-medium">
-                                        {new Date(selectedSlide.created_at).toLocaleDateString()}
+                                        {new Date(
+                                            selectedSlide.created_at,
+                                        ).toLocaleDateString()}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     )}
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsViewDialogOpen(false)}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setIsViewDialogOpen(false)}
+                        >
                             Close
                         </Button>
-                        <Button onClick={() => {
-                            setIsViewDialogOpen(false);
-                            if (selectedSlide) openEditDialog(selectedSlide);
-                        }}>
+                        <Button
+                            onClick={() => {
+                                setIsViewDialogOpen(false);
+                                if (selectedSlide)
+                                    openEditDialog(selectedSlide);
+                            }}
+                        >
                             Edit Slide
                         </Button>
                     </DialogFooter>
@@ -860,12 +1087,17 @@ export default function HeroSlidesIndex({ slides }: Props) {
             </Dialog>
 
             {/* Delete Confirmation Dialog */}
-            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <AlertDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Hero Slide</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete the slide "{selectedSlide?.title}"? This action cannot be undone.
+                            Are you sure you want to delete the slide "
+                            {selectedSlide?.title}"? This action cannot be
+                            undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

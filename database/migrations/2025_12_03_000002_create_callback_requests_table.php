@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamp('called_at')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
-            
+
             $table->index('status');
             $table->index('phone');
         });

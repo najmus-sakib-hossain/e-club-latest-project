@@ -1,4 +1,4 @@
-import { Head, useForm, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 
 import InputError from '@/components/input-error';
@@ -7,8 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import SiteAuthLayout from '@/layouts/auth/site-auth-layout';
-import { Eye, EyeOff } from 'lucide-react';
 import type { Category, SiteSettings } from '@/types/cms';
+import { Eye, EyeOff } from 'lucide-react';
 
 interface RegisterProps {
     settings?: SiteSettings;
@@ -50,7 +50,9 @@ export default function Register({ settings, categories }: RegisterProps) {
                             id="name"
                             type="text"
                             value={form.data.name}
-                            onChange={(e) => form.setData('name', e.target.value)}
+                            onChange={(e) =>
+                                form.setData('name', e.target.value)
+                            }
                             required
                             autoFocus
                             tabIndex={1}
@@ -66,7 +68,9 @@ export default function Register({ settings, categories }: RegisterProps) {
                             id="email"
                             type="email"
                             value={form.data.email}
-                            onChange={(e) => form.setData('email', e.target.value)}
+                            onChange={(e) =>
+                                form.setData('email', e.target.value)
+                            }
                             required
                             tabIndex={2}
                             autoComplete="email"
@@ -80,9 +84,11 @@ export default function Register({ settings, categories }: RegisterProps) {
                         <div className="relative">
                             <Input
                                 id="password"
-                                type={showPassword ? "text" : "password"}
+                                type={showPassword ? 'text' : 'password'}
                                 value={form.data.password}
-                                onChange={(e) => form.setData('password', e.target.value)}
+                                onChange={(e) =>
+                                    form.setData('password', e.target.value)
+                                }
                                 required
                                 tabIndex={3}
                                 autoComplete="new-password"
@@ -91,23 +97,34 @@ export default function Register({ settings, categories }: RegisterProps) {
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                                className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
                                 tabIndex={-1}
                             >
-                                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                {showPassword ? (
+                                    <EyeOff className="h-4 w-4" />
+                                ) : (
+                                    <Eye className="h-4 w-4" />
+                                )}
                             </button>
                         </div>
                         <InputError message={form.errors.password} />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm Password</Label>
+                        <Label htmlFor="password_confirmation">
+                            Confirm Password
+                        </Label>
                         <div className="relative">
                             <Input
                                 id="password_confirmation"
-                                type={showConfirmPassword ? "text" : "password"}
+                                type={showConfirmPassword ? 'text' : 'password'}
                                 value={form.data.password_confirmation}
-                                onChange={(e) => form.setData('password_confirmation', e.target.value)}
+                                onChange={(e) =>
+                                    form.setData(
+                                        'password_confirmation',
+                                        e.target.value,
+                                    )
+                                }
                                 required
                                 tabIndex={4}
                                 autoComplete="new-password"
@@ -115,14 +132,22 @@ export default function Register({ settings, categories }: RegisterProps) {
                             />
                             <button
                                 type="button"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                                onClick={() =>
+                                    setShowConfirmPassword(!showConfirmPassword)
+                                }
+                                className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
                                 tabIndex={-1}
                             >
-                                {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                {showConfirmPassword ? (
+                                    <EyeOff className="h-4 w-4" />
+                                ) : (
+                                    <Eye className="h-4 w-4" />
+                                )}
                             </button>
                         </div>
-                        <InputError message={form.errors.password_confirmation} />
+                        <InputError
+                            message={form.errors.password_confirmation}
+                        />
                     </div>
 
                     <Button
@@ -138,7 +163,11 @@ export default function Register({ settings, categories }: RegisterProps) {
 
                 <div className="text-center text-sm text-muted-foreground">
                     Already have an account?{' '}
-                    <Link href="/login" className="font-medium text-primary hover:underline" tabIndex={6}>
+                    <Link
+                        href="/login"
+                        className="font-medium text-primary hover:underline"
+                        tabIndex={6}
+                    >
                         Sign in
                     </Link>
                 </div>

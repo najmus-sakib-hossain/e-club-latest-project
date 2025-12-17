@@ -43,7 +43,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::loginView(function (Request $request) {
             $categories = Category::where('is_active', true)->orderBy('name')->get();
             $settings = SiteSetting::getAllGrouped();
-            
+
             return Inertia::render('auth/login', [
                 'status' => $request->session()->get('status'),
                 'canResetPassword' => true,
@@ -57,7 +57,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::registerView(function (Request $request) {
             $categories = Category::where('is_active', true)->orderBy('name')->get();
             $settings = SiteSetting::getAllGrouped();
-            
+
             return Inertia::render('auth/register', [
                 'categories' => $categories,
                 'settings' => $settings,
@@ -75,7 +75,7 @@ class FortifyServiceProvider extends ServiceProvider
             $user = User::where('email', $request->email)->first();
 
             // If no user found or password doesn't match, return null (let Fortify handle error)
-            if (!$user || !Hash::check($request->password, $user->password)) {
+            if (! $user || ! Hash::check($request->password, $user->password)) {
                 return null;
             }
 

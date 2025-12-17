@@ -1,33 +1,39 @@
-import { useState } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router } from '@inertiajs/react';
 import {
-    Plus,
-    Search,
-    Pencil,
-    Trash2,
+    ExternalLink,
     Eye,
     FileText,
-    ExternalLink,
+    Pencil,
+    Plus,
+    Search,
+    Trash2,
     X,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
@@ -45,7 +51,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -53,17 +59,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 import { Switch } from '@/components/ui/switch';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import { Textarea } from '@/components/ui/textarea';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -86,9 +92,18 @@ interface Props {
 
 // Form Schema
 const pageSchema = z.object({
-    title: z.string().min(1, 'Title is required').max(255, 'Title must be less than 255 characters'),
-    slug: z.string().min(1, 'Slug is required').max(255, 'Slug must be less than 255 characters')
-        .regex(/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers, and hyphens'),
+    title: z
+        .string()
+        .min(1, 'Title is required')
+        .max(255, 'Title must be less than 255 characters'),
+    slug: z
+        .string()
+        .min(1, 'Slug is required')
+        .max(255, 'Slug must be less than 255 characters')
+        .regex(
+            /^[a-z0-9-]+$/,
+            'Slug can only contain lowercase letters, numbers, and hyphens',
+        ),
     content: z.string().min(1, 'Content is required'),
     meta_title: z.string().max(255).nullable().optional(),
     meta_description: z.string().max(500).nullable().optional(),
@@ -138,7 +153,10 @@ export default function PagesIndex({ pages }: Props) {
         form.setValue('title', title);
         // Only auto-generate slug if it's empty or matches the previous auto-generated value
         const currentSlug = form.getValues('slug');
-        if (!currentSlug || currentSlug === generateSlug(form.getValues('title').slice(0, -1))) {
+        if (
+            !currentSlug ||
+            currentSlug === generateSlug(form.getValues('title').slice(0, -1))
+        ) {
             form.setValue('slug', generateSlug(title));
         }
     };
@@ -271,7 +289,9 @@ export default function PagesIndex({ pages }: Props) {
                     transition={{ duration: 0.3 }}
                 >
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Pages</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Pages
+                        </h1>
                         <p className="text-muted-foreground">
                             Manage your website's static content pages.
                         </p>
@@ -291,32 +311,54 @@ export default function PagesIndex({ pages }: Props) {
                 >
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Pages</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Total Pages
+                            </CardTitle>
                             <FileText className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{totalPages}</div>
-                            <p className="text-xs text-muted-foreground">All content pages</p>
+                            <div className="text-2xl font-bold">
+                                {totalPages}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                All content pages
+                            </p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Active Pages</CardTitle>
-                            <Badge variant="default" className="text-xs">Active</Badge>
+                            <CardTitle className="text-sm font-medium">
+                                Active Pages
+                            </CardTitle>
+                            <Badge variant="default" className="text-xs">
+                                Active
+                            </Badge>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{activePages}</div>
-                            <p className="text-xs text-muted-foreground">Visible on the website</p>
+                            <div className="text-2xl font-bold">
+                                {activePages}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Visible on the website
+                            </p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Inactive Pages</CardTitle>
-                            <Badge variant="secondary" className="text-xs">Inactive</Badge>
+                            <CardTitle className="text-sm font-medium">
+                                Inactive Pages
+                            </CardTitle>
+                            <Badge variant="secondary" className="text-xs">
+                                Inactive
+                            </Badge>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{inactivePages}</div>
-                            <p className="text-xs text-muted-foreground">Hidden from visitors</p>
+                            <div className="text-2xl font-bold">
+                                {inactivePages}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Hidden from visitors
+                            </p>
                         </CardContent>
                     </Card>
                 </motion.div>
@@ -330,30 +372,46 @@ export default function PagesIndex({ pages }: Props) {
                     <Card>
                         <CardHeader>
                             <CardTitle>Filters</CardTitle>
-                            <CardDescription>Search and filter pages</CardDescription>
+                            <CardDescription>
+                                Search and filter pages
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="flex flex-col gap-4 sm:flex-row">
                                 <div className="relative flex-1">
-                                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                     <Input
                                         placeholder="Search pages..."
                                         value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        onChange={(e) =>
+                                            setSearchQuery(e.target.value)
+                                        }
                                         className="pl-10"
                                     />
                                 </div>
-                                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                                <Select
+                                    value={statusFilter}
+                                    onValueChange={setStatusFilter}
+                                >
                                     <SelectTrigger className="w-full sm:w-40">
                                         <SelectValue placeholder="Status" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">All Status</SelectItem>
-                                        <SelectItem value="active">Active</SelectItem>
-                                        <SelectItem value="inactive">Inactive</SelectItem>
+                                        <SelectItem value="all">
+                                            All Status
+                                        </SelectItem>
+                                        <SelectItem value="active">
+                                            Active
+                                        </SelectItem>
+                                        <SelectItem value="inactive">
+                                            Inactive
+                                        </SelectItem>
                                     </SelectContent>
                                 </Select>
-                                <Button variant="outline" onClick={handleClearFilters}>
+                                <Button
+                                    variant="outline"
+                                    onClick={handleClearFilters}
+                                >
                                     <X className="mr-2 h-4 w-4" />
                                     Clear
                                 </Button>
@@ -371,36 +429,51 @@ export default function PagesIndex({ pages }: Props) {
                     <Card>
                         <CardHeader>
                             <CardTitle>All Pages</CardTitle>
-                            <CardDescription>A list of all content pages on your website.</CardDescription>
+                            <CardDescription>
+                                A list of all content pages on your website.
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             {filteredPages.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                                    <FileText className="h-12 w-12 text-muted-foreground/50 mb-4" />
-                                    <h3 className="text-lg font-medium">No pages found</h3>
-                                    <p className="text-sm text-muted-foreground mt-1">
+                                    <FileText className="mb-4 h-12 w-12 text-muted-foreground/50" />
+                                    <h3 className="text-lg font-medium">
+                                        No pages found
+                                    </h3>
+                                    <p className="mt-1 text-sm text-muted-foreground">
                                         {searchQuery || statusFilter !== 'all'
                                             ? 'Try adjusting your filters'
                                             : 'Get started by creating a new page'}
                                     </p>
                                     {!searchQuery && statusFilter === 'all' && (
-                                        <Button onClick={openAddDialog} className="mt-4 gap-2">
+                                        <Button
+                                            onClick={openAddDialog}
+                                            className="mt-4 gap-2"
+                                        >
                                             <Plus className="h-4 w-4" />
                                             Add Page
                                         </Button>
                                     )}
                                 </div>
                             ) : (
-                                <div className="overflow-x-auto -mx-4 md:mx-0">
+                                <div className="-mx-4 overflow-x-auto md:mx-0">
                                     <Table>
                                         <TableHeader>
                                             <TableRow>
                                                 <TableHead>Title</TableHead>
-                                                <TableHead className="hidden md:table-cell">Slug</TableHead>
+                                                <TableHead className="hidden md:table-cell">
+                                                    Slug
+                                                </TableHead>
                                                 <TableHead>Status</TableHead>
-                                                <TableHead className="hidden sm:table-cell">Order</TableHead>
-                                                <TableHead className="hidden lg:table-cell">Updated</TableHead>
-                                                <TableHead className="text-right">Actions</TableHead>
+                                                <TableHead className="hidden sm:table-cell">
+                                                    Order
+                                                </TableHead>
+                                                <TableHead className="hidden lg:table-cell">
+                                                    Updated
+                                                </TableHead>
+                                                <TableHead className="text-right">
+                                                    Actions
+                                                </TableHead>
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
@@ -408,27 +481,39 @@ export default function PagesIndex({ pages }: Props) {
                                                 <TableRow key={page.id}>
                                                     <TableCell>
                                                         <div className="flex flex-col">
-                                                            <span className="font-medium">{page.title}</span>
-                                                            <code className="text-xs bg-muted px-1.5 py-0.5 rounded md:hidden">
+                                                            <span className="font-medium">
+                                                                {page.title}
+                                                            </span>
+                                                            <code className="rounded bg-muted px-1.5 py-0.5 text-xs md:hidden">
                                                                 /{page.slug}
                                                             </code>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="hidden md:table-cell">
-                                                        <code className="text-xs bg-muted px-2 py-1 rounded">
+                                                        <code className="rounded bg-muted px-2 py-1 text-xs">
                                                             /{page.slug}
                                                         </code>
                                                     </TableCell>
                                                     <TableCell>
                                                         <Badge
-                                                            variant={page.is_active ? 'default' : 'secondary'}
+                                                            variant={
+                                                                page.is_active
+                                                                    ? 'default'
+                                                                    : 'secondary'
+                                                            }
                                                         >
-                                                            {page.is_active ? 'Active' : 'Inactive'}
+                                                            {page.is_active
+                                                                ? 'Active'
+                                                                : 'Inactive'}
                                                         </Badge>
                                                     </TableCell>
-                                                    <TableCell className="hidden sm:table-cell">{page.sort_order}</TableCell>
+                                                    <TableCell className="hidden sm:table-cell">
+                                                        {page.sort_order}
+                                                    </TableCell>
                                                     <TableCell className="hidden lg:table-cell">
-                                                        {new Date(page.updated_at).toLocaleDateString()}
+                                                        {new Date(
+                                                            page.updated_at,
+                                                        ).toLocaleDateString()}
                                                     </TableCell>
                                                     <TableCell className="text-right">
                                                         <div className="flex items-center justify-end gap-1 sm:gap-2">
@@ -436,7 +521,11 @@ export default function PagesIndex({ pages }: Props) {
                                                                 variant="ghost"
                                                                 size="icon"
                                                                 className="h-8 w-8 sm:h-9 sm:w-9"
-                                                                onClick={() => openViewDialog(page)}
+                                                                onClick={() =>
+                                                                    openViewDialog(
+                                                                        page,
+                                                                    )
+                                                                }
                                                                 title="View"
                                                             >
                                                                 <Eye className="h-4 w-4" />
@@ -460,7 +549,11 @@ export default function PagesIndex({ pages }: Props) {
                                                                 variant="ghost"
                                                                 size="icon"
                                                                 className="h-8 w-8 sm:h-9 sm:w-9"
-                                                                onClick={() => openEditDialog(page)}
+                                                                onClick={() =>
+                                                                    openEditDialog(
+                                                                        page,
+                                                                    )
+                                                                }
                                                                 title="Edit"
                                                             >
                                                                 <Pencil className="h-4 w-4" />
@@ -468,8 +561,12 @@ export default function PagesIndex({ pages }: Props) {
                                                             <Button
                                                                 variant="ghost"
                                                                 size="icon"
-                                                                className="h-8 w-8 sm:h-9 sm:w-9 text-destructive hover:text-destructive"
-                                                                onClick={() => openDeleteDialog(page)}
+                                                                className="h-8 w-8 text-destructive hover:text-destructive sm:h-9 sm:w-9"
+                                                                onClick={() =>
+                                                                    openDeleteDialog(
+                                                                        page,
+                                                                    )
+                                                                }
                                                                 title="Delete"
                                                             >
                                                                 <Trash2 className="h-4 w-4" />
@@ -489,7 +586,7 @@ export default function PagesIndex({ pages }: Props) {
 
             {/* Add Page Dialog */}
             <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>Add New Page</DialogTitle>
                         <DialogDescription>
@@ -497,7 +594,10 @@ export default function PagesIndex({ pages }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleCreate)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleCreate)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={form.control}
                                 name="title"
@@ -508,7 +608,11 @@ export default function PagesIndex({ pages }: Props) {
                                             <Input
                                                 placeholder="e.g., Shipping Policy"
                                                 {...field}
-                                                onChange={(e) => handleTitleChange(e.target.value)}
+                                                onChange={(e) =>
+                                                    handleTitleChange(
+                                                        e.target.value,
+                                                    )
+                                                }
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -522,10 +626,14 @@ export default function PagesIndex({ pages }: Props) {
                                     <FormItem>
                                         <FormLabel>Slug</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., shipping-policy" {...field} />
+                                            <Input
+                                                placeholder="e.g., shipping-policy"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormDescription>
-                                            URL-friendly version of the title. Will be used as: /{field.value}
+                                            URL-friendly version of the title.
+                                            Will be used as: /{field.value}
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -545,7 +653,8 @@ export default function PagesIndex({ pages }: Props) {
                                             />
                                         </FormControl>
                                         <FormDescription>
-                                            You can use HTML tags for formatting.
+                                            You can use HTML tags for
+                                            formatting.
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -557,7 +666,9 @@ export default function PagesIndex({ pages }: Props) {
                                     name="meta_title"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Meta Title (SEO)</FormLabel>
+                                            <FormLabel>
+                                                Meta Title (SEO)
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     placeholder="SEO title"
@@ -581,7 +692,13 @@ export default function PagesIndex({ pages }: Props) {
                                                     min="0"
                                                     placeholder="0"
                                                     value={field.value}
-                                                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                            parseInt(
+                                                                e.target.value,
+                                                            ) || 0,
+                                                        )
+                                                    }
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -594,7 +711,9 @@ export default function PagesIndex({ pages }: Props) {
                                 name="meta_description"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Meta Description (SEO)</FormLabel>
+                                        <FormLabel>
+                                            Meta Description (SEO)
+                                        </FormLabel>
                                         <FormControl>
                                             <Textarea
                                                 placeholder="Brief description for search engines..."
@@ -613,9 +732,12 @@ export default function PagesIndex({ pages }: Props) {
                                 render={({ field }) => (
                                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                                         <div className="space-y-0.5">
-                                            <FormLabel className="text-base">Active</FormLabel>
+                                            <FormLabel className="text-base">
+                                                Active
+                                            </FormLabel>
                                             <FormDescription>
-                                                Make this page visible on the website.
+                                                Make this page visible on the
+                                                website.
                                             </FormDescription>
                                         </div>
                                         <FormControl>
@@ -636,7 +758,9 @@ export default function PagesIndex({ pages }: Props) {
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Creating...' : 'Create Page'}
+                                    {isSubmitting
+                                        ? 'Creating...'
+                                        : 'Create Page'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -646,7 +770,7 @@ export default function PagesIndex({ pages }: Props) {
 
             {/* Edit Page Dialog */}
             <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>Edit Page</DialogTitle>
                         <DialogDescription>
@@ -654,7 +778,10 @@ export default function PagesIndex({ pages }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleUpdate)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleUpdate)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={form.control}
                                 name="title"
@@ -662,7 +789,10 @@ export default function PagesIndex({ pages }: Props) {
                                     <FormItem>
                                         <FormLabel>Title</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., Shipping Policy" {...field} />
+                                            <Input
+                                                placeholder="e.g., Shipping Policy"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -675,10 +805,14 @@ export default function PagesIndex({ pages }: Props) {
                                     <FormItem>
                                         <FormLabel>Slug</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., shipping-policy" {...field} />
+                                            <Input
+                                                placeholder="e.g., shipping-policy"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormDescription>
-                                            URL-friendly version of the title. Will be used as: /{field.value}
+                                            URL-friendly version of the title.
+                                            Will be used as: /{field.value}
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -698,7 +832,8 @@ export default function PagesIndex({ pages }: Props) {
                                             />
                                         </FormControl>
                                         <FormDescription>
-                                            You can use HTML tags for formatting.
+                                            You can use HTML tags for
+                                            formatting.
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -710,7 +845,9 @@ export default function PagesIndex({ pages }: Props) {
                                     name="meta_title"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Meta Title (SEO)</FormLabel>
+                                            <FormLabel>
+                                                Meta Title (SEO)
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     placeholder="SEO title"
@@ -734,7 +871,13 @@ export default function PagesIndex({ pages }: Props) {
                                                     min="0"
                                                     placeholder="0"
                                                     value={field.value}
-                                                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                            parseInt(
+                                                                e.target.value,
+                                                            ) || 0,
+                                                        )
+                                                    }
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -747,7 +890,9 @@ export default function PagesIndex({ pages }: Props) {
                                 name="meta_description"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Meta Description (SEO)</FormLabel>
+                                        <FormLabel>
+                                            Meta Description (SEO)
+                                        </FormLabel>
                                         <FormControl>
                                             <Textarea
                                                 placeholder="Brief description for search engines..."
@@ -766,9 +911,12 @@ export default function PagesIndex({ pages }: Props) {
                                 render={({ field }) => (
                                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                                         <div className="space-y-0.5">
-                                            <FormLabel className="text-base">Active</FormLabel>
+                                            <FormLabel className="text-base">
+                                                Active
+                                            </FormLabel>
                                             <FormDescription>
-                                                Make this page visible on the website.
+                                                Make this page visible on the
+                                                website.
                                             </FormDescription>
                                         </div>
                                         <FormControl>
@@ -789,7 +937,9 @@ export default function PagesIndex({ pages }: Props) {
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                    {isSubmitting
+                                        ? 'Saving...'
+                                        : 'Save Changes'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -799,7 +949,7 @@ export default function PagesIndex({ pages }: Props) {
 
             {/* View Page Dialog */}
             <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>{selectedPage?.title}</DialogTitle>
                         <DialogDescription>
@@ -809,8 +959,16 @@ export default function PagesIndex({ pages }: Props) {
                     {selectedPage && (
                         <div className="space-y-4">
                             <div className="flex items-center gap-4">
-                                <Badge variant={selectedPage.is_active ? 'default' : 'secondary'}>
-                                    {selectedPage.is_active ? 'Active' : 'Inactive'}
+                                <Badge
+                                    variant={
+                                        selectedPage.is_active
+                                            ? 'default'
+                                            : 'secondary'
+                                    }
+                                >
+                                    {selectedPage.is_active
+                                        ? 'Active'
+                                        : 'Inactive'}
                                 </Badge>
                                 <span className="text-sm text-muted-foreground">
                                     Sort Order: {selectedPage.sort_order}
@@ -819,39 +977,59 @@ export default function PagesIndex({ pages }: Props) {
 
                             {selectedPage.meta_title && (
                                 <div>
-                                    <h4 className="text-sm font-medium mb-1">Meta Title</h4>
-                                    <p className="text-sm text-muted-foreground">{selectedPage.meta_title}</p>
+                                    <h4 className="mb-1 text-sm font-medium">
+                                        Meta Title
+                                    </h4>
+                                    <p className="text-sm text-muted-foreground">
+                                        {selectedPage.meta_title}
+                                    </p>
                                 </div>
                             )}
 
                             {selectedPage.meta_description && (
                                 <div>
-                                    <h4 className="text-sm font-medium mb-1">Meta Description</h4>
-                                    <p className="text-sm text-muted-foreground">{selectedPage.meta_description}</p>
+                                    <h4 className="mb-1 text-sm font-medium">
+                                        Meta Description
+                                    </h4>
+                                    <p className="text-sm text-muted-foreground">
+                                        {selectedPage.meta_description}
+                                    </p>
                                 </div>
                             )}
 
                             <div>
-                                <h4 className="text-sm font-medium mb-1">Content</h4>
+                                <h4 className="mb-1 text-sm font-medium">
+                                    Content
+                                </h4>
                                 <div
-                                    className="prose prose-sm max-w-none p-4 bg-muted rounded-lg"
-                                    dangerouslySetInnerHTML={{ __html: selectedPage.content }}
+                                    className="prose prose-sm max-w-none rounded-lg bg-muted p-4"
+                                    dangerouslySetInnerHTML={{
+                                        __html: selectedPage.content,
+                                    }}
                                 />
                             </div>
 
                             <div className="text-xs text-muted-foreground">
-                                Last updated: {new Date(selectedPage.updated_at).toLocaleString()}
+                                Last updated:{' '}
+                                {new Date(
+                                    selectedPage.updated_at,
+                                ).toLocaleString()}
                             </div>
                         </div>
                     )}
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsViewDialogOpen(false)}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setIsViewDialogOpen(false)}
+                        >
                             Close
                         </Button>
-                        <Button onClick={() => {
-                            setIsViewDialogOpen(false);
-                            if (selectedPage) openEditDialog(selectedPage);
-                        }}>
+                        <Button
+                            onClick={() => {
+                                setIsViewDialogOpen(false);
+                                if (selectedPage) openEditDialog(selectedPage);
+                            }}
+                        >
                             Edit Page
                         </Button>
                     </DialogFooter>
@@ -859,12 +1037,17 @@ export default function PagesIndex({ pages }: Props) {
             </Dialog>
 
             {/* Delete Confirmation Dialog */}
-            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <AlertDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Page</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete "{selectedPage?.title}"? This action cannot be undone.
+                            Are you sure you want to delete "
+                            {selectedPage?.title}"? This action cannot be
+                            undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

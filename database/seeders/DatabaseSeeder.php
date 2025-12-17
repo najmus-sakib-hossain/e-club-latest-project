@@ -2,19 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\TrustedCompany;
-use App\Models\FeatureCard;
-use App\Models\SiteSetting;
-use App\Models\HeroSlide;
 use App\Models\Category;
-use App\Models\Product;
+use App\Models\CustomerReview;
+use App\Models\Faq;
+use App\Models\FaqCategory;
+use App\Models\FeatureCard;
 use App\Models\FeaturedProduct;
+use App\Models\HeroSlide;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\CustomerReview;
-use App\Models\FaqCategory;
-use App\Models\Faq;
+use App\Models\Product;
+use App\Models\SiteSetting;
+use App\Models\TrustedCompany;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -101,13 +101,13 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Office Desks', 'slug' => 'office-desks', 'collection_type' => 'business', 'description' => 'Professional desks for your workspace', 'image' => 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800&q=80', 'order' => 1],
             ['name' => 'Conference Tables', 'slug' => 'conference-tables', 'collection_type' => 'business', 'description' => 'Meeting and conference room e-club', 'image' => 'https://images.unsplash.com/photo-1431540015161-0bf868a2d407?w=800&q=80', 'order' => 2],
             ['name' => 'Office Chairs', 'slug' => 'office-chairs', 'collection_type' => 'business', 'description' => 'Ergonomic chairs for comfort', 'image' => 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&q=80', 'order' => 3],
-            
+
             // Family Collections
             ['name' => 'Dining Tables', 'slug' => 'dining-tables', 'collection_type' => 'family', 'description' => 'Beautiful dining sets for family meals', 'image' => 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=800&q=80', 'order' => 1],
             ['name' => 'Sofas', 'slug' => 'sofas', 'collection_type' => 'family', 'description' => 'Comfortable sofas for living rooms', 'image' => 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80', 'order' => 2],
             ['name' => 'Beds', 'slug' => 'beds', 'collection_type' => 'family', 'description' => 'Quality beds for restful sleep', 'image' => 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=800&q=80', 'order' => 3],
             ['name' => 'Storage', 'slug' => 'storage', 'collection_type' => 'family', 'description' => 'Wardrobes and storage solutions', 'image' => 'https://images.unsplash.com/photo-1558997519-83ea9252edf8?w=800&q=80', 'order' => 4],
-            
+
             // Seating Collections
             ['name' => 'Executive Chairs', 'slug' => 'executive-chairs', 'collection_type' => 'seating', 'description' => 'Premium executive seating', 'image' => 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&q=80', 'order' => 1],
             ['name' => 'Lounge Chairs', 'slug' => 'lounge-chairs', 'collection_type' => 'seating', 'description' => 'Relaxing lounge seating', 'image' => 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80', 'order' => 2],
@@ -527,15 +527,15 @@ class DatabaseSeeder extends Seeder
         foreach ($customers as $index => $customer) {
             // Select random products for order (1-4 items)
             $orderProducts = $products->random(rand(1, min(4, $products->count())));
-            
+
             $subtotal = 0;
             $orderItems = [];
-            
+
             foreach ($orderProducts as $product) {
                 $quantity = rand(1, 3);
                 $price = $product->price;
                 $subtotal += $price * $quantity;
-                
+
                 $orderItems[] = [
                     'product_id' => $product->id,
                     'name' => $product->name,
@@ -552,7 +552,7 @@ class DatabaseSeeder extends Seeder
             // Determine realistic statuses
             $paymentMethod = $paymentMethods[array_rand($paymentMethods)];
             $status = $statuses[array_rand($statuses)];
-            
+
             // COD orders can be pending payment even if delivered
             if ($paymentMethod === 'cod') {
                 $paymentStatus = $status === 'delivered' ? 'paid' : 'pending';

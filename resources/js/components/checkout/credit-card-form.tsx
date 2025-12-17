@@ -1,14 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CheckCircle2, CreditCard, Lock } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { motion, AnimatePresence } from 'motion/react';
-import { CreditCard, Lock, CheckCircle2 } from 'lucide-react';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import {
     Select,
     SelectContent,
@@ -17,42 +23,46 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import {
-    usePaymentStore,
-    formatCardNumber,
-    validateCardNumber,
-    getCardType,
-    validateExpiry,
     CardDetails,
+    formatCardNumber,
+    getCardType,
+    usePaymentStore,
+    validateCardNumber,
+    validateExpiry,
 } from '@/stores/payment-store';
 
 // Validation schema
-const cardSchema = z.object({
-    cardNumber: z.string()
-        .min(13, 'Card number must be at least 13 digits')
-        .max(19, 'Card number must be at most 19 digits')
-        .refine((val) => validateCardNumber(val.replace(/\s/g, '')), {
-            message: 'Invalid card number',
-        }),
-    cardHolderName: z.string()
-        .min(2, 'Name must be at least 2 characters')
-        .max(100, 'Name is too long'),
-    expiryMonth: z.string()
-        .min(1, 'Month is required')
-        .max(2, 'Invalid month'),
-    expiryYear: z.string()
-        .min(2, 'Year is required')
-        .max(2, 'Invalid year'),
-    cvv: z.string()
-        .min(3, 'CVV must be at least 3 digits')
-        .max(4, 'CVV must be at most 4 digits')
-        .regex(/^\d+$/, 'CVV must only contain numbers'),
-}).refine(
-    (data) => validateExpiry(data.expiryMonth, data.expiryYear),
-    {
+const cardSchema = z
+    .object({
+        cardNumber: z
+            .string()
+            .min(13, 'Card number must be at least 13 digits')
+            .max(19, 'Card number must be at most 19 digits')
+            .refine((val) => validateCardNumber(val.replace(/\s/g, '')), {
+                message: 'Invalid card number',
+            }),
+        cardHolderName: z
+            .string()
+            .min(2, 'Name must be at least 2 characters')
+            .max(100, 'Name is too long'),
+        expiryMonth: z
+            .string()
+            .min(1, 'Month is required')
+            .max(2, 'Invalid month'),
+        expiryYear: z
+            .string()
+            .min(2, 'Year is required')
+            .max(2, 'Invalid year'),
+        cvv: z
+            .string()
+            .min(3, 'CVV must be at least 3 digits')
+            .max(4, 'CVV must be at most 4 digits')
+            .regex(/^\d+$/, 'CVV must only contain numbers'),
+    })
+    .refine((data) => validateExpiry(data.expiryMonth, data.expiryYear), {
         message: 'Card has expired',
         path: ['expiryMonth'],
-    }
-);
+    });
 
 type CardFormData = z.infer<typeof cardSchema>;
 
@@ -61,7 +71,10 @@ interface CreditCardFormProps {
     isProcessing?: boolean;
 }
 
-export function CreditCardForm({ onSubmit, isProcessing = false }: CreditCardFormProps) {
+export function CreditCardForm({
+    onSubmit,
+    isProcessing = false,
+}: CreditCardFormProps) {
     const { cardDetails, setCardDetails } = usePaymentStore();
     const [cardType, setCardType] = useState<string>('unknown');
     const [isFocused, setIsFocused] = useState<string | null>(null);
@@ -134,18 +147,25 @@ export function CreditCardForm({ onSubmit, isProcessing = false }: CreditCardFor
                             <CreditCard className="h-5 w-5" />
                             Credit/Debit Card
                         </CardTitle>
-                        <CardDescription>Enter your card details securely</CardDescription>
+                        <CardDescription>
+                            Enter your card details securely
+                        </CardDescription>
                     </div>
                     <div className="flex items-center gap-1">
                         <Lock className="h-4 w-4 text-green-600" />
-                        <span className="text-xs text-green-600 font-medium">Secure</span>
+                        <span className="text-xs font-medium text-green-600">
+                            Secure
+                        </span>
                     </div>
                 </div>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+                <form
+                    onSubmit={handleSubmit(handleFormSubmit)}
+                    className="space-y-4"
+                >
                     {/* Card Preview */}
-                    <motion.div 
+                    <motion.div
                         className="relative h-48 w-full rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 p-6 text-white shadow-xl"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -155,7 +175,10 @@ export function CreditCardForm({ onSubmit, isProcessing = false }: CreditCardFor
                         <div className="absolute top-6 left-6 h-10 w-14 rounded bg-gradient-to-br from-yellow-300 to-yellow-500">
                             <div className="m-1 grid h-8 w-12 grid-cols-3 gap-px">
                                 {[...Array(9)].map((_, i) => (
-                                    <div key={i} className="bg-yellow-600/40 rounded-sm" />
+                                    <div
+                                        key={i}
+                                        className="rounded-sm bg-yellow-600/40"
+                                    />
                                 ))}
                             </div>
                         </div>
@@ -176,24 +199,29 @@ export function CreditCardForm({ onSubmit, isProcessing = false }: CreditCardFor
                         </AnimatePresence>
 
                         {/* Card number */}
-                        <div className="absolute bottom-20 left-6 right-6">
+                        <div className="absolute right-6 bottom-20 left-6">
                             <p className="font-mono text-xl tracking-widest">
                                 {watchedCardNumber || '•••• •••• •••• ••••'}
                             </p>
                         </div>
 
                         {/* Card holder and expiry */}
-                        <div className="absolute bottom-6 left-6 right-6 flex justify-between">
+                        <div className="absolute right-6 bottom-6 left-6 flex justify-between">
                             <div>
-                                <p className="text-xs text-gray-400 uppercase">Card Holder</p>
-                                <p className="font-medium uppercase tracking-wide">
+                                <p className="text-xs text-gray-400 uppercase">
+                                    Card Holder
+                                </p>
+                                <p className="font-medium tracking-wide uppercase">
                                     {watch('cardHolderName') || 'Your Name'}
                                 </p>
                             </div>
                             <div className="text-right">
-                                <p className="text-xs text-gray-400 uppercase">Expires</p>
+                                <p className="text-xs text-gray-400 uppercase">
+                                    Expires
+                                </p>
                                 <p className="font-medium tracking-wide">
-                                    {watch('expiryMonth') || 'MM'}/{watch('expiryYear') || 'YY'}
+                                    {watch('expiryMonth') || 'MM'}/
+                                    {watch('expiryYear') || 'YY'}
                                 </p>
                             </div>
                         </div>
@@ -213,31 +241,39 @@ export function CreditCardForm({ onSubmit, isProcessing = false }: CreditCardFor
                                 maxLength={19}
                                 className={`pl-10 font-mono ${isFocused === 'cardNumber' ? 'ring-2 ring-primary' : ''}`}
                             />
-                            <CreditCard className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                            <CreditCard className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                             {isValid && watchedCardNumber && (
-                                <CheckCircle2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-green-500" />
+                                <CheckCircle2 className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-green-500" />
                             )}
                         </div>
                         {errors.cardNumber && (
-                            <p className="text-sm text-red-500">{errors.cardNumber.message}</p>
+                            <p className="text-sm text-red-500">
+                                {errors.cardNumber.message}
+                            </p>
                         )}
                     </div>
 
                     {/* Card Holder Name */}
                     <div className="space-y-2">
-                        <Label htmlFor="cardHolderName">Card Holder Name *</Label>
+                        <Label htmlFor="cardHolderName">
+                            Card Holder Name *
+                        </Label>
                         <Input
                             id="cardHolderName"
                             placeholder="John Doe"
                             {...register('cardHolderName')}
                             onChange={(e) => {
                                 register('cardHolderName').onChange(e);
-                                setCardDetails({ cardHolderName: e.target.value });
+                                setCardDetails({
+                                    cardHolderName: e.target.value,
+                                });
                             }}
                             className="uppercase"
                         />
                         {errors.cardHolderName && (
-                            <p className="text-sm text-red-500">{errors.cardHolderName.message}</p>
+                            <p className="text-sm text-red-500">
+                                {errors.cardHolderName.message}
+                            </p>
                         )}
                     </div>
 
@@ -253,7 +289,9 @@ export function CreditCardForm({ onSubmit, isProcessing = false }: CreditCardFor
                                         value={field.value}
                                         onValueChange={(value) => {
                                             field.onChange(value);
-                                            setCardDetails({ expiryMonth: value });
+                                            setCardDetails({
+                                                expiryMonth: value,
+                                            });
                                         }}
                                     >
                                         <SelectTrigger>
@@ -261,7 +299,10 @@ export function CreditCardForm({ onSubmit, isProcessing = false }: CreditCardFor
                                         </SelectTrigger>
                                         <SelectContent>
                                             {months.map((month) => (
-                                                <SelectItem key={month.value} value={month.value}>
+                                                <SelectItem
+                                                    key={month.value}
+                                                    value={month.value}
+                                                >
                                                     {month.label}
                                                 </SelectItem>
                                             ))}
@@ -280,7 +321,9 @@ export function CreditCardForm({ onSubmit, isProcessing = false }: CreditCardFor
                                         value={field.value}
                                         onValueChange={(value) => {
                                             field.onChange(value);
-                                            setCardDetails({ expiryYear: value });
+                                            setCardDetails({
+                                                expiryYear: value,
+                                            });
                                         }}
                                     >
                                         <SelectTrigger>
@@ -288,7 +331,10 @@ export function CreditCardForm({ onSubmit, isProcessing = false }: CreditCardFor
                                         </SelectTrigger>
                                         <SelectContent>
                                             {years.map((year) => (
-                                                <SelectItem key={year.value} value={year.value}>
+                                                <SelectItem
+                                                    key={year.value}
+                                                    value={year.value}
+                                                >
                                                     {year.label}
                                                 </SelectItem>
                                             ))}
@@ -307,29 +353,39 @@ export function CreditCardForm({ onSubmit, isProcessing = false }: CreditCardFor
                                     maxLength={4}
                                     {...register('cvv')}
                                     onChange={(e) => {
-                                        const value = e.target.value.replace(/\D/g, '');
-                                        setValue('cvv', value, { shouldValidate: true });
+                                        const value = e.target.value.replace(
+                                            /\D/g,
+                                            '',
+                                        );
+                                        setValue('cvv', value, {
+                                            shouldValidate: true,
+                                        });
                                         setCardDetails({ cvv: value });
                                     }}
                                     className="font-mono"
                                 />
-                                <Lock className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                <Lock className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                             </div>
                         </div>
                     </div>
                     {(errors.expiryMonth || errors.expiryYear) && (
                         <p className="text-sm text-red-500">
-                            {errors.expiryMonth?.message || errors.expiryYear?.message}
+                            {errors.expiryMonth?.message ||
+                                errors.expiryYear?.message}
                         </p>
                     )}
                     {errors.cvv && (
-                        <p className="text-sm text-red-500">{errors.cvv.message}</p>
+                        <p className="text-sm text-red-500">
+                            {errors.cvv.message}
+                        </p>
                     )}
 
                     {/* Secure notice */}
                     <div className="flex items-center gap-2 rounded-lg bg-green-50 p-3 text-sm text-green-700">
                         <Lock className="h-4 w-4" />
-                        <span>Your payment information is encrypted and secure.</span>
+                        <span>
+                            Your payment information is encrypted and secure.
+                        </span>
                     </div>
 
                     {/* Submit button */}
@@ -344,7 +400,11 @@ export function CreditCardForm({ onSubmit, isProcessing = false }: CreditCardFor
                                 <motion.div
                                     className="h-4 w-4 rounded-full border-2 border-white border-t-transparent"
                                     animate={{ rotate: 360 }}
-                                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                                    transition={{
+                                        duration: 1,
+                                        repeat: Infinity,
+                                        ease: 'linear',
+                                    }}
                                 />
                                 Processing...
                             </span>

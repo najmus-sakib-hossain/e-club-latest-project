@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\ContactMessage;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -29,7 +28,7 @@ class ContactReplyMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Re: ' . $this->message->subject,
+            subject: 'Re: '.$this->message->subject,
             replyTo: [config('mail.from.address', 'noreply@example.com')],
         );
     }

@@ -14,19 +14,19 @@ class PageContentSeeder extends Seeder
     {
         // Shipping Page Content
         $this->seedShippingContent();
-        
+
         // Returns Page Content
         $this->seedReturnsContent();
-        
+
         // Warranty Page Content
         $this->seedWarrantyContent();
-        
+
         // Care Page Content
         $this->seedCareContent();
-        
+
         // Terms Page Content
         $this->seedTermsContent();
-        
+
         // Privacy Page Content
         $this->seedPrivacyContent();
     }

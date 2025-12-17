@@ -166,7 +166,7 @@ class AboutPageController extends Controller
         if ($teamMember->image) {
             Storage::disk('public')->delete($teamMember->image);
         }
-        
+
         $teamMember->delete();
 
         return redirect()->back()->with('success', 'Team member deleted successfully');

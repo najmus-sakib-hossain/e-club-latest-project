@@ -1,6 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
-import { motion } from 'motion/react';
 import { CheckCircle, Package } from 'lucide-react';
+import { motion } from 'motion/react';
 
 import { SiteLayout } from '@/components/site/site-layout';
 import { Button } from '@/components/ui/button';
@@ -86,9 +86,12 @@ export default function OrderConfirmation({ order }: OrderConfirmationProps) {
                         >
                             <CheckCircle className="h-12 w-12 text-primary" />
                         </motion.div>
-                        <h1 className="mb-2 text-3xl font-bold">Order Confirmed!</h1>
+                        <h1 className="mb-2 text-3xl font-bold">
+                            Order Confirmed!
+                        </h1>
                         <p className="text-muted-foreground">
-                            Thank you for your order. We've received your order and will begin processing it soon.
+                            Thank you for your order. We've received your order
+                            and will begin processing it soon.
                         </p>
                     </motion.div>
 
@@ -108,11 +111,20 @@ export default function OrderConfirmation({ order }: OrderConfirmationProps) {
                                 {/* Order Status */}
                                 <div className="rounded-lg bg-primary/10 p-4">
                                     <p className="text-sm font-medium text-primary">
-                                        Order Status: <span className="capitalize">{order.status}</span>
+                                        Order Status:{' '}
+                                        <span className="capitalize">
+                                            {order.status}
+                                        </span>
                                     </p>
                                     <p className="mt-1 text-sm text-primary">
-                                        Payment: <span className="capitalize">{order.payment_status}</span> via{' '}
-                                        <span className="capitalize">{order.payment_method}</span>
+                                        Payment:{' '}
+                                        <span className="capitalize">
+                                            {order.payment_status}
+                                        </span>{' '}
+                                        via{' '}
+                                        <span className="capitalize">
+                                            {order.payment_method}
+                                        </span>
                                     </p>
                                 </div>
 
@@ -120,38 +132,65 @@ export default function OrderConfirmation({ order }: OrderConfirmationProps) {
 
                                 {/* Customer Info */}
                                 <div>
-                                    <h3 className="mb-2 font-semibold">Delivery Information</h3>
-                                    <p className="text-foreground">{order.customer_name}</p>
-                                    <p className="text-muted-foreground">{order.customer_email}</p>
-                                    <p className="text-muted-foreground">{order.customer_phone}</p>
-                                    <p className="mt-2 text-muted-foreground">{order.shipping_address}</p>
+                                    <h3 className="mb-2 font-semibold">
+                                        Delivery Information
+                                    </h3>
+                                    <p className="text-foreground">
+                                        {order.customer_name}
+                                    </p>
+                                    <p className="text-muted-foreground">
+                                        {order.customer_email}
+                                    </p>
+                                    <p className="text-muted-foreground">
+                                        {order.customer_phone}
+                                    </p>
+                                    <p className="mt-2 text-muted-foreground">
+                                        {order.shipping_address}
+                                    </p>
                                 </div>
 
                                 <Separator />
 
                                 {/* Order Items */}
                                 <div>
-                                    <h3 className="mb-3 font-semibold">Order Items</h3>
+                                    <h3 className="mb-3 font-semibold">
+                                        Order Items
+                                    </h3>
                                     <div className="space-y-3">
                                         {order.items?.map((item) => (
-                                            <div key={item.id} className="flex items-center justify-between">
+                                            <div
+                                                key={item.id}
+                                                className="flex items-center justify-between"
+                                            >
                                                 <div className="flex items-center gap-3">
                                                     {item.image && (
                                                         <img
-                                                            src={getImageUrl(item.image) || ''}
+                                                            src={
+                                                                getImageUrl(
+                                                                    item.image,
+                                                                ) || ''
+                                                            }
                                                             alt={item.name}
                                                             className="h-12 w-12 rounded object-cover"
                                                         />
                                                     )}
                                                     <div>
-                                                        <p className="font-medium">{item.name}</p>
+                                                        <p className="font-medium">
+                                                            {item.name}
+                                                        </p>
                                                         <p className="text-sm text-muted-foreground">
-                                                            {formatPrice(item.price)} × {item.quantity}
+                                                            {formatPrice(
+                                                                item.price,
+                                                            )}{' '}
+                                                            × {item.quantity}
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <p className="font-medium">
-                                                    {formatPrice(item.price * item.quantity)}
+                                                    {formatPrice(
+                                                        item.price *
+                                                            item.quantity,
+                                                    )}
                                                 </p>
                                             </div>
                                         ))}
@@ -164,24 +203,37 @@ export default function OrderConfirmation({ order }: OrderConfirmationProps) {
                                 <div className="space-y-2">
                                     <div className="flex justify-between">
                                         <span>Subtotal</span>
-                                        <span>{formatPrice(order.subtotal)}</span>
+                                        <span>
+                                            {formatPrice(order.subtotal)}
+                                        </span>
                                     </div>
                                     {order.discount_amount > 0 && (
                                         <div className="flex justify-between text-primary">
                                             <span>Discount</span>
-                                            <span>-{formatPrice(order.discount_amount)}</span>
+                                            <span>
+                                                -
+                                                {formatPrice(
+                                                    order.discount_amount,
+                                                )}
+                                            </span>
                                         </div>
                                     )}
                                     <div className="flex justify-between">
                                         <span>Shipping</span>
                                         <span>
-                                            {order.shipping_amount > 0 ? formatPrice(order.shipping_amount) : 'Free'}
+                                            {order.shipping_amount > 0
+                                                ? formatPrice(
+                                                      order.shipping_amount,
+                                                  )
+                                                : 'Free'}
                                         </span>
                                     </div>
                                     <Separator />
                                     <div className="flex justify-between text-lg font-bold">
                                         <span>Total</span>
-                                        <span>{formatPrice(order.total_amount)}</span>
+                                        <span>
+                                            {formatPrice(order.total_amount)}
+                                        </span>
                                     </div>
                                 </div>
 
@@ -189,8 +241,12 @@ export default function OrderConfirmation({ order }: OrderConfirmationProps) {
                                     <>
                                         <Separator />
                                         <div>
-                                            <h3 className="mb-2 font-semibold">Order Notes</h3>
-                                            <p className="text-muted-foreground">{order.notes}</p>
+                                            <h3 className="mb-2 font-semibold">
+                                                Order Notes
+                                            </h3>
+                                            <p className="text-muted-foreground">
+                                                {order.notes}
+                                            </p>
                                         </div>
                                     </>
                                 )}

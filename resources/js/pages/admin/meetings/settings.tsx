@@ -1,23 +1,30 @@
-import { useState, useRef } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    Plus,
-    Pencil,
-    Trash2,
-    Clock,
-    Calendar,
-    ArrowLeft,
-} from 'lucide-react';
+import { Head, router } from '@inertiajs/react';
+import { ArrowLeft, Calendar, Clock, Pencil, Plus, Trash2 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
@@ -35,6 +42,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -44,16 +52,6 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import {
     Table,
     TableBody,
     TableCell,
@@ -61,6 +59,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -89,14 +88,20 @@ const days = [
 ];
 
 const getDayName = (dayOfWeek: number) => {
-    return days.find((d) => d.value === dayOfWeek.toString())?.label || 'Unknown';
+    return (
+        days.find((d) => d.value === dayOfWeek.toString())?.label || 'Unknown'
+    );
 };
 
 // Form Schema
 const slotSchema = z.object({
     day_of_week: z.coerce.number().min(0).max(6),
-    start_time: z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
-    end_time: z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
+    start_time: z
+        .string()
+        .regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
+    end_time: z
+        .string()
+        .regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
     is_active: z.boolean().default(true),
 });
 
@@ -200,12 +205,15 @@ export default function MeetingSettings({ slots }: Props) {
     };
 
     // Group slots by day
-    const slotsByDay = slots.reduce((acc, slot) => {
-        const day = slot.day_of_week;
-        if (!acc[day]) acc[day] = [];
-        acc[day].push(slot);
-        return acc;
-    }, {} as Record<number, MeetingSlot[]>);
+    const slotsByDay = slots.reduce(
+        (acc, slot) => {
+            const day = slot.day_of_week;
+            if (!acc[day]) acc[day] = [];
+            acc[day].push(slot);
+            return acc;
+        },
+        {} as Record<number, MeetingSlot[]>,
+    );
 
     const formatTime = (time: string) => {
         const [hours, minutes] = time.split(':');
@@ -228,13 +236,20 @@ export default function MeetingSettings({ slots }: Props) {
                     transition={{ duration: 0.3 }}
                 >
                     <div className="flex items-center gap-4">
-                        <Button variant="ghost" size="icon" onClick={() => router.visit('/admin/meetings')}>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => router.visit('/admin/meetings')}
+                        >
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
                         <div>
-                            <h1 className="text-3xl font-bold tracking-tight">Availability Settings</h1>
+                            <h1 className="text-3xl font-bold tracking-tight">
+                                Availability Settings
+                            </h1>
                             <p className="text-muted-foreground">
-                                Configure meeting time slots for each day of the week.
+                                Configure meeting time slots for each day of the
+                                week.
                             </p>
                         </div>
                     </div>
@@ -250,16 +265,22 @@ export default function MeetingSettings({ slots }: Props) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.1 }}
                 >
-                    <Card className="bg-blue-50 border-blue-200">
+                    <Card className="border-blue-200 bg-blue-50">
                         <CardContent className="pt-6">
                             <div className="flex items-start gap-3">
-                                <Clock className="h-5 w-5 text-blue-600 mt-0.5" />
+                                <Clock className="mt-0.5 h-5 w-5 text-blue-600" />
                                 <div>
-                                    <h3 className="font-medium text-blue-900">How Availability Works</h3>
-                                    <p className="text-sm text-blue-700 mt-1">
-                                        Time slots define when customers can book meetings. The system will generate 30-minute
-                                        appointment slots within each time range. For example, a slot from 9:00 AM to 12:00 PM
-                                        will offer appointments at 9:00, 9:30, 10:00, 10:30, 11:00, and 11:30 AM.
+                                    <h3 className="font-medium text-blue-900">
+                                        How Availability Works
+                                    </h3>
+                                    <p className="mt-1 text-sm text-blue-700">
+                                        Time slots define when customers can
+                                        book meetings. The system will generate
+                                        30-minute appointment slots within each
+                                        time range. For example, a slot from
+                                        9:00 AM to 12:00 PM will offer
+                                        appointments at 9:00, 9:30, 10:00,
+                                        10:30, 11:00, and 11:30 AM.
                                     </p>
                                 </div>
                             </div>
@@ -277,35 +298,60 @@ export default function MeetingSettings({ slots }: Props) {
                         <CardHeader>
                             <CardTitle>Weekly Schedule</CardTitle>
                             <CardDescription>
-                                View and manage your availability for each day of the week.
+                                View and manage your availability for each day
+                                of the week.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-4">
                                 {days.map((day) => {
-                                    const daySlots = slotsByDay[parseInt(day.value)] || [];
+                                    const daySlots =
+                                        slotsByDay[parseInt(day.value)] || [];
                                     return (
                                         <div
                                             key={day.value}
                                             className="flex items-start justify-between border-b pb-4 last:border-0 last:pb-0"
                                         >
                                             <div className="flex items-center gap-3">
-                                                <div className="w-24 font-medium">{day.label}</div>
+                                                <div className="w-24 font-medium">
+                                                    {day.label}
+                                                </div>
                                                 {daySlots.length === 0 ? (
-                                                    <span className="text-muted-foreground text-sm">No slots configured</span>
+                                                    <span className="text-sm text-muted-foreground">
+                                                        No slots configured
+                                                    </span>
                                                 ) : (
                                                     <div className="flex flex-wrap gap-2">
-                                                        {daySlots.map((slot) => (
-                                                            <Badge
-                                                                key={slot.id}
-                                                                variant={slot.is_active ? 'default' : 'secondary'}
-                                                                className="cursor-pointer"
-                                                                onClick={() => openEditDialog(slot)}
-                                                            >
-                                                                {formatTime(slot.start_time)} - {formatTime(slot.end_time)}
-                                                                {!slot.is_active && ' (Inactive)'}
-                                                            </Badge>
-                                                        ))}
+                                                        {daySlots.map(
+                                                            (slot) => (
+                                                                <Badge
+                                                                    key={
+                                                                        slot.id
+                                                                    }
+                                                                    variant={
+                                                                        slot.is_active
+                                                                            ? 'default'
+                                                                            : 'secondary'
+                                                                    }
+                                                                    className="cursor-pointer"
+                                                                    onClick={() =>
+                                                                        openEditDialog(
+                                                                            slot,
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {formatTime(
+                                                                        slot.start_time,
+                                                                    )}{' '}
+                                                                    -{' '}
+                                                                    {formatTime(
+                                                                        slot.end_time,
+                                                                    )}
+                                                                    {!slot.is_active &&
+                                                                        ' (Inactive)'}
+                                                                </Badge>
+                                                            ),
+                                                        )}
                                                     </div>
                                                 )}
                                             </div>
@@ -332,10 +378,14 @@ export default function MeetingSettings({ slots }: Props) {
                         </CardHeader>
                         <CardContent>
                             {slots.length === 0 ? (
-                                <div className="text-center py-12 text-muted-foreground">
-                                    <Calendar className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                                <div className="py-12 text-center text-muted-foreground">
+                                    <Calendar className="mx-auto mb-4 h-12 w-12 opacity-50" />
                                     <p>No time slots configured yet.</p>
-                                    <Button variant="outline" className="mt-4" onClick={openAddDialog}>
+                                    <Button
+                                        variant="outline"
+                                        className="mt-4"
+                                        onClick={openAddDialog}
+                                    >
                                         Add Your First Slot
                                     </Button>
                                 </div>
@@ -347,22 +397,49 @@ export default function MeetingSettings({ slots }: Props) {
                                             <TableHead>Start Time</TableHead>
                                             <TableHead>End Time</TableHead>
                                             <TableHead>Status</TableHead>
-                                            <TableHead className="text-right">Actions</TableHead>
+                                            <TableHead className="text-right">
+                                                Actions
+                                            </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {slots
-                                            .sort((a, b) => a.day_of_week - b.day_of_week || a.start_time.localeCompare(b.start_time))
+                                            .sort(
+                                                (a, b) =>
+                                                    a.day_of_week -
+                                                        b.day_of_week ||
+                                                    a.start_time.localeCompare(
+                                                        b.start_time,
+                                                    ),
+                                            )
                                             .map((slot) => (
                                                 <TableRow key={slot.id}>
                                                     <TableCell className="font-medium">
-                                                        {getDayName(slot.day_of_week)}
+                                                        {getDayName(
+                                                            slot.day_of_week,
+                                                        )}
                                                     </TableCell>
-                                                    <TableCell>{formatTime(slot.start_time)}</TableCell>
-                                                    <TableCell>{formatTime(slot.end_time)}</TableCell>
                                                     <TableCell>
-                                                        <Badge variant={slot.is_active ? 'default' : 'secondary'}>
-                                                            {slot.is_active ? 'Active' : 'Inactive'}
+                                                        {formatTime(
+                                                            slot.start_time,
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {formatTime(
+                                                            slot.end_time,
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Badge
+                                                            variant={
+                                                                slot.is_active
+                                                                    ? 'default'
+                                                                    : 'secondary'
+                                                            }
+                                                        >
+                                                            {slot.is_active
+                                                                ? 'Active'
+                                                                : 'Inactive'}
                                                         </Badge>
                                                     </TableCell>
                                                     <TableCell className="text-right">
@@ -370,7 +447,11 @@ export default function MeetingSettings({ slots }: Props) {
                                                             <Button
                                                                 size="icon"
                                                                 variant="ghost"
-                                                                onClick={() => openEditDialog(slot)}
+                                                                onClick={() =>
+                                                                    openEditDialog(
+                                                                        slot,
+                                                                    )
+                                                                }
                                                             >
                                                                 <Pencil className="h-4 w-4" />
                                                             </Button>
@@ -378,7 +459,11 @@ export default function MeetingSettings({ slots }: Props) {
                                                                 size="icon"
                                                                 variant="ghost"
                                                                 className="text-destructive"
-                                                                onClick={() => openDeleteDialog(slot)}
+                                                                onClick={() =>
+                                                                    openDeleteDialog(
+                                                                        slot,
+                                                                    )
+                                                                }
                                                             >
                                                                 <Trash2 className="h-4 w-4" />
                                                             </Button>
@@ -404,7 +489,10 @@ export default function MeetingSettings({ slots }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleCreate as any)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleCreate as any)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={form.control}
                                 name="day_of_week"
@@ -412,8 +500,12 @@ export default function MeetingSettings({ slots }: Props) {
                                     <FormItem>
                                         <FormLabel>Day of Week</FormLabel>
                                         <Select
-                                            value={(field.value ?? 1).toString()}
-                                            onValueChange={(val) => field.onChange(parseInt(val))}
+                                            value={(
+                                                field.value ?? 1
+                                            ).toString()}
+                                            onValueChange={(val) =>
+                                                field.onChange(parseInt(val))
+                                            }
                                         >
                                             <FormControl>
                                                 <SelectTrigger>
@@ -422,7 +514,10 @@ export default function MeetingSettings({ slots }: Props) {
                                             </FormControl>
                                             <SelectContent>
                                                 {days.map((day) => (
-                                                    <SelectItem key={day.value} value={day.value}>
+                                                    <SelectItem
+                                                        key={day.value}
+                                                        value={day.value}
+                                                    >
                                                         {day.label}
                                                     </SelectItem>
                                                 ))}
@@ -440,7 +535,11 @@ export default function MeetingSettings({ slots }: Props) {
                                         <FormItem>
                                             <FormLabel>Start Time</FormLabel>
                                             <FormControl>
-                                                <Input type="time" placeholder="09:00" {...field} />
+                                                <Input
+                                                    type="time"
+                                                    placeholder="09:00"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -453,7 +552,11 @@ export default function MeetingSettings({ slots }: Props) {
                                         <FormItem>
                                             <FormLabel>End Time</FormLabel>
                                             <FormControl>
-                                                <Input type="time" placeholder="17:00" {...field} />
+                                                <Input
+                                                    type="time"
+                                                    placeholder="17:00"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -468,7 +571,8 @@ export default function MeetingSettings({ slots }: Props) {
                                         <div className="space-y-0.5">
                                             <FormLabel>Active</FormLabel>
                                             <FormDescription>
-                                                Enable this time slot for bookings
+                                                Enable this time slot for
+                                                bookings
                                             </FormDescription>
                                         </div>
                                         <FormControl>
@@ -481,7 +585,11 @@ export default function MeetingSettings({ slots }: Props) {
                                 )}
                             />
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsAddDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
@@ -503,7 +611,10 @@ export default function MeetingSettings({ slots }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleUpdate as any)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleUpdate as any)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={form.control}
                                 name="day_of_week"
@@ -511,8 +622,12 @@ export default function MeetingSettings({ slots }: Props) {
                                     <FormItem>
                                         <FormLabel>Day of Week</FormLabel>
                                         <Select
-                                            value={(field.value ?? 1).toString()}
-                                            onValueChange={(val) => field.onChange(parseInt(val))}
+                                            value={(
+                                                field.value ?? 1
+                                            ).toString()}
+                                            onValueChange={(val) =>
+                                                field.onChange(parseInt(val))
+                                            }
                                         >
                                             <FormControl>
                                                 <SelectTrigger>
@@ -521,7 +636,10 @@ export default function MeetingSettings({ slots }: Props) {
                                             </FormControl>
                                             <SelectContent>
                                                 {days.map((day) => (
-                                                    <SelectItem key={day.value} value={day.value}>
+                                                    <SelectItem
+                                                        key={day.value}
+                                                        value={day.value}
+                                                    >
                                                         {day.label}
                                                     </SelectItem>
                                                 ))}
@@ -539,7 +657,11 @@ export default function MeetingSettings({ slots }: Props) {
                                         <FormItem>
                                             <FormLabel>Start Time</FormLabel>
                                             <FormControl>
-                                                <Input type="time" placeholder="09:00" {...field} />
+                                                <Input
+                                                    type="time"
+                                                    placeholder="09:00"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -552,7 +674,11 @@ export default function MeetingSettings({ slots }: Props) {
                                         <FormItem>
                                             <FormLabel>End Time</FormLabel>
                                             <FormControl>
-                                                <Input type="time" placeholder="17:00" {...field} />
+                                                <Input
+                                                    type="time"
+                                                    placeholder="17:00"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -567,7 +693,8 @@ export default function MeetingSettings({ slots }: Props) {
                                         <div className="space-y-0.5">
                                             <FormLabel>Active</FormLabel>
                                             <FormDescription>
-                                                Enable this time slot for bookings
+                                                Enable this time slot for
+                                                bookings
                                             </FormDescription>
                                         </div>
                                         <FormControl>
@@ -580,11 +707,17 @@ export default function MeetingSettings({ slots }: Props) {
                                 )}
                             />
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsEditDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                    {isSubmitting
+                                        ? 'Saving...'
+                                        : 'Save Changes'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -593,12 +726,16 @@ export default function MeetingSettings({ slots }: Props) {
             </Dialog>
 
             {/* Delete Confirmation Dialog */}
-            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <AlertDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Time Slot</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete this time slot? This action cannot be undone.
+                            Are you sure you want to delete this time slot? This
+                            action cannot be undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

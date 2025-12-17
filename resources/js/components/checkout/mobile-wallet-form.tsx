@@ -1,30 +1,43 @@
-import { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+    AlertCircle,
+    ArrowRight,
+    CheckCircle2,
+    Lock,
+    Phone,
+    RefreshCcw,
+} from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { motion, AnimatePresence } from 'motion/react';
-import { Phone, Lock, CheckCircle2, AlertCircle, ArrowRight, RefreshCcw } from 'lucide-react';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import {
     InputOTP,
     InputOTPGroup,
     InputOTPSlot,
 } from '@/components/ui/input-otp';
+import { Label } from '@/components/ui/label';
 import {
     usePaymentStore,
     validateBDPhoneNumber,
-    type PaymentMethod,
     type MobileWalletDetails,
 } from '@/stores/payment-store';
 
 // Validation schema for phone number
 const phoneSchema = z.object({
-    phoneNumber: z.string()
+    phoneNumber: z
+        .string()
         .min(11, 'Phone number must be at least 11 digits')
         .max(14, 'Phone number is too long')
         .refine((val) => validateBDPhoneNumber(val), {
@@ -34,7 +47,8 @@ const phoneSchema = z.object({
 
 // Validation schema for PIN
 const pinSchema = z.object({
-    pin: z.string()
+    pin: z
+        .string()
         .length(6, 'PIN must be exactly 6 digits')
         .regex(/^\d+$/, 'PIN must only contain numbers'),
 });
@@ -50,15 +64,18 @@ interface MobileWalletFormProps {
 }
 
 // Wallet configuration
-const walletConfig: Record<'bkash' | 'nagad' | 'rocket', {
-    name: string;
-    color: string;
-    bgColor: string;
-    borderColor: string;
-    textColor: string;
-    logo: string;
-    merchantNumber: string;
-}> = {
+const walletConfig: Record<
+    'bkash' | 'nagad' | 'rocket',
+    {
+        name: string;
+        color: string;
+        bgColor: string;
+        borderColor: string;
+        textColor: string;
+        logo: string;
+        merchantNumber: string;
+    }
+> = {
     bkash: {
         name: 'bKash',
         color: '#E2136E',
@@ -88,16 +105,27 @@ const walletConfig: Record<'bkash' | 'nagad' | 'rocket', {
     },
 };
 
-export function MobileWalletForm({ 
-    walletType, 
-    onSubmit, 
+const generateTransactionId = () => {
+    return `TXN${Date.now()}${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+};
+
+export function MobileWalletForm({
+    walletType,
+    onSubmit,
     isProcessing = false,
     amount,
 }: MobileWalletFormProps) {
-    const { mobileWalletDetails, setMobileWalletDetails, paymentStep, setPaymentStep } = usePaymentStore();
+    const {
+        mobileWalletDetails,
+        setMobileWalletDetails,
+        paymentStep,
+        setPaymentStep,
+    } = usePaymentStore();
     const [otpSent, setOtpSent] = useState(false);
     const [otpTimer, setOtpTimer] = useState(0);
-    const [localStep, setLocalStep] = useState<'phone' | 'otp' | 'pin'>('phone');
+    const [localStep, setLocalStep] = useState<'phone' | 'otp' | 'pin'>(
+        'phone',
+    );
     const [otp, setOtp] = useState('');
 
     const config = walletConfig[walletType];
@@ -158,7 +186,7 @@ export function MobileWalletForm({
         const walletData: MobileWalletDetails = {
             phoneNumber: mobileWalletDetails.phoneNumber,
             pin: data.pin,
-            transactionId: `TXN${Date.now()}${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+            transactionId: generateTransactionId(),
         };
         setMobileWalletDetails(walletData);
         onSubmit(walletData);
@@ -184,30 +212,45 @@ export function MobileWalletForm({
             <CardHeader className={`${config.bgColor} rounded-t-lg`}>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <img 
-                            src={config.logo} 
+                        <img
+                            src={config.logo}
                             alt={config.name}
-                            className="h-12 w-12 rounded-lg object-contain bg-white p-1"
+                            className="h-12 w-12 rounded-lg bg-white object-contain p-1"
                             onError={(e) => {
-                                (e.target as HTMLImageElement).style.display = 'none';
+                                (e.target as HTMLImageElement).style.display =
+                                    'none';
                             }}
                         />
                         <div>
-                            <CardTitle className={config.textColor}>Pay with {config.name}</CardTitle>
-                            <CardDescription>Secure mobile payment</CardDescription>
+                            <CardTitle className={config.textColor}>
+                                Pay with {config.name}
+                            </CardTitle>
+                            <CardDescription>
+                                Secure mobile payment
+                            </CardDescription>
                         </div>
                     </div>
                     <div className="flex items-center gap-1">
                         <Lock className={`h-4 w-4 ${config.textColor}`} />
-                        <span className={`text-xs font-medium ${config.textColor}`}>Secure</span>
+                        <span
+                            className={`text-xs font-medium ${config.textColor}`}
+                        >
+                            Secure
+                        </span>
                     </div>
                 </div>
             </CardHeader>
             <CardContent className="pt-6">
                 {/* Payment Amount Display */}
-                <div className={`mb-6 rounded-lg ${config.bgColor} p-4 text-center`}>
-                    <p className="text-sm text-muted-foreground">Amount to Pay</p>
-                    <p className={`text-3xl font-bold ${config.textColor}`}>{formatPrice(amount)}</p>
+                <div
+                    className={`mb-6 rounded-lg ${config.bgColor} p-4 text-center`}
+                >
+                    <p className="text-sm text-muted-foreground">
+                        Amount to Pay
+                    </p>
+                    <p className={`text-3xl font-bold ${config.textColor}`}>
+                        {formatPrice(amount)}
+                    </p>
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -220,25 +263,37 @@ export function MobileWalletForm({
                             exit={{ opacity: 0, x: 20 }}
                             transition={{ duration: 0.2 }}
                         >
-                            <form onSubmit={phoneForm.handleSubmit(handlePhoneSubmit)} className="space-y-4">
+                            <form
+                                onSubmit={phoneForm.handleSubmit(
+                                    handlePhoneSubmit,
+                                )}
+                                className="space-y-4"
+                            >
                                 <div className="space-y-2">
-                                    <Label htmlFor="phoneNumber">{config.name} Account Number *</Label>
+                                    <Label htmlFor="phoneNumber">
+                                        {config.name} Account Number *
+                                    </Label>
                                     <div className="relative">
                                         <Input
                                             id="phoneNumber"
                                             placeholder="01XXXXXXXXX"
-                                            {...phoneForm.register('phoneNumber')}
+                                            {...phoneForm.register(
+                                                'phoneNumber',
+                                            )}
                                             className="pl-10"
                                             maxLength={14}
                                         />
-                                        <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                        <Phone className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                         {phoneForm.formState.isValid && (
-                                            <CheckCircle2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-green-500" />
+                                            <CheckCircle2 className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-green-500" />
                                         )}
                                     </div>
                                     {phoneForm.formState.errors.phoneNumber && (
                                         <p className="text-sm text-red-500">
-                                            {phoneForm.formState.errors.phoneNumber.message}
+                                            {
+                                                phoneForm.formState.errors
+                                                    .phoneNumber.message
+                                            }
                                         </p>
                                     )}
                                 </div>
@@ -247,10 +302,19 @@ export function MobileWalletForm({
                                     <AlertCircle className="h-4 w-4" />
                                     <AlertTitle>How it works</AlertTitle>
                                     <AlertDescription>
-                                        <ol className="mt-2 list-decimal pl-4 text-sm space-y-1">
-                                            <li>Enter your {config.name} account number</li>
-                                            <li>You will receive an OTP on your phone</li>
-                                            <li>Enter the OTP and your {config.name} PIN to confirm</li>
+                                        <ol className="mt-2 list-decimal space-y-1 pl-4 text-sm">
+                                            <li>
+                                                Enter your {config.name} account
+                                                number
+                                            </li>
+                                            <li>
+                                                You will receive an OTP on your
+                                                phone
+                                            </li>
+                                            <li>
+                                                Enter the OTP and your{' '}
+                                                {config.name} PIN to confirm
+                                            </li>
                                         </ol>
                                     </AlertDescription>
                                 </Alert>
@@ -281,7 +345,10 @@ export function MobileWalletForm({
                         >
                             <div className="text-center">
                                 <p className="text-sm text-muted-foreground">
-                                    We've sent an OTP to <strong>{mobileWalletDetails.phoneNumber}</strong>
+                                    We've sent an OTP to{' '}
+                                    <strong>
+                                        {mobileWalletDetails.phoneNumber}
+                                    </strong>
                                 </p>
                             </div>
 
@@ -305,12 +372,16 @@ export function MobileWalletForm({
                                 <div className="flex items-center gap-2 text-sm">
                                     {otpTimer > 0 ? (
                                         <span className="text-muted-foreground">
-                                            Resend OTP in {Math.floor(otpTimer / 60)}:{(otpTimer % 60).toString().padStart(2, '0')}
+                                            Resend OTP in{' '}
+                                            {Math.floor(otpTimer / 60)}:
+                                            {(otpTimer % 60)
+                                                .toString()
+                                                .padStart(2, '0')}
                                         </span>
                                     ) : (
-                                        <Button 
-                                            variant="ghost" 
-                                            size="sm" 
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
                                             onClick={handleResendOTP}
                                             className={config.textColor}
                                         >
@@ -353,10 +424,14 @@ export function MobileWalletForm({
                             exit={{ opacity: 0, x: -20 }}
                             transition={{ duration: 0.2 }}
                         >
-                            <form onSubmit={pinForm.handleSubmit(handlePinSubmit)} className="space-y-4">
+                            <form
+                                onSubmit={pinForm.handleSubmit(handlePinSubmit)}
+                                className="space-y-4"
+                            >
                                 <div className="text-center">
                                     <p className="text-sm text-muted-foreground">
-                                        Enter your {config.name} PIN to confirm payment
+                                        Enter your {config.name} PIN to confirm
+                                        payment
                                     </p>
                                 </div>
 
@@ -385,7 +460,10 @@ export function MobileWalletForm({
                                     />
                                     {pinForm.formState.errors.pin && (
                                         <p className="text-sm text-red-500">
-                                            {pinForm.formState.errors.pin.message}
+                                            {
+                                                pinForm.formState.errors.pin
+                                                    .message
+                                            }
                                         </p>
                                     )}
                                 </div>
@@ -393,7 +471,8 @@ export function MobileWalletForm({
                                 <Alert className="border-yellow-200 bg-yellow-50">
                                     <Lock className="h-4 w-4 text-yellow-600" />
                                     <AlertDescription className="text-yellow-800">
-                                        Your PIN is encrypted and never stored. This is a secure payment.
+                                        Your PIN is encrypted and never stored.
+                                        This is a secure payment.
                                     </AlertDescription>
                                 </Alert>
 
@@ -410,15 +489,24 @@ export function MobileWalletForm({
                                     <Button
                                         type="submit"
                                         className="flex-1"
-                                        disabled={!pinForm.formState.isValid || isProcessing}
-                                        style={{ backgroundColor: config.color }}
+                                        disabled={
+                                            !pinForm.formState.isValid ||
+                                            isProcessing
+                                        }
+                                        style={{
+                                            backgroundColor: config.color,
+                                        }}
                                     >
                                         {isProcessing ? (
                                             <span className="flex items-center gap-2">
                                                 <motion.div
                                                     className="h-4 w-4 rounded-full border-2 border-white border-t-transparent"
                                                     animate={{ rotate: 360 }}
-                                                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                                                    transition={{
+                                                        duration: 1,
+                                                        repeat: Infinity,
+                                                        ease: 'linear',
+                                                    }}
                                                 />
                                                 Processing...
                                             </span>

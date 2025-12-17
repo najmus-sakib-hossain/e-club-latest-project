@@ -21,9 +21,9 @@ export default function AuthSimpleLayout({
                             href="/"
                             className="flex flex-col items-center gap-2 font-medium"
                         >
-                            <img 
-                                src="/logo.png" 
-                                alt="E-Club" 
+                            <img
+                                src="/logo.png"
+                                alt="E-Club"
                                 className="h-12 w-auto"
                             />
                             <span className="sr-only">{title}</span>

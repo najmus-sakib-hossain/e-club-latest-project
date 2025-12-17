@@ -1,23 +1,37 @@
-import { useState, useRef } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router } from '@inertiajs/react';
 import {
-    Plus,
-    Pencil,
-    Trash2,
     Building2,
     ExternalLink,
     Image as ImageIcon,
+    Pencil,
+    Plus,
+    Trash2,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
@@ -35,6 +49,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -42,16 +57,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -103,10 +109,13 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const [selectedCompany, setSelectedCompany] = useState<TrustedCompany | null>(null);
+    const [selectedCompany, setSelectedCompany] =
+        useState<TrustedCompany | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
+    const [editImagePreview, setEditImagePreview] = useState<string | null>(
+        null,
+    );
     const addFileInputRef = useRef<HTMLInputElement>(null);
     const editFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -191,19 +200,23 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
             formData.append('logo', values.logo);
         }
 
-        router.post(`/admin/trusted-companies/${selectedCompany.id}`, formData, {
-            onSuccess: () => {
-                toast.success('Company updated successfully');
-                setIsEditDialogOpen(false);
-                setSelectedCompany(null);
+        router.post(
+            `/admin/trusted-companies/${selectedCompany.id}`,
+            formData,
+            {
+                onSuccess: () => {
+                    toast.success('Company updated successfully');
+                    setIsEditDialogOpen(false);
+                    setSelectedCompany(null);
+                },
+                onError: (errors) => {
+                    Object.values(errors).forEach((error) => {
+                        toast.error(error as string);
+                    });
+                },
+                onFinish: () => setIsSubmitting(false),
             },
-            onError: (errors) => {
-                Object.values(errors).forEach((error) => {
-                    toast.error(error as string);
-                });
-            },
-            onFinish: () => setIsSubmitting(false),
-        });
+        );
     };
 
     const handleDelete = () => {
@@ -223,7 +236,7 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
         });
     };
 
-    const activeCompanies = companies.filter(c => c.is_active).length;
+    const activeCompanies = companies.filter((c) => c.is_active).length;
 
     return (
         <AdminPageLayout>
@@ -238,7 +251,9 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                     transition={{ duration: 0.3 }}
                 >
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Trusted Companies</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Trusted Companies
+                        </h1>
                         <p className="text-muted-foreground">
                             Manage the partner logos displayed on your homepage.
                         </p>
@@ -258,11 +273,15 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                 >
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Companies</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Total Companies
+                            </CardTitle>
                             <Building2 className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{companies.length}</div>
+                            <div className="text-2xl font-bold">
+                                {companies.length}
+                            </div>
                             <p className="text-xs text-muted-foreground">
                                 All trusted partners
                             </p>
@@ -270,11 +289,17 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Active Logos</CardTitle>
-                            <Badge variant="default" className="text-xs">Active</Badge>
+                            <CardTitle className="text-sm font-medium">
+                                Active Logos
+                            </CardTitle>
+                            <Badge variant="default" className="text-xs">
+                                Active
+                            </Badge>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{activeCompanies}</div>
+                            <div className="text-2xl font-bold">
+                                {activeCompanies}
+                            </div>
                             <p className="text-xs text-muted-foreground">
                                 Visible on homepage
                             </p>
@@ -292,39 +317,68 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                         <CardHeader>
                             <CardTitle>All Companies</CardTitle>
                             <CardDescription>
-                                Partner and trusted company logos displayed on your store.
+                                Partner and trusted company logos displayed on
+                                your store.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             {companies.length === 0 ? (
-                                <div className="text-center py-12 text-muted-foreground">
-                                    <Building2 className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                                    <p>No companies added yet. Add your first partner!</p>
+                                <div className="py-12 text-center text-muted-foreground">
+                                    <Building2 className="mx-auto mb-4 h-12 w-12 opacity-50" />
+                                    <p>
+                                        No companies added yet. Add your first
+                                        partner!
+                                    </p>
                                 </div>
                             ) : (
                                 <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
                                     {companies
-                                        .sort((a, b) => a.sort_order - b.sort_order)
+                                        .sort(
+                                            (a, b) =>
+                                                a.sort_order - b.sort_order,
+                                        )
                                         .map((company, index) => (
                                             <motion.div
                                                 key={company.id}
-                                                initial={{ opacity: 0, scale: 0.95 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ duration: 0.2, delay: index * 0.03 }}
-                                                className="group relative rounded-lg border bg-card p-4 hover:shadow-md transition-shadow"
+                                                initial={{
+                                                    opacity: 0,
+                                                    scale: 0.95,
+                                                }}
+                                                animate={{
+                                                    opacity: 1,
+                                                    scale: 1,
+                                                }}
+                                                transition={{
+                                                    duration: 0.2,
+                                                    delay: index * 0.03,
+                                                }}
+                                                className="group relative rounded-lg border bg-card p-4 transition-shadow hover:shadow-md"
                                             >
                                                 {/* Status Badge */}
                                                 <div className="absolute top-2 right-2 z-10">
-                                                    <Badge variant={company.is_active ? 'default' : 'secondary'} className="text-xs">
-                                                        {company.is_active ? 'Active' : 'Inactive'}
+                                                    <Badge
+                                                        variant={
+                                                            company.is_active
+                                                                ? 'default'
+                                                                : 'secondary'
+                                                        }
+                                                        className="text-xs"
+                                                    >
+                                                        {company.is_active
+                                                            ? 'Active'
+                                                            : 'Inactive'}
                                                     </Badge>
                                                 </div>
 
                                                 {/* Logo */}
-                                                <div className="aspect-[3/2] relative rounded bg-muted/50 flex items-center justify-center overflow-hidden mb-3">
+                                                <div className="relative mb-3 flex aspect-[3/2] items-center justify-center overflow-hidden rounded bg-muted/50">
                                                     {getCompanyLogo(company) ? (
                                                         <img
-                                                            src={getCompanyLogo(company)!}
+                                                            src={
+                                                                getCompanyLogo(
+                                                                    company,
+                                                                )!
+                                                            }
                                                             alt={company.name}
                                                             className="max-h-full max-w-full object-contain p-2"
                                                         />
@@ -334,7 +388,9 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                                 </div>
 
                                                 {/* Name */}
-                                                <h3 className="font-medium text-sm truncate">{company.name}</h3>
+                                                <h3 className="truncate text-sm font-medium">
+                                                    {company.name}
+                                                </h3>
 
                                                 {/* Website Link */}
                                                 {company.website && (
@@ -342,7 +398,7 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                                         href={company.website}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary mt-1"
+                                                        className="mt-1 flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
                                                     >
                                                         <ExternalLink className="h-3 w-3" />
                                                         Website
@@ -350,23 +406,31 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                                 )}
 
                                                 {/* Order */}
-                                                <p className="text-xs text-muted-foreground mt-2">
+                                                <p className="mt-2 text-xs text-muted-foreground">
                                                     Order: {company.sort_order}
                                                 </p>
 
                                                 {/* Actions */}
-                                                <div className="absolute inset-0 bg-black/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                                <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                                                     <Button
                                                         size="icon"
                                                         variant="secondary"
-                                                        onClick={() => openEditDialog(company)}
+                                                        onClick={() =>
+                                                            openEditDialog(
+                                                                company,
+                                                            )
+                                                        }
                                                     >
                                                         <Pencil className="h-4 w-4" />
                                                     </Button>
                                                     <Button
                                                         size="icon"
                                                         variant="destructive"
-                                                        onClick={() => openDeleteDialog(company)}
+                                                        onClick={() =>
+                                                            openDeleteDialog(
+                                                                company,
+                                                            )
+                                                        }
                                                     >
                                                         <Trash2 className="h-4 w-4" />
                                                     </Button>
@@ -380,7 +444,7 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                 </motion.div>
 
                 {/* Preview Section */}
-                {companies.filter(c => c.is_active).length > 0 && (
+                {companies.filter((c) => c.is_active).length > 0 && (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -390,26 +454,34 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                             <CardHeader>
                                 <CardTitle>Homepage Preview</CardTitle>
                                 <CardDescription>
-                                    This is how your trusted companies section will appear.
+                                    This is how your trusted companies section
+                                    will appear.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <div className="bg-muted/30 rounded-lg p-8">
-                                    <p className="text-center text-sm text-muted-foreground mb-6">
+                                <div className="rounded-lg bg-muted/30 p-8">
+                                    <p className="mb-6 text-center text-sm text-muted-foreground">
                                         Trusted by leading brands
                                     </p>
                                     <div className="flex flex-wrap items-center justify-center gap-8">
                                         {companies
-                                            .filter(c => c.is_active)
-                                            .sort((a, b) => a.sort_order - b.sort_order)
+                                            .filter((c) => c.is_active)
+                                            .sort(
+                                                (a, b) =>
+                                                    a.sort_order - b.sort_order,
+                                            )
                                             .map((company) => (
                                                 <div
                                                     key={company.id}
-                                                    className="h-12 w-32 flex items-center justify-center grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100"
+                                                    className="flex h-12 w-32 items-center justify-center opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0"
                                                 >
                                                     {getCompanyLogo(company) ? (
                                                         <img
-                                                            src={getCompanyLogo(company)!}
+                                                            src={
+                                                                getCompanyLogo(
+                                                                    company,
+                                                                )!
+                                                            }
                                                             alt={company.name}
                                                             className="max-h-full max-w-full object-contain"
                                                         />
@@ -438,7 +510,10 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleCreate)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleCreate)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={form.control}
                                 name="name"
@@ -446,7 +521,10 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                     <FormItem>
                                         <FormLabel>Company Name *</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., Apple Inc." {...field} />
+                                            <Input
+                                                placeholder="e.g., Apple Inc."
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -455,7 +533,9 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                             <FormField
                                 control={form.control}
                                 name="logo"
-                                render={({ field: { onChange, value, ...field } }) => (
+                                render={({
+                                    field: { onChange, value, ...field },
+                                }) => (
                                     <FormItem>
                                         <FormLabel>Logo *</FormLabel>
                                         <FormControl>
@@ -464,14 +544,21 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                                 type="file"
                                                 accept="image/*"
                                                 onChange={(e) => {
-                                                    const file = e.target.files?.[0];
+                                                    const file =
+                                                        e.target.files?.[0];
                                                     onChange(file);
                                                     if (file) {
-                                                        const reader = new FileReader();
+                                                        const reader =
+                                                            new FileReader();
                                                         reader.onload = (e) => {
-                                                            setImagePreview(e.target?.result as string);
+                                                            setImagePreview(
+                                                                e.target
+                                                                    ?.result as string,
+                                                            );
                                                         };
-                                                        reader.readAsDataURL(file);
+                                                        reader.readAsDataURL(
+                                                            file,
+                                                        );
                                                     } else {
                                                         setImagePreview(null);
                                                     }
@@ -479,7 +566,7 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                             />
                                         </FormControl>
                                         {imagePreview && (
-                                            <div className="flex justify-center p-4 bg-muted/50 rounded-lg mt-2">
+                                            <div className="mt-2 flex justify-center rounded-lg bg-muted/50 p-4">
                                                 <img
                                                     src={imagePreview}
                                                     alt="Preview"
@@ -488,7 +575,8 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                             </div>
                                         )}
                                         <FormDescription>
-                                            Recommended: PNG with transparent background
+                                            Recommended: PNG with transparent
+                                            background
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -519,7 +607,12 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                         <FormItem>
                                             <FormLabel>Sort Order</FormLabel>
                                             <FormControl>
-                                                <Input type="number" min="0" placeholder="0" {...field} />
+                                                <Input
+                                                    type="number"
+                                                    min="0"
+                                                    placeholder="0"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -532,8 +625,16 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                         <FormItem>
                                             <FormLabel>Status</FormLabel>
                                             <Select
-                                                value={field.value ? 'active' : 'inactive'}
-                                                onValueChange={(val) => field.onChange(val === 'active')}
+                                                value={
+                                                    field.value
+                                                        ? 'active'
+                                                        : 'inactive'
+                                                }
+                                                onValueChange={(val) =>
+                                                    field.onChange(
+                                                        val === 'active',
+                                                    )
+                                                }
                                             >
                                                 <FormControl>
                                                     <SelectTrigger>
@@ -541,8 +642,12 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value="active">Active</SelectItem>
-                                                    <SelectItem value="inactive">Inactive</SelectItem>
+                                                    <SelectItem value="active">
+                                                        Active
+                                                    </SelectItem>
+                                                    <SelectItem value="inactive">
+                                                        Inactive
+                                                    </SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />
@@ -551,7 +656,11 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsAddDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
@@ -573,11 +682,19 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleUpdate)} className="space-y-4">
-                            {(editImagePreview || (selectedCompany && getCompanyLogo(selectedCompany))) && (
-                                <div className="flex justify-center p-4 bg-muted/50 rounded-lg">
+                        <form
+                            onSubmit={form.handleSubmit(handleUpdate)}
+                            className="space-y-4"
+                        >
+                            {(editImagePreview ||
+                                (selectedCompany &&
+                                    getCompanyLogo(selectedCompany))) && (
+                                <div className="flex justify-center rounded-lg bg-muted/50 p-4">
                                     <img
-                                        src={editImagePreview || getCompanyLogo(selectedCompany)!}
+                                        src={
+                                            editImagePreview ||
+                                            getCompanyLogo(selectedCompany)!
+                                        }
                                         alt={selectedCompany?.name || 'Preview'}
                                         className="max-h-20 object-contain"
                                     />
@@ -590,7 +707,10 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                     <FormItem>
                                         <FormLabel>Company Name *</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., Apple Inc." {...field} />
+                                            <Input
+                                                placeholder="e.g., Apple Inc."
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -599,7 +719,9 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                             <FormField
                                 control={form.control}
                                 name="logo"
-                                render={({ field: { onChange, value, ...field } }) => (
+                                render={({
+                                    field: { onChange, value, ...field },
+                                }) => (
                                     <FormItem>
                                         <FormLabel>New Logo</FormLabel>
                                         <FormControl>
@@ -608,16 +730,25 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                                 type="file"
                                                 accept="image/*"
                                                 onChange={(e) => {
-                                                    const file = e.target.files?.[0];
+                                                    const file =
+                                                        e.target.files?.[0];
                                                     onChange(file);
                                                     if (file) {
-                                                        const reader = new FileReader();
+                                                        const reader =
+                                                            new FileReader();
                                                         reader.onload = (e) => {
-                                                            setEditImagePreview(e.target?.result as string);
+                                                            setEditImagePreview(
+                                                                e.target
+                                                                    ?.result as string,
+                                                            );
                                                         };
-                                                        reader.readAsDataURL(file);
+                                                        reader.readAsDataURL(
+                                                            file,
+                                                        );
                                                     } else {
-                                                        setEditImagePreview(null);
+                                                        setEditImagePreview(
+                                                            null,
+                                                        );
                                                     }
                                                 }}
                                             />
@@ -654,7 +785,12 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                         <FormItem>
                                             <FormLabel>Sort Order</FormLabel>
                                             <FormControl>
-                                                <Input type="number" min="0" placeholder="0" {...field} />
+                                                <Input
+                                                    type="number"
+                                                    min="0"
+                                                    placeholder="0"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -667,8 +803,16 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                         <FormItem>
                                             <FormLabel>Status</FormLabel>
                                             <Select
-                                                value={field.value ? 'active' : 'inactive'}
-                                                onValueChange={(val) => field.onChange(val === 'active')}
+                                                value={
+                                                    field.value
+                                                        ? 'active'
+                                                        : 'inactive'
+                                                }
+                                                onValueChange={(val) =>
+                                                    field.onChange(
+                                                        val === 'active',
+                                                    )
+                                                }
                                             >
                                                 <FormControl>
                                                     <SelectTrigger>
@@ -676,8 +820,12 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value="active">Active</SelectItem>
-                                                    <SelectItem value="inactive">Inactive</SelectItem>
+                                                    <SelectItem value="active">
+                                                        Active
+                                                    </SelectItem>
+                                                    <SelectItem value="inactive">
+                                                        Inactive
+                                                    </SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />
@@ -686,11 +834,17 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsEditDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                    {isSubmitting
+                                        ? 'Saving...'
+                                        : 'Save Changes'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -699,12 +853,17 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
             </Dialog>
 
             {/* Delete Confirmation Dialog */}
-            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <AlertDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Remove Company</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to remove "{selectedCompany?.name}"? This action cannot be undone.
+                            Are you sure you want to remove "
+                            {selectedCompany?.name}"? This action cannot be
+                            undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

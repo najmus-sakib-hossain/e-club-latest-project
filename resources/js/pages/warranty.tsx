@@ -1,9 +1,28 @@
 import { Head, Link } from '@inertiajs/react';
-import { ChevronRight, Shield, CheckCircle, XCircle, Clock, Phone, Mail, FileText } from 'lucide-react';
+import {
+    CheckCircle,
+    ChevronRight,
+    FileText,
+    Mail,
+    Phone,
+    Shield,
+    XCircle,
+} from 'lucide-react';
 
 import { SiteLayout } from '@/components/site';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/components/ui/accordion';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import type { Category, SiteSettings } from '@/types/cms';
 
 interface PageContentSection {
@@ -103,27 +122,32 @@ const defaultClaimSteps: ClaimStep[] = [
     {
         step: 1,
         title: 'Gather Information',
-        description: 'Collect your order number, purchase date, and photos of the defect.',
+        description:
+            'Collect your order number, purchase date, and photos of the defect.',
     },
     {
         step: 2,
         title: 'Contact Us',
-        description: 'Reach out via phone, email, or through your online account.',
+        description:
+            'Reach out via phone, email, or through your online account.',
     },
     {
         step: 3,
         title: 'Submit Claim',
-        description: 'Provide details and photos for our warranty team to review.',
+        description:
+            'Provide details and photos for our warranty team to review.',
     },
     {
         step: 4,
         title: 'Assessment',
-        description: 'Our team will review your claim within 3-5 business days.',
+        description:
+            'Our team will review your claim within 3-5 business days.',
     },
     {
         step: 5,
         title: 'Resolution',
-        description: 'We will repair, replace, or refund based on the assessment.',
+        description:
+            'We will repair, replace, or refund based on the assessment.',
     },
 ];
 
@@ -154,15 +178,28 @@ const defaultFaqs: FAQ[] = [
     },
 ];
 
-export default function Warranty({ settings, categories, page, content }: WarrantyProps) {
+export default function Warranty({
+    settings,
+    categories,
+    page,
+    content,
+}: WarrantyProps) {
     // Get content from database or use defaults
     const heroTitle = content?.hero?.title || 'Warranty Information';
-    const heroSubtitle = content?.hero?.subtitle || 'We stand behind the quality of our e-club. Learn about our comprehensive warranty coverage and how to make a claim.';
+    const heroSubtitle =
+        content?.hero?.subtitle ||
+        'We stand behind the quality of our e-club. Learn about our comprehensive warranty coverage and how to make a claim.';
 
-    const warrantyTiers = (content?.warranty_tiers?.items as WarrantyTier[]) || defaultWarrantyTiers;
-    const coveredItems = (content?.covered?.items as CoveredItem[]) || defaultCoveredItems;
-    const notCoveredItems = (content?.not_covered?.items as CoveredItem[]) || defaultNotCoveredItems;
-    const claimSteps = (content?.claim_process?.items as ClaimStep[]) || defaultClaimSteps;
+    const warrantyTiers =
+        (content?.warranty_tiers?.items as WarrantyTier[]) ||
+        defaultWarrantyTiers;
+    const coveredItems =
+        (content?.covered?.items as CoveredItem[]) || defaultCoveredItems;
+    const notCoveredItems =
+        (content?.not_covered?.items as CoveredItem[]) ||
+        defaultNotCoveredItems;
+    const claimSteps =
+        (content?.claim_process?.items as ClaimStep[]) || defaultClaimSteps;
     const faqs = (content?.faqs?.items as FAQ[]) || defaultFaqs;
 
     return (
@@ -177,9 +214,13 @@ export default function Warranty({ settings, categories, page, content }: Warran
             <div className="bg-muted py-4">
                 <div className="container mx-auto px-4">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Link href="/" className="hover:text-primary">Home</Link>
+                        <Link href="/" className="hover:text-primary">
+                            Home
+                        </Link>
                         <ChevronRight className="h-4 w-4" />
-                        <span className="text-foreground font-medium">Warranty Information</span>
+                        <span className="font-medium text-foreground">
+                            Warranty Information
+                        </span>
                     </div>
                 </div>
             </div>
@@ -187,8 +228,10 @@ export default function Warranty({ settings, categories, page, content }: Warran
             {/* Header */}
             <div className="bg-primary/10 py-12">
                 <div className="container mx-auto px-4 text-center">
-                    <h1 className="text-3xl lg:text-4xl font-bold mb-4">{heroTitle}</h1>
-                    <p className="text-muted-foreground max-w-2xl mx-auto">
+                    <h1 className="mb-4 text-3xl font-bold lg:text-4xl">
+                        {heroTitle}
+                    </h1>
+                    <p className="mx-auto max-w-2xl text-muted-foreground">
                         {heroSubtitle}
                     </p>
                 </div>
@@ -197,23 +240,35 @@ export default function Warranty({ settings, categories, page, content }: Warran
             {/* Warranty Tiers */}
             <div className="py-12">
                 <div className="container mx-auto px-4">
-                    <h2 className="text-2xl font-bold text-center mb-8">
-                        {content?.warranty_tiers?.title || 'Our Warranty Coverage'}
+                    <h2 className="mb-8 text-center text-2xl font-bold">
+                        {content?.warranty_tiers?.title ||
+                            'Our Warranty Coverage'}
                     </h2>
-                    <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                    <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-3">
                         {warrantyTiers.map((tier, index) => (
-                            <Card key={index} className={`${tier.color || 'bg-accent/20 border-accent/40'} border-2`}>
+                            <Card
+                                key={index}
+                                className={`${tier.color || 'border-accent/40 bg-accent/20'} border-2`}
+                            >
                                 <CardHeader className="text-center">
-                                    <div className={`w-14 h-14 bg-background rounded-full flex items-center justify-center mx-auto mb-2 shadow-sm`}>
-                                        <Shield className={`h-7 w-7 ${tier.iconColor || 'text-accent-foreground'}`} />
+                                    <div
+                                        className={`mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-background shadow-sm`}
+                                    >
+                                        <Shield
+                                            className={`h-7 w-7 ${tier.iconColor || 'text-accent-foreground'}`}
+                                        />
                                     </div>
-                                    <CardTitle className="text-lg">{tier.title}</CardTitle>
+                                    <CardTitle className="text-lg">
+                                        {tier.title}
+                                    </CardTitle>
                                     <CardDescription className="text-2xl font-bold text-foreground">
                                         {tier.duration}
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="text-center">
-                                    <p className="text-sm text-muted-foreground">{tier.description}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        {tier.description}
+                                    </p>
                                 </CardContent>
                             </Card>
                         ))}
@@ -224,24 +279,34 @@ export default function Warranty({ settings, categories, page, content }: Warran
             {/* What's Covered */}
             <div className="bg-muted py-12">
                 <div className="container mx-auto px-4">
-                    <h2 className="text-2xl font-bold text-center mb-8">What's Covered</h2>
-                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <h2 className="mb-8 text-center text-2xl font-bold">
+                        What's Covered
+                    </h2>
+                    <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
                         {/* Covered */}
                         <Card className="border-primary/30">
                             <CardHeader className="bg-primary/10">
                                 <div className="flex items-center gap-3">
                                     <CheckCircle className="h-6 w-6 text-primary" />
                                     <CardTitle className="text-lg text-primary">
-                                        {content?.covered?.title || 'Covered by Warranty'}
+                                        {content?.covered?.title ||
+                                            'Covered by Warranty'}
                                     </CardTitle>
                                 </div>
                             </CardHeader>
                             <CardContent className="pt-4">
                                 <ul className="space-y-3">
                                     {coveredItems.map((item, index) => (
-                                        <li key={index} className="flex items-start gap-2 text-sm">
-                                            <CheckCircle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                                            <span>{typeof item === 'string' ? item : item.text}</span>
+                                        <li
+                                            key={index}
+                                            className="flex items-start gap-2 text-sm"
+                                        >
+                                            <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                                            <span>
+                                                {typeof item === 'string'
+                                                    ? item
+                                                    : item.text}
+                                            </span>
                                         </li>
                                     ))}
                                 </ul>
@@ -254,16 +319,24 @@ export default function Warranty({ settings, categories, page, content }: Warran
                                 <div className="flex items-center gap-3">
                                     <XCircle className="h-6 w-6 text-destructive" />
                                     <CardTitle className="text-lg text-destructive">
-                                        {content?.not_covered?.title || 'Not Covered'}
+                                        {content?.not_covered?.title ||
+                                            'Not Covered'}
                                     </CardTitle>
                                 </div>
                             </CardHeader>
                             <CardContent className="pt-4">
                                 <ul className="space-y-3">
                                     {notCoveredItems.map((item, index) => (
-                                        <li key={index} className="flex items-start gap-2 text-sm">
-                                            <XCircle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
-                                            <span>{typeof item === 'string' ? item : item.text}</span>
+                                        <li
+                                            key={index}
+                                            className="flex items-start gap-2 text-sm"
+                                        >
+                                            <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+                                            <span>
+                                                {typeof item === 'string'
+                                                    ? item
+                                                    : item.text}
+                                            </span>
                                         </li>
                                     ))}
                                 </ul>
@@ -276,22 +349,30 @@ export default function Warranty({ settings, categories, page, content }: Warran
             {/* How to Claim */}
             <div className="py-12">
                 <div className="container mx-auto px-4">
-                    <h2 className="text-2xl font-bold text-center mb-8">
-                        {content?.claim_process?.title || 'How to Make a Warranty Claim'}
+                    <h2 className="mb-8 text-center text-2xl font-bold">
+                        {content?.claim_process?.title ||
+                            'How to Make a Warranty Claim'}
                     </h2>
-                    <div className="max-w-4xl mx-auto">
-                        <div className="grid md:grid-cols-5 gap-4">
+                    <div className="mx-auto max-w-4xl">
+                        <div className="grid gap-4 md:grid-cols-5">
                             {claimSteps.map((step, index) => (
-                                <div key={step.step || index} className="text-center relative">
+                                <div
+                                    key={step.step || index}
+                                    className="relative text-center"
+                                >
                                     {/* Connector line */}
                                     {index < claimSteps.length - 1 && (
-                                        <div className="hidden md:block absolute top-6 left-1/2 w-full h-0.5 bg-border" />
+                                        <div className="absolute top-6 left-1/2 hidden h-0.5 w-full bg-border md:block" />
                                     )}
-                                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-lg font-bold text-primary-foreground mx-auto mb-3 relative z-10">
+                                    <div className="relative z-10 mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
                                         {step.step || index + 1}
                                     </div>
-                                    <h3 className="font-semibold text-sm mb-1">{step.title}</h3>
-                                    <p className="text-xs text-muted-foreground">{step.description}</p>
+                                    <h3 className="mb-1 text-sm font-semibold">
+                                        {step.title}
+                                    </h3>
+                                    <p className="text-xs text-muted-foreground">
+                                        {step.description}
+                                    </p>
                                 </div>
                             ))}
                         </div>
@@ -300,37 +381,51 @@ export default function Warranty({ settings, categories, page, content }: Warran
             </div>
 
             {/* Contact for Claims */}
-            <div className="bg-foreground text-background py-12">
+            <div className="bg-foreground py-12 text-background">
                 <div className="container mx-auto px-4">
-                    <h2 className="text-2xl font-bold text-center mb-8">Contact Our Warranty Team</h2>
-                    <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                    <h2 className="mb-8 text-center text-2xl font-bold">
+                        Contact Our Warranty Team
+                    </h2>
+                    <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-3">
                         <div className="text-center">
-                            <div className="w-14 h-14 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary">
                                 <Phone className="h-7 w-7 text-primary-foreground" />
                             </div>
-                            <h3 className="font-semibold mb-2">Call Us</h3>
-                            <p className="text-background/80 text-sm">
+                            <h3 className="mb-2 font-semibold">Call Us</h3>
+                            <p className="text-sm text-background/80">
                                 {settings?.contact?.phone || '+880 1234-567890'}
                             </p>
-                            <p className="text-background/70 text-xs mt-1">Sat-Thu, 10AM - 6PM</p>
+                            <p className="mt-1 text-xs text-background/70">
+                                Sat-Thu, 10AM - 6PM
+                            </p>
                         </div>
                         <div className="text-center">
-                            <div className="w-14 h-14 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary">
                                 <Mail className="h-7 w-7 text-primary-foreground" />
                             </div>
-                            <h3 className="font-semibold mb-2">Email Us</h3>
-                            <p className="text-background/80 text-sm">
-                                warranty@{settings?.general?.site_name?.toLowerCase().replace(/\s+/g, '') || 'e-club'}.com
+                            <h3 className="mb-2 font-semibold">Email Us</h3>
+                            <p className="text-sm text-background/80">
+                                warranty@
+                                {settings?.general?.site_name
+                                    ?.toLowerCase()
+                                    .replace(/\s+/g, '') || 'e-club'}
+                                .com
                             </p>
-                            <p className="text-background/70 text-xs mt-1">Response within 24 hours</p>
+                            <p className="mt-1 text-xs text-background/70">
+                                Response within 24 hours
+                            </p>
                         </div>
                         <div className="text-center">
-                            <div className="w-14 h-14 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary">
                                 <FileText className="h-7 w-7 text-primary-foreground" />
                             </div>
-                            <h3 className="font-semibold mb-2">Online Form</h3>
-                            <p className="text-background/80 text-sm">Submit claim through your account</p>
-                            <p className="text-background/70 text-xs mt-1">Track claim status online</p>
+                            <h3 className="mb-2 font-semibold">Online Form</h3>
+                            <p className="text-sm text-background/80">
+                                Submit claim through your account
+                            </p>
+                            <p className="mt-1 text-xs text-background/70">
+                                Track claim status online
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -340,13 +435,21 @@ export default function Warranty({ settings, categories, page, content }: Warran
             {faqs.length > 0 && (
                 <div className="py-12">
                     <div className="container mx-auto px-4">
-                        <h2 className="text-2xl font-bold text-center mb-8">
-                            {content?.faqs?.title || 'Frequently Asked Questions'}
+                        <h2 className="mb-8 text-center text-2xl font-bold">
+                            {content?.faqs?.title ||
+                                'Frequently Asked Questions'}
                         </h2>
-                        <div className="max-w-3xl mx-auto">
-                            <Accordion type="single" collapsible className="bg-card rounded-lg border">
+                        <div className="mx-auto max-w-3xl">
+                            <Accordion
+                                type="single"
+                                collapsible
+                                className="rounded-lg border bg-card"
+                            >
                                 {faqs.map((faq, index) => (
-                                    <AccordionItem key={index} value={`item-${index}`}>
+                                    <AccordionItem
+                                        key={index}
+                                        value={`item-${index}`}
+                                    >
                                         <AccordionTrigger className="px-6 text-left">
                                             {faq.question}
                                         </AccordionTrigger>
@@ -364,13 +467,16 @@ export default function Warranty({ settings, categories, page, content }: Warran
             {/* Download Warranty Card */}
             <div className="bg-muted py-12">
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-2xl font-bold mb-4">Register Your Product</h2>
-                    <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                        Register your purchase to receive faster warranty service and exclusive benefits.
+                    <h2 className="mb-4 text-2xl font-bold">
+                        Register Your Product
+                    </h2>
+                    <p className="mx-auto mb-6 max-w-xl text-muted-foreground">
+                        Register your purchase to receive faster warranty
+                        service and exclusive benefits.
                     </p>
                     <Link
                         href="/account"
-                        className="inline-flex items-center justify-center px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+                        className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3 font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                     >
                         Register Product
                     </Link>

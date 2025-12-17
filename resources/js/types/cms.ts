@@ -117,6 +117,9 @@ export interface SiteSettings {
         contact_phone_support?: string;
         email_support?: string;
         contact_email_support?: string;
+        // Merged from below
+        contact_address_title?: string;
+        contact_hours_title?: string;
     };
     social?: {
         social_facebook?: string;
@@ -282,23 +285,7 @@ export interface SiteSettings {
         about_stats_products?: string;
         about_stats_cities?: string;
     };
-    contact?: {
-        contact_page_title?: string;
-        contact_page_subtitle?: string;
-        contact_form_title?: string;
-        contact_form_subtitle?: string;
-        contact_address_title?: string;
-        contact_hours_title?: string;
-        contact_hours_weekday?: string;
-        contact_hours_weekend?: string;
-        // Legacy fields from other contact group
-        contact_email?: string;
-        contact_phone?: string;
-        contact_address?: string;
-        email?: string;
-        phone?: string;
-        address?: string;
-    };
+
     cart?: {
         cart_page_title?: string;
         cart_empty_title?: string;
@@ -314,7 +301,7 @@ export interface SiteSettings {
         checkout_order_summary_title?: string;
         checkout_place_order_button?: string;
     };
-    [key: string]: Record<string, string | undefined> | undefined;
+    [key: string]: any;
 }
 
 export interface FeaturedProduct {
@@ -393,6 +380,114 @@ export interface HomeContent {
     siteSettings: SiteSettings;
 }
 
+// Home Page Types
+export interface HomeSection {
+    id: number;
+    key: string;
+    title: string;
+    subtitle: string | null;
+    content: string | null;
+    image: string | null;
+    image_position: 'left' | 'right' | 'center' | null;
+    background_color: string | null;
+    text_color: string | null;
+    button_text: string | null;
+    button_url: string | null;
+    is_active: boolean;
+    sort_order: number;
+    created_at: string;
+    updated_at: string;
+    [key: string]: any;
+}
+
+export interface HomeStat {
+    id: number;
+    label: string;
+    value: string;
+    icon: string | null;
+    is_active: boolean;
+    sort_order: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface HomeActivity {
+    id: number;
+    title: string;
+    description: string | null;
+    image: string | null;
+    icon: string | null;
+    url: string | null;
+    is_active: boolean;
+    sort_order: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface HomeProject {
+    id: number;
+    title: string;
+    subtitle: string | null;
+    description: string | null;
+    image: string | null;
+    url: string | null;
+    color: string | null;
+    is_active: boolean;
+    sort_order: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface HomePartner {
+    id: number;
+    name: string;
+    type: string | null;
+    logo: string | null;
+    url: string | null;
+    color: string | null;
+    is_active: boolean;
+    sort_order: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface HomeCoreValue {
+    id: number;
+    title: string;
+    description: string | null;
+    icon: string | null;
+    is_active: boolean;
+    sort_order: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface FooterSection {
+    id: number;
+    title: string;
+    content: string | null;
+    is_active: boolean;
+    sort_order: number;
+}
+
+export interface Address {
+    id: number;
+    type: string;
+    address: string;
+    phone: string | null;
+    email: string | null;
+    latitude: string | null;
+    longitude: string | null;
+}
+
+export interface SocialLink {
+    id: number;
+    platform: string;
+    url: string;
+    icon: string | null;
+    is_active: boolean;
+}
+
 // Cart Types
 export interface CartItem {
     productId: number;
@@ -410,4 +505,12 @@ export interface GuestCheckout {
     city: string;
     postalCode: string;
     notes?: string;
+}
+
+export interface FooterData {
+    sections: FooterSection[];
+    bangladeshAddresses: Address[];
+    internationalAddresses: Address[];
+    links: Record<string, { id: number; label: string; url: string }[]> | any[];
+    socialLinks: SocialLink[];
 }

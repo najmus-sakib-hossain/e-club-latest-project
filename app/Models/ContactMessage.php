@@ -10,7 +10,9 @@ class ContactMessage extends Model
     use HasFactory;
 
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_IN_PROGRESS = 'in_progress';
+
     public const STATUS_RESOLVED = 'resolved';
 
     protected $fillable = [
@@ -65,7 +67,7 @@ class ContactMessage extends Model
      */
     public function markAsRead()
     {
-        if (!$this->read_at) {
+        if (! $this->read_at) {
             $this->update([
                 'read_at' => now(),
             ]);
@@ -108,6 +110,6 @@ class ContactMessage extends Model
      */
     public function hasReply()
     {
-        return !empty($this->reply_content);
+        return ! empty($this->reply_content);
     }
 }

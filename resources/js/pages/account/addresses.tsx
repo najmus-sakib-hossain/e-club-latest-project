@@ -1,19 +1,17 @@
 import { Head, Link } from '@inertiajs/react';
-import { ChevronRight, MapPin, Plus, Pencil, Trash2, Star, Home, Building } from 'lucide-react';
+import {
+    Building,
+    ChevronRight,
+    Home,
+    MapPin,
+    Pencil,
+    Plus,
+    Star,
+    Trash2,
+} from 'lucide-react';
 import { useState } from 'react';
 
 import { SiteLayout } from '@/components/site';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -24,14 +22,25 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
 import { PhoneInput } from '@/components/ui/phone-input';
+import { Textarea } from '@/components/ui/textarea';
 import { useAddressStore, type Address } from '@/stores/address-store';
-import { toast } from 'sonner';
 import type { Category, SiteSettings } from '@/types/cms';
+import { toast } from 'sonner';
 
 interface AddressesPageProps {
     settings?: SiteSettings;
@@ -44,13 +53,22 @@ const addressLabels = [
     { value: 'other', label: 'Other', icon: MapPin },
 ];
 
-export default function AddressesPage({ settings, categories }: AddressesPageProps) {
-    const { addresses, addAddress, updateAddress, removeAddress, setDefaultAddress } = useAddressStore();
-    
+export default function AddressesPage({
+    settings,
+    categories,
+}: AddressesPageProps) {
+    const {
+        addresses,
+        addAddress,
+        updateAddress,
+        removeAddress,
+        setDefaultAddress,
+    } = useAddressStore();
+
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [editingAddress, setEditingAddress] = useState<Address | null>(null);
     const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
-    
+
     const [formData, setFormData] = useState({
         label: 'home',
         name: '',
@@ -95,7 +113,7 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (editingAddress) {
             updateAddress(editingAddress.id, formData);
             toast.success('Address updated successfully');
@@ -103,7 +121,7 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
             addAddress(formData);
             toast.success('Address added successfully');
         }
-        
+
         setIsDialogOpen(false);
         resetForm();
     };
@@ -132,17 +150,23 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
             <div className="bg-muted py-4">
                 <div className="container mx-auto px-4">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Link href="/" className="hover:text-primary">Home</Link>
+                        <Link href="/" className="hover:text-primary">
+                            Home
+                        </Link>
                         <ChevronRight className="h-4 w-4" />
-                        <Link href="/account" className="hover:text-primary">Account</Link>
+                        <Link href="/account" className="hover:text-primary">
+                            Account
+                        </Link>
                         <ChevronRight className="h-4 w-4" />
-                        <span className="text-foreground font-medium">Addresses</span>
+                        <span className="font-medium text-foreground">
+                            Addresses
+                        </span>
                     </div>
                 </div>
             </div>
 
             <div className="container mx-auto px-4 py-8">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h1 className="text-2xl font-bold">My Addresses</h1>
                         <p className="text-muted-foreground">
@@ -150,7 +174,7 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
                         </p>
                     </div>
                     <Button onClick={openAddDialog}>
-                        <Plus className="h-4 w-4 mr-2" />
+                        <Plus className="mr-2 h-4 w-4" />
                         Add Address
                     </Button>
                 </div>
@@ -159,23 +183,26 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
                     <Card>
                         <CardContent className="py-16">
                             <div className="text-center">
-                                <MapPin className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                                <h2 className="text-xl font-semibold mb-2">No addresses saved</h2>
-                                <p className="text-muted-foreground mb-6">
-                                    Add your delivery address to make checkout faster.
+                                <MapPin className="mx-auto mb-4 h-16 w-16 text-muted-foreground" />
+                                <h2 className="mb-2 text-xl font-semibold">
+                                    No addresses saved
+                                </h2>
+                                <p className="mb-6 text-muted-foreground">
+                                    Add your delivery address to make checkout
+                                    faster.
                                 </p>
                                 <Button onClick={openAddDialog}>
-                                    <Plus className="h-4 w-4 mr-2" />
+                                    <Plus className="mr-2 h-4 w-4" />
                                     Add Your First Address
                                 </Button>
                             </div>
                         </CardContent>
                     </Card>
                 ) : (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {addresses.map((address) => {
                             const LabelIcon = getLabelIcon(address.label);
-                            
+
                             return (
                                 <Card
                                     key={address.id}
@@ -184,42 +211,59 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
                                     {address.isDefault && (
                                         <div className="absolute top-3 right-3">
                                             <Badge className="bg-primary text-primary-foreground">
-                                                <Star className="h-3 w-3 mr-1" />
+                                                <Star className="mr-1 h-3 w-3" />
                                                 Default
                                             </Badge>
                                         </div>
                                     )}
                                     <CardHeader className="pb-2">
-                                        <CardTitle className="text-base flex items-center gap-2">
+                                        <CardTitle className="flex items-center gap-2 text-base">
                                             <LabelIcon className="h-4 w-4" />
-                                            {address.label.charAt(0).toUpperCase() + address.label.slice(1)}
+                                            {address.label
+                                                .charAt(0)
+                                                .toUpperCase() +
+                                                address.label.slice(1)}
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="space-y-1 text-sm mb-4">
-                                            <p className="font-medium">{address.name}</p>
-                                            <p className="text-muted-foreground">{address.phone}</p>
-                                            <p className="text-muted-foreground">{address.address}</p>
+                                        <div className="mb-4 space-y-1 text-sm">
+                                            <p className="font-medium">
+                                                {address.name}
+                                            </p>
                                             <p className="text-muted-foreground">
-                                                {address.city}{address.postalCode && ` - ${address.postalCode}`}
+                                                {address.phone}
+                                            </p>
+                                            <p className="text-muted-foreground">
+                                                {address.address}
+                                            </p>
+                                            <p className="text-muted-foreground">
+                                                {address.city}
+                                                {address.postalCode &&
+                                                    ` - ${address.postalCode}`}
                                             </p>
                                         </div>
                                         <div className="flex gap-2">
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                onClick={() => openEditDialog(address)}
+                                                onClick={() =>
+                                                    openEditDialog(address)
+                                                }
                                             >
-                                                <Pencil className="h-3 w-3 mr-1" />
+                                                <Pencil className="mr-1 h-3 w-3" />
                                                 Edit
                                             </Button>
                                             {!address.isDefault && (
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    onClick={() => handleSetDefault(address.id)}
+                                                    onClick={() =>
+                                                        handleSetDefault(
+                                                            address.id,
+                                                        )
+                                                    }
                                                 >
-                                                    <Star className="h-3 w-3 mr-1" />
+                                                    <Star className="mr-1 h-3 w-3" />
                                                     Set Default
                                                 </Button>
                                             )}
@@ -227,7 +271,11 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
                                                 variant="outline"
                                                 size="sm"
                                                 className="text-destructive hover:text-destructive"
-                                                onClick={() => setDeleteConfirmId(address.id)}
+                                                onClick={() =>
+                                                    setDeleteConfirmId(
+                                                        address.id,
+                                                    )
+                                                }
                                             >
                                                 <Trash2 className="h-3 w-3" />
                                             </Button>
@@ -245,7 +293,9 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
                 <DialogContent className="sm:max-w-[500px]">
                     <DialogHeader>
                         <DialogTitle>
-                            {editingAddress ? 'Edit Address' : 'Add New Address'}
+                            {editingAddress
+                                ? 'Edit Address'
+                                : 'Add New Address'}
                         </DialogTitle>
                         <DialogDescription>
                             {editingAddress
@@ -259,18 +309,29 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
                             <div className="space-y-2">
                                 <Label>Address Type</Label>
                                 <div className="flex gap-2">
-                                    {addressLabels.map(({ value, label, icon: Icon }) => (
-                                        <Button
-                                            key={value}
-                                            type="button"
-                                            variant={formData.label === value ? 'default' : 'outline'}
-                                            size="sm"
-                                            onClick={() => setFormData({ ...formData, label: value })}
-                                        >
-                                            <Icon className="h-4 w-4 mr-1" />
-                                            {label}
-                                        </Button>
-                                    ))}
+                                    {addressLabels.map(
+                                        ({ value, label, icon: Icon }) => (
+                                            <Button
+                                                key={value}
+                                                type="button"
+                                                variant={
+                                                    formData.label === value
+                                                        ? 'default'
+                                                        : 'outline'
+                                                }
+                                                size="sm"
+                                                onClick={() =>
+                                                    setFormData({
+                                                        ...formData,
+                                                        label: value,
+                                                    })
+                                                }
+                                            >
+                                                <Icon className="mr-1 h-4 w-4" />
+                                                {label}
+                                            </Button>
+                                        ),
+                                    )}
                                 </div>
                             </div>
 
@@ -280,7 +341,12 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
                                     <Input
                                         id="name"
                                         value={formData.name}
-                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                name: e.target.value,
+                                            })
+                                        }
                                         required
                                     />
                                 </div>
@@ -289,7 +355,12 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
                                     <PhoneInput
                                         id="phone"
                                         value={formData.phone}
-                                        onChange={(value) => setFormData({ ...formData, phone: value || '' })}
+                                        onChange={(value) =>
+                                            setFormData({
+                                                ...formData,
+                                                phone: value || '',
+                                            })
+                                        }
                                         defaultCountry="BD"
                                         placeholder="Enter phone number"
                                     />
@@ -301,7 +372,12 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
                                 <Textarea
                                     id="address"
                                     value={formData.address}
-                                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                                    onChange={(e) =>
+                                        setFormData({
+                                            ...formData,
+                                            address: e.target.value,
+                                        })
+                                    }
                                     placeholder="House/Building number, Street name, Area"
                                     required
                                 />
@@ -313,16 +389,28 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
                                     <Input
                                         id="city"
                                         value={formData.city}
-                                        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                city: e.target.value,
+                                            })
+                                        }
                                         required
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="postalCode">Postal Code</Label>
+                                    <Label htmlFor="postalCode">
+                                        Postal Code
+                                    </Label>
                                     <Input
                                         id="postalCode"
                                         value={formData.postalCode}
-                                        onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                postalCode: e.target.value,
+                                            })
+                                        }
                                     />
                                 </div>
                             </div>
@@ -332,20 +420,32 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
                                     id="isDefault"
                                     checked={formData.isDefault}
                                     onCheckedChange={(checked) =>
-                                        setFormData({ ...formData, isDefault: checked === true })
+                                        setFormData({
+                                            ...formData,
+                                            isDefault: checked === true,
+                                        })
                                     }
                                 />
-                                <Label htmlFor="isDefault" className="text-sm font-normal">
+                                <Label
+                                    htmlFor="isDefault"
+                                    className="text-sm font-normal"
+                                >
                                     Set as default address
                                 </Label>
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setIsDialogOpen(false)}
+                            >
                                 Cancel
                             </Button>
                             <Button type="submit">
-                                {editingAddress ? 'Update Address' : 'Add Address'}
+                                {editingAddress
+                                    ? 'Update Address'
+                                    : 'Add Address'}
                             </Button>
                         </DialogFooter>
                     </form>
@@ -353,18 +453,24 @@ export default function AddressesPage({ settings, categories }: AddressesPagePro
             </Dialog>
 
             {/* Delete Confirmation */}
-            <AlertDialog open={!!deleteConfirmId} onOpenChange={() => setDeleteConfirmId(null)}>
+            <AlertDialog
+                open={!!deleteConfirmId}
+                onOpenChange={() => setDeleteConfirmId(null)}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Address</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete this address? This action cannot be undone.
+                            Are you sure you want to delete this address? This
+                            action cannot be undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
-                            onClick={() => deleteConfirmId && handleDelete(deleteConfirmId)}
+                            onClick={() =>
+                                deleteConfirmId && handleDelete(deleteConfirmId)
+                            }
                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
                             Delete

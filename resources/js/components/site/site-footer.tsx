@@ -1,6 +1,14 @@
-import { Link } from '@inertiajs/react';
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Youtube } from 'lucide-react';
 import type { SiteSettings } from '@/types/cms';
+import { Link } from '@inertiajs/react';
+import {
+    Facebook,
+    Instagram,
+    Linkedin,
+    Mail,
+    MapPin,
+    Phone,
+    Youtube,
+} from 'lucide-react';
 
 interface SiteFooterProps {
     settings?: SiteSettings;
@@ -10,7 +18,11 @@ export function SiteFooter({ settings }: SiteFooterProps) {
     const currentYear = new Date().getFullYear();
 
     // Helper to get setting values from nested structure
-    const getSetting = (group: string, key: string, fallback: any = ''): any => {
+    const getSetting = (
+        group: string,
+        key: string,
+        fallback: any = '',
+    ): any => {
         const groupSettings = settings?.[group];
         if (groupSettings && typeof groupSettings === 'object') {
             return (groupSettings[key] as any) ?? fallback;
@@ -20,7 +32,11 @@ export function SiteFooter({ settings }: SiteFooterProps) {
 
     const defaultPaymentMethods = [
         { id: 'visa', name: 'VISA', logo: '/company/visa.png' },
-        { id: 'mastercard', name: 'Mastercard', logo: '/company/mastercard.png' },
+        {
+            id: 'mastercard',
+            name: 'Mastercard',
+            logo: '/company/mastercard.png',
+        },
         { id: 'amex', name: 'American Express', logo: '/company/amex.png' },
         { id: 'bkash', name: 'bKash', logo: '/company/bkash.png' },
         { id: 'nagad', name: 'Nagad', logo: '/company/nagad.png' },
@@ -38,10 +54,16 @@ export function SiteFooter({ settings }: SiteFooterProps) {
             const parsed = value
                 .map((item, index) => {
                     if (!item || typeof item !== 'object') return null;
-                    const method = item as { id?: string; name?: string; logo?: string };
+                    const method = item as {
+                        id?: string;
+                        name?: string;
+                        logo?: string;
+                    };
                     const fallback = defaultPaymentMethods[index];
                     const name = method.name || fallback?.name || '';
-                    const logo = normalizeLogo(method.logo || fallback?.logo || '');
+                    const logo = normalizeLogo(
+                        method.logo || fallback?.logo || '',
+                    );
                     if (!name || !logo) return null;
                     return {
                         id: method.id || fallback?.id || `payment-${index}`,
@@ -49,7 +71,11 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                         logo,
                     };
                 })
-                .filter(Boolean) as { id: string; name: string; logo: string }[];
+                .filter(Boolean) as {
+                id: string;
+                name: string;
+                logo: string;
+            }[];
             return parsed.length ? parsed : defaultPaymentMethods;
         }
 
@@ -69,89 +95,244 @@ export function SiteFooter({ settings }: SiteFooterProps) {
     const siteName = getSetting('general', 'site_name', 'E-Club Store');
     const siteLogo = getSetting('general', 'site_logo', '');
     const logoSrc = siteLogo ? `/storage/${siteLogo}` : '/logo.png';
-    const siteDescription = getSetting('general', 'site_description', 'Premium quality e-club for your home and office. We bring comfort and style to your living spaces.');
-    const contactPhone = getSetting('contact', 'contact_phone') || getSetting('contact', 'phone', '+880 1234-567890');
-    const contactEmail = getSetting('contact', 'contact_email') || getSetting('contact', 'email', 'info@e-clubstore.com');
-    const contactAddress = getSetting('contact', 'contact_address') || getSetting('contact', 'address', 'Dhaka, Bangladesh');
-    const socialFacebook = getSetting('social', 'social_facebook') || getSetting('social', 'facebook');
-    const socialInstagram = getSetting('social', 'social_instagram') || getSetting('social', 'instagram');
-    const socialLinkedin = getSetting('social', 'social_linkedin') || getSetting('social', 'linkedin');
-    const socialYoutube = getSetting('social', 'social_youtube') || getSetting('social', 'youtube');
+    const siteDescription = getSetting(
+        'general',
+        'site_description',
+        'Premium quality e-club for your home and office. We bring comfort and style to your living spaces.',
+    );
+    const contactPhone =
+        getSetting('contact', 'contact_phone') ||
+        getSetting('contact', 'phone', '+880 1234-567890');
+    const contactEmail =
+        getSetting('contact', 'contact_email') ||
+        getSetting('contact', 'email', 'info@e-clubstore.com');
+    const contactAddress =
+        getSetting('contact', 'contact_address') ||
+        getSetting('contact', 'address', 'Dhaka, Bangladesh');
+    const socialFacebook =
+        getSetting('social', 'social_facebook') ||
+        getSetting('social', 'facebook');
+    const socialInstagram =
+        getSetting('social', 'social_instagram') ||
+        getSetting('social', 'instagram');
+    const socialLinkedin =
+        getSetting('social', 'social_linkedin') ||
+        getSetting('social', 'linkedin');
+    const socialYoutube =
+        getSetting('social', 'social_youtube') ||
+        getSetting('social', 'youtube');
     // Footer copyright section settings
-    const copyrightLeftText = getSetting('footer', 'footer_copyright_left_text') || getSetting('footer', 'copyright_left_text', '© 2025 Nex Real Estate. All rights reserved.');
-    const copyrightLeftLinkText = getSetting('footer', 'footer_copyright_left_link_text') || getSetting('footer', 'copyright_left_link_text', 'Nex Real Estate');
-    const copyrightLeftLinkUrl = getSetting('footer', 'footer_copyright_left_link_url') || getSetting('footer', 'copyright_left_link_url', 'https://realstate.nexgroup.biz');
-    const copyrightRightText = getSetting('footer', 'footer_copyright_right_text') || getSetting('footer', 'copyright_right_text', 'Developed and maintained by');
-    const copyrightRightLinkText = getSetting('footer', 'footer_copyright_right_link_text') || getSetting('footer', 'copyright_right_link_text', 'Alphainno');
-    const copyrightRightLinkUrl = getSetting('footer', 'footer_copyright_right_link_url') || getSetting('footer', 'copyright_right_link_url', 'https://alphainno.com');
+    const copyrightLeftText =
+        getSetting('footer', 'footer_copyright_left_text') ||
+        getSetting(
+            'footer',
+            'copyright_left_text',
+            '© 2025 Nex Real Estate. All rights reserved.',
+        );
+    const copyrightLeftLinkText =
+        getSetting('footer', 'footer_copyright_left_link_text') ||
+        getSetting('footer', 'copyright_left_link_text', 'Nex Real Estate');
+    const copyrightLeftLinkUrl =
+        getSetting('footer', 'footer_copyright_left_link_url') ||
+        getSetting(
+            'footer',
+            'copyright_left_link_url',
+            'https://realstate.nexgroup.biz',
+        );
+    const copyrightRightText =
+        getSetting('footer', 'footer_copyright_right_text') ||
+        getSetting(
+            'footer',
+            'copyright_right_text',
+            'Developed and maintained by',
+        );
+    const copyrightRightLinkText =
+        getSetting('footer', 'footer_copyright_right_link_text') ||
+        getSetting('footer', 'copyright_right_link_text', 'Alphainno');
+    const copyrightRightLinkUrl =
+        getSetting('footer', 'footer_copyright_right_link_url') ||
+        getSetting(
+            'footer',
+            'copyright_right_link_url',
+            'https://alphainno.com',
+        );
 
     // Footer section titles from settings (keys match admin settings)
-    const followUsTitle = getSetting('footer', 'footer_follow_us_title') || getSetting('footer', 'follow_us_title', 'Follow Us');
-    const quickLinksTitle = getSetting('footer', 'footer_quick_links_title') || getSetting('footer', 'quick_links_title', 'Quick Links');
-    const customerServiceTitle = getSetting('footer', 'footer_customer_service_title') || getSetting('footer', 'customer_service_title', 'Customer Service');
-    const informationTitle = getSetting('footer', 'footer_information_title') || getSetting('footer', 'information_title', 'Information');
-    const paymentTitle = getSetting('footer', 'footer_payment_title') || getSetting('footer', 'payment_title', 'Secure Payment Methods');
+    const followUsTitle =
+        getSetting('footer', 'footer_follow_us_title') ||
+        getSetting('footer', 'follow_us_title', 'Follow Us');
+    const quickLinksTitle =
+        getSetting('footer', 'footer_quick_links_title') ||
+        getSetting('footer', 'quick_links_title', 'Quick Links');
+    const customerServiceTitle =
+        getSetting('footer', 'footer_customer_service_title') ||
+        getSetting('footer', 'customer_service_title', 'Customer Service');
+    const informationTitle =
+        getSetting('footer', 'footer_information_title') ||
+        getSetting('footer', 'information_title', 'Information');
+    const paymentTitle =
+        getSetting('footer', 'footer_payment_title') ||
+        getSetting('footer', 'payment_title', 'Secure Payment Methods');
 
     // Footer link labels from settings
-    const linkHome = getSetting('footer', 'footer_link_home') || getSetting('footer', 'link_home', 'Home');
-    const linkProducts = getSetting('footer', 'footer_link_products') || getSetting('footer', 'link_products', 'All Products');
-    const linkCategories = getSetting('footer', 'footer_link_categories') || getSetting('footer', 'link_categories', 'Categories');
-    const linkAbout = getSetting('footer', 'footer_link_about') || getSetting('footer', 'link_about', 'About Us');
-    const linkContact = getSetting('footer', 'footer_link_contact') || getSetting('footer', 'link_contact', 'Contact Us');
-    const linkHelp = getSetting('footer', 'footer_link_help') || getSetting('footer', 'link_help', 'Help Center');
-    const linkAccount = getSetting('footer', 'footer_link_account') || getSetting('footer', 'link_account', 'My Account');
-    const linkOrderTracking = getSetting('footer', 'footer_link_order_tracking') || getSetting('footer', 'link_order_tracking', 'Order Tracking');
-    const linkWishlist = getSetting('footer', 'footer_link_wishlist') || getSetting('footer', 'link_wishlist', 'Wishlist');
-    const linkShipping = getSetting('footer', 'footer_link_shipping') || getSetting('footer', 'link_shipping', 'Shipping Policy');
-    const linkReturns = getSetting('footer', 'footer_link_returns') || getSetting('footer', 'link_returns', 'Returns & Exchanges');
-    const linkFaqs = getSetting('footer', 'footer_link_faqs') || getSetting('footer', 'link_faqs', 'FAQs');
-    const linkPrivacy = getSetting('footer', 'footer_link_privacy') || getSetting('footer', 'link_privacy', 'Privacy Policy');
-    const linkTerms = getSetting('footer', 'footer_link_terms') || getSetting('footer', 'link_terms', 'Terms & Conditions');
-    const linkWarranty = getSetting('footer', 'footer_link_warranty') || getSetting('footer', 'link_warranty', 'Warranty Information');
-    const linkCare = getSetting('footer', 'footer_link_care') || getSetting('footer', 'link_care', 'Care & Maintenance');
-    const linkStores = getSetting('footer', 'footer_link_stores') || getSetting('footer', 'link_stores', 'Store Locator');
+    const linkHome =
+        getSetting('footer', 'footer_link_home') ||
+        getSetting('footer', 'link_home', 'Home');
+    const linkProducts =
+        getSetting('footer', 'footer_link_products') ||
+        getSetting('footer', 'link_products', 'All Products');
+    const linkCategories =
+        getSetting('footer', 'footer_link_categories') ||
+        getSetting('footer', 'link_categories', 'Categories');
+    const linkAbout =
+        getSetting('footer', 'footer_link_about') ||
+        getSetting('footer', 'link_about', 'About Us');
+    const linkContact =
+        getSetting('footer', 'footer_link_contact') ||
+        getSetting('footer', 'link_contact', 'Contact Us');
+    const linkHelp =
+        getSetting('footer', 'footer_link_help') ||
+        getSetting('footer', 'link_help', 'Help Center');
+    const linkAccount =
+        getSetting('footer', 'footer_link_account') ||
+        getSetting('footer', 'link_account', 'My Account');
+    const linkOrderTracking =
+        getSetting('footer', 'footer_link_order_tracking') ||
+        getSetting('footer', 'link_order_tracking', 'Order Tracking');
+    const linkWishlist =
+        getSetting('footer', 'footer_link_wishlist') ||
+        getSetting('footer', 'link_wishlist', 'Wishlist');
+    const linkShipping =
+        getSetting('footer', 'footer_link_shipping') ||
+        getSetting('footer', 'link_shipping', 'Shipping Policy');
+    const linkReturns =
+        getSetting('footer', 'footer_link_returns') ||
+        getSetting('footer', 'link_returns', 'Returns & Exchanges');
+    const linkFaqs =
+        getSetting('footer', 'footer_link_faqs') ||
+        getSetting('footer', 'link_faqs', 'FAQs');
+    const linkPrivacy =
+        getSetting('footer', 'footer_link_privacy') ||
+        getSetting('footer', 'link_privacy', 'Privacy Policy');
+    const linkTerms =
+        getSetting('footer', 'footer_link_terms') ||
+        getSetting('footer', 'link_terms', 'Terms & Conditions');
+    const linkWarranty =
+        getSetting('footer', 'footer_link_warranty') ||
+        getSetting('footer', 'link_warranty', 'Warranty Information');
+    const linkCare =
+        getSetting('footer', 'footer_link_care') ||
+        getSetting('footer', 'link_care', 'Care & Maintenance');
+    const linkStores =
+        getSetting('footer', 'footer_link_stores') ||
+        getSetting('footer', 'link_stores', 'Store Locator');
 
     // Link URLs from settings
     const linkHomeUrl = getSetting('footer', 'footer_link_home_url', '/');
-    const linkProductsUrl = getSetting('footer', 'footer_link_products_url', '/products');
-    const linkCategoriesUrl = getSetting('footer', 'footer_link_categories_url', '/categories');
-    const linkAboutUrl = getSetting('footer', 'footer_link_about_url', '/about');
-    const linkContactUrl = getSetting('footer', 'footer_link_contact_url', '/contact');
+    const linkProductsUrl = getSetting(
+        'footer',
+        'footer_link_products_url',
+        '/products',
+    );
+    const linkCategoriesUrl = getSetting(
+        'footer',
+        'footer_link_categories_url',
+        '/categories',
+    );
+    const linkAboutUrl = getSetting(
+        'footer',
+        'footer_link_about_url',
+        '/about',
+    );
+    const linkContactUrl = getSetting(
+        'footer',
+        'footer_link_contact_url',
+        '/contact',
+    );
     const linkHelpUrl = getSetting('footer', 'footer_link_help_url', '/help');
-    const linkAccountUrl = getSetting('footer', 'footer_link_account_url', '/account');
-    const linkOrderTrackingUrl = getSetting('footer', 'footer_link_order_tracking_url', '/account/orders');
-    const linkWishlistUrl = getSetting('footer', 'footer_link_wishlist_url', '/account/wishlist');
-    const linkShippingUrl = getSetting('footer', 'footer_link_shipping_url', '/shipping');
-    const linkReturnsUrl = getSetting('footer', 'footer_link_returns_url', '/returns');
+    const linkAccountUrl = getSetting(
+        'footer',
+        'footer_link_account_url',
+        '/account',
+    );
+    const linkOrderTrackingUrl = getSetting(
+        'footer',
+        'footer_link_order_tracking_url',
+        '/account/orders',
+    );
+    const linkWishlistUrl = getSetting(
+        'footer',
+        'footer_link_wishlist_url',
+        '/account/wishlist',
+    );
+    const linkShippingUrl = getSetting(
+        'footer',
+        'footer_link_shipping_url',
+        '/shipping',
+    );
+    const linkReturnsUrl = getSetting(
+        'footer',
+        'footer_link_returns_url',
+        '/returns',
+    );
     const linkFaqsUrl = getSetting('footer', 'footer_link_faqs_url', '/faqs');
-    const linkPrivacyUrl = getSetting('footer', 'footer_link_privacy_url', '/privacy');
-    const linkTermsUrl = getSetting('footer', 'footer_link_terms_url', '/terms');
-    const linkWarrantyUrl = getSetting('footer', 'footer_link_warranty_url', '/warranty');
+    const linkPrivacyUrl = getSetting(
+        'footer',
+        'footer_link_privacy_url',
+        '/privacy',
+    );
+    const linkTermsUrl = getSetting(
+        'footer',
+        'footer_link_terms_url',
+        '/terms',
+    );
+    const linkWarrantyUrl = getSetting(
+        'footer',
+        'footer_link_warranty_url',
+        '/warranty',
+    );
     const linkCareUrl = getSetting('footer', 'footer_link_care_url', '/care');
-    const linkStoresUrl = getSetting('footer', 'footer_link_stores_url', '/stores');
+    const linkStoresUrl = getSetting(
+        'footer',
+        'footer_link_stores_url',
+        '/stores',
+    );
 
     // Visibility toggles
-    const showQuickLinks = getSetting('footer', 'footer_show_quick_links', '1') !== '0';
-    const showCustomerService = getSetting('footer', 'footer_show_customer_service', '1') !== '0';
-    const showInformation = getSetting('footer', 'footer_show_information', '1') !== '0';
-    const showPaymentMethods = getSetting('footer', 'footer_show_payment_methods', '1') !== '0';
-    const showSocialLinks = getSetting('footer', 'footer_show_social_links', '1') !== '0';
+    const showQuickLinks =
+        getSetting('footer', 'footer_show_quick_links', '1') !== '0';
+    const showCustomerService =
+        getSetting('footer', 'footer_show_customer_service', '1') !== '0';
+    const showInformation =
+        getSetting('footer', 'footer_show_information', '1') !== '0';
+    const showPaymentMethods =
+        getSetting('footer', 'footer_show_payment_methods', '1') !== '0';
+    const showSocialLinks =
+        getSetting('footer', 'footer_show_social_links', '1') !== '0';
 
-    const paymentMethodsSetting = getSetting('footer', 'footer_payment_methods', defaultPaymentMethods);
+    const paymentMethodsSetting = getSetting(
+        'footer',
+        'footer_payment_methods',
+        defaultPaymentMethods,
+    );
     const paymentMethods = parsePaymentMethods(paymentMethodsSetting);
 
     return (
-        <footer className="bg-background border-t">
+        <footer className="border-t bg-background">
             {/* Main Footer Content */}
-            <div className="bg-secondary text-secondary-foreground py-12">
+            <div className="bg-secondary py-12 text-secondary-foreground">
                 <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
                         {/* Company Info */}
                         <div>
-                            <Link href="/" className="inline-block mb-4">
-                                <img src={logoSrc} alt={siteName} className="h-10" />
+                            <Link href="/" className="mb-4 inline-block">
+                                <img
+                                    src={logoSrc}
+                                    alt={siteName}
+                                    className="h-10"
+                                />
                             </Link>
-                            <p className="text-muted-foreground text-sm mb-4">
+                            <p className="mb-4 text-sm text-muted-foreground">
                                 {siteDescription}
                             </p>
                             <div className="space-y-2 text-sm text-muted-foreground">
@@ -164,21 +345,23 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                                     {contactEmail}
                                 </p>
                                 <p className="flex items-start gap-2">
-                                    <MapPin className="h-4 w-4 text-primary mt-0.5" />
+                                    <MapPin className="mt-0.5 h-4 w-4 text-primary" />
                                     <span>{contactAddress}</span>
                                 </p>
                             </div>
                             {/* Social Links */}
                             {showSocialLinks && (
                                 <div className="mt-4">
-                                    <p className="text-sm font-semibold mb-3 text-secondary-foreground">{followUsTitle}</p>
+                                    <p className="mb-3 text-sm font-semibold text-secondary-foreground">
+                                        {followUsTitle}
+                                    </p>
                                     <div className="flex gap-3">
                                         {socialFacebook && (
                                             <a
                                                 href={socialFacebook}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-muted-foreground hover:text-primary transition-colors"
+                                                className="text-muted-foreground transition-colors hover:text-primary"
                                             >
                                                 <Facebook className="h-5 w-5" />
                                             </a>
@@ -188,7 +371,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                                                 href={socialInstagram}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-muted-foreground hover:text-primary transition-colors"
+                                                className="text-muted-foreground transition-colors hover:text-primary"
                                             >
                                                 <Instagram className="h-5 w-5" />
                                             </a>
@@ -198,7 +381,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                                                 href={socialLinkedin}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-muted-foreground hover:text-primary transition-colors"
+                                                className="text-muted-foreground transition-colors hover:text-primary"
                                             >
                                                 <Linkedin className="h-5 w-5" />
                                             </a>
@@ -208,7 +391,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                                                 href={socialYoutube}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-muted-foreground hover:text-primary transition-colors"
+                                                className="text-muted-foreground transition-colors hover:text-primary"
                                             >
                                                 <Youtube className="h-5 w-5" />
                                             </a>
@@ -221,35 +404,55 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                         {/* Quick Links */}
                         {showQuickLinks && (
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">{quickLinksTitle}</h3>
+                                <h3 className="mb-4 text-lg font-semibold">
+                                    {quickLinksTitle}
+                                </h3>
                                 <ul className="space-y-2 text-sm text-muted-foreground">
                                     <li>
-                                        <Link href={linkHomeUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkHomeUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkHome}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkProductsUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkProductsUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkProducts}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkCategoriesUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkCategoriesUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkCategories}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkAboutUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkAboutUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkAbout}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkContactUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkContactUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkContact}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkHelpUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkHelpUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkHelp}
                                         </Link>
                                     </li>
@@ -260,35 +463,55 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                         {/* Customer Service */}
                         {showCustomerService && (
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">{customerServiceTitle}</h3>
+                                <h3 className="mb-4 text-lg font-semibold">
+                                    {customerServiceTitle}
+                                </h3>
                                 <ul className="space-y-2 text-sm text-muted-foreground">
                                     <li>
-                                        <Link href={linkAccountUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkAccountUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkAccount}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkOrderTrackingUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkOrderTrackingUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkOrderTracking}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkWishlistUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkWishlistUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkWishlist}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkShippingUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkShippingUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkShipping}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkReturnsUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkReturnsUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkReturns}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkFaqsUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkFaqsUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkFaqs}
                                         </Link>
                                     </li>
@@ -299,30 +522,47 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                         {/* Policies */}
                         {showInformation && (
                             <div>
-                                <h3 className="text-lg font-semibold mb-4">{informationTitle}</h3>
+                                <h3 className="mb-4 text-lg font-semibold">
+                                    {informationTitle}
+                                </h3>
                                 <ul className="space-y-2 text-sm text-muted-foreground">
                                     <li>
-                                        <Link href={linkPrivacyUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkPrivacyUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkPrivacy}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkTermsUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkTermsUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkTerms}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkWarrantyUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkWarrantyUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkWarranty}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkCareUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkCareUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkCare}
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={linkStoresUrl} className="hover:text-primary transition-colors">
+                                        <Link
+                                            href={linkStoresUrl}
+                                            className="transition-colors hover:text-primary"
+                                        >
                                             {linkStores}
                                         </Link>
                                     </li>
@@ -337,14 +577,16 @@ export function SiteFooter({ settings }: SiteFooterProps) {
             {showPaymentMethods && (
                 <div className="bg-secondary py-6">
                     <div className="container mx-auto px-4">
-                        <div className="text-center mb-4">
-                            <p className="text-secondary-foreground font-semibold mb-4">{paymentTitle}</p>
+                        <div className="mb-4 text-center">
+                            <p className="mb-4 font-semibold text-secondary-foreground">
+                                {paymentTitle}
+                            </p>
                         </div>
-                        <div className="flex flex-wrap justify-center items-center gap-3">
+                        <div className="flex flex-wrap items-center justify-center gap-3">
                             {paymentMethods.map((method) => (
                                 <div
                                     key={method.id}
-                                    className="bg-card text-card-foreground rounded p-2 h-10 w-14 flex items-center justify-center"
+                                    className="flex h-10 w-14 items-center justify-center rounded bg-card p-2 text-card-foreground"
                                     title={method.name}
                                 >
                                     <img
@@ -352,7 +594,8 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                                         alt={method.name}
                                         className="max-h-6 max-w-full object-contain"
                                         onError={(e) => {
-                                            e.currentTarget.style.display = 'none';
+                                            e.currentTarget.style.display =
+                                                'none';
                                         }}
                                     />
                                 </div>
@@ -363,23 +606,33 @@ export function SiteFooter({ settings }: SiteFooterProps) {
             )}
 
             {/* Copyright */}
-            <div className="bg-secondary py-4 border-t border-border">
+            <div className="border-t border-border bg-secondary py-4">
                 <div className="container mx-auto px-4">
-                    <div className="flex flex-col lg:flex-row justify-between items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex flex-col items-center justify-between gap-2 text-sm text-muted-foreground lg:flex-row">
                         {/* Left: Copyright with Nex Real Estate link */}
                         <p className="text-center lg:text-left">
-                            {copyrightLeftText.includes(copyrightLeftLinkText) ? (
+                            {copyrightLeftText.includes(
+                                copyrightLeftLinkText,
+                            ) ? (
                                 <>
-                                    {copyrightLeftText.split(copyrightLeftLinkText)[0]}
+                                    {
+                                        copyrightLeftText.split(
+                                            copyrightLeftLinkText,
+                                        )[0]
+                                    }
                                     <a
                                         href={copyrightLeftLinkUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="hover:text-primary transition-colors underline underline-offset-2"
+                                        className="underline underline-offset-2 transition-colors hover:text-primary"
                                     >
                                         {copyrightLeftLinkText}
                                     </a>
-                                    {copyrightLeftText.split(copyrightLeftLinkText)[1]}
+                                    {
+                                        copyrightLeftText.split(
+                                            copyrightLeftLinkText,
+                                        )[1]
+                                    }
                                 </>
                             ) : (
                                 copyrightLeftText
@@ -392,7 +645,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                                 href={copyrightRightLinkUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="hover:text-primary transition-colors underline underline-offset-2"
+                                className="underline underline-offset-2 transition-colors hover:text-primary"
                             >
                                 {copyrightRightLinkText}
                             </a>

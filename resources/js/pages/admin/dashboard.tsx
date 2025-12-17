@@ -1,14 +1,14 @@
-import { Head } from '@inertiajs/react';
-import { AdminLayout } from '@/layouts/admin-layout';
-import { DashboardStats } from '@/components/dashboard/stats-cards';
 import {
     MemberTypeChart,
     TopProjectsChart,
-    UserGrowthChart
+    UserGrowthChart,
 } from '@/components/dashboard/charts';
 import { MembersTable } from '@/components/dashboard/members-table';
+import { DashboardStats } from '@/components/dashboard/stats-cards';
+import { AdminLayout } from '@/layouts/admin-layout';
+import { Head } from '@inertiajs/react';
 
-// Interfaces can be kept if we plan to use real data later, 
+// Interfaces can be kept if we plan to use real data later,
 // otherwise we can simplify. keeping them for now but unused.
 interface Stats {
     heroSlides: number;
@@ -34,16 +34,16 @@ interface Props {
     // Add other props as optional if needed
 }
 
-export default function Dashboard({
-    stats,
-}: Props) {
+export default function Dashboard({ stats }: Props) {
     return (
         <AdminLayout title="Dashboard">
             <Head title="Dashboard" />
 
             <div className="flex flex-1 flex-col gap-8">
                 <div className="flex flex-col gap-4">
-                    <h2 className="text-xl font-semibold tracking-tight">Total Users</h2>
+                    <h2 className="text-xl font-semibold tracking-tight">
+                        Total Users
+                    </h2>
                     <DashboardStats />
                 </div>
 

@@ -5,8 +5,8 @@ import { Toaster } from '@/components/ui/sonner';
 import { pageVariants } from '@/lib/animations';
 import type { Category, SiteSettings } from '@/types/cms';
 
-import Header from '@/components/header';
 import Footer from '@/components/footer';
+import Header from '@/components/header';
 
 interface SiteLayoutProps {
     children: ReactNode;
@@ -16,7 +16,13 @@ interface SiteLayoutProps {
     footerData?: any;
 }
 
-export function SiteLayout({ children, settings, categories, navigationMenus, footerData }: SiteLayoutProps) {
+export function SiteLayout({
+    children,
+    settings,
+    categories,
+    navigationMenus,
+    footerData,
+}: SiteLayoutProps) {
     return (
         <div className="flex min-h-screen flex-col">
             <Header navigationMenus={navigationMenus} />

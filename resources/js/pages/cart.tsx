@@ -1,13 +1,23 @@
 import { Head, Link } from '@inertiajs/react';
-import { motion } from 'motion/react';
 import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
+import { motion } from 'motion/react';
 
 import { SiteLayout } from '@/components/site/site-layout';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { useCartStore, selectTotalItems, selectTotalPrice } from '@/stores/cart-store';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
+import {
+    selectTotalItems,
+    selectTotalPrice,
+    useCartStore,
+} from '@/stores/cart-store';
 import type { Category, SiteSettings } from '@/types/cms';
 
 interface CartPageProps {
@@ -26,10 +36,14 @@ export default function CartPage({ settings, categories }: CartPageProps) {
     // Get dynamic content from settings
     const pageTitle = settings?.cart?.cart_page_title || 'Shopping Cart';
     const emptyTitle = settings?.cart?.cart_empty_title || 'Your cart is empty';
-    const emptyMessage = settings?.cart?.cart_empty_message || 'Start shopping and add some products to your cart!';
+    const emptyMessage =
+        settings?.cart?.cart_empty_message ||
+        'Start shopping and add some products to your cart!';
     const summaryTitle = settings?.cart?.cart_summary_title || 'Order Summary';
-    const checkoutButton = settings?.cart?.cart_checkout_button || 'Proceed to Checkout';
-    const continueShoppingText = settings?.cart?.cart_continue_shopping || 'Continue Shopping';
+    const checkoutButton =
+        settings?.cart?.cart_checkout_button || 'Proceed to Checkout';
+    const continueShoppingText =
+        settings?.cart?.cart_continue_shopping || 'Continue Shopping';
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('en-BD', {
@@ -50,7 +64,9 @@ export default function CartPage({ settings, categories }: CartPageProps) {
                         animate={{ opacity: 1, y: 0 }}
                     >
                         <ShoppingBag className="mb-4 h-16 w-16 text-muted-foreground" />
-                        <h2 className="mb-2 text-2xl font-semibold">{emptyTitle}</h2>
+                        <h2 className="mb-2 text-2xl font-semibold">
+                            {emptyTitle}
+                        </h2>
                         <p className="mb-8 text-muted-foreground">
                             {emptyMessage}
                         </p>
@@ -73,7 +89,7 @@ export default function CartPage({ settings, categories }: CartPageProps) {
                     initial="initial"
                     animate="animate"
                 >
-                    <motion.h1 
+                    <motion.h1
                         className="mb-8 text-3xl font-bold"
                         variants={fadeInUp}
                     >
@@ -82,7 +98,10 @@ export default function CartPage({ settings, categories }: CartPageProps) {
 
                     <div className="grid gap-8 lg:grid-cols-3">
                         {/* Cart Items */}
-                        <motion.div className="lg:col-span-2" variants={fadeInUp}>
+                        <motion.div
+                            className="lg:col-span-2"
+                            variants={fadeInUp}
+                        >
                             <Card className="py-6">
                                 <CardContent className="divide-y">
                                     {items.map((item) => (
@@ -94,12 +113,18 @@ export default function CartPage({ settings, categories }: CartPageProps) {
                                             <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-muted">
                                                 {item.image ? (
                                                     <img
-                                                        src={item.image.startsWith('http') ? item.image : `/storage/${item.image}`}
+                                                        src={
+                                                            item.image.startsWith(
+                                                                'http',
+                                                            )
+                                                                ? item.image
+                                                                : `/storage/${item.image}`
+                                                        }
                                                         alt={item.name}
                                                         className="h-full w-full object-cover"
                                                     />
                                                 ) : (
-                                                    <div className="flex h-full w-full items-center justify-center text-muted-foreground text-sm">
+                                                    <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
                                                         No image
                                                     </div>
                                                 )}
@@ -109,14 +134,22 @@ export default function CartPage({ settings, categories }: CartPageProps) {
                                             <div className="flex flex-1 flex-col">
                                                 <div className="flex justify-between">
                                                     <div>
-                                                        <h3 className="font-medium">{item.name}</h3>
+                                                        <h3 className="font-medium">
+                                                            {item.name}
+                                                        </h3>
                                                         <p className="text-sm text-muted-foreground">
-                                                            {formatPrice(item.price)} each
+                                                            {formatPrice(
+                                                                item.price,
+                                                            )}{' '}
+                                                            each
                                                         </p>
                                                     </div>
                                                     <div className="text-right">
                                                         <p className="font-semibold">
-                                                            {formatPrice(item.price * item.quantity)}
+                                                            {formatPrice(
+                                                                item.price *
+                                                                    item.quantity,
+                                                            )}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -129,19 +162,32 @@ export default function CartPage({ settings, categories }: CartPageProps) {
                                                             size="icon"
                                                             className="h-8 w-8"
                                                             onClick={() =>
-                                                                updateQuantity(item.productId, item.quantity - 1)
+                                                                updateQuantity(
+                                                                    item.productId,
+                                                                    item.quantity -
+                                                                        1,
+                                                                )
                                                             }
-                                                            disabled={item.quantity <= 1}
+                                                            disabled={
+                                                                item.quantity <=
+                                                                1
+                                                            }
                                                         >
                                                             <Minus className="h-4 w-4" />
                                                         </Button>
-                                                        <span className="w-8 text-center">{item.quantity}</span>
+                                                        <span className="w-8 text-center">
+                                                            {item.quantity}
+                                                        </span>
                                                         <Button
                                                             variant="outline"
                                                             size="icon"
                                                             className="h-8 w-8"
                                                             onClick={() =>
-                                                                updateQuantity(item.productId, item.quantity + 1)
+                                                                updateQuantity(
+                                                                    item.productId,
+                                                                    item.quantity +
+                                                                        1,
+                                                                )
                                                             }
                                                         >
                                                             <Plus className="h-4 w-4" />
@@ -151,7 +197,11 @@ export default function CartPage({ settings, categories }: CartPageProps) {
                                                         variant="ghost"
                                                         size="sm"
                                                         className="text-destructive hover:text-destructive"
-                                                        onClick={() => removeItem(item.productId)}
+                                                        onClick={() =>
+                                                            removeItem(
+                                                                item.productId,
+                                                            )
+                                                        }
                                                     >
                                                         <Trash2 className="mr-1 h-4 w-4" />
                                                         Remove
@@ -167,7 +217,11 @@ export default function CartPage({ settings, categories }: CartPageProps) {
                                 <Button variant="outline" asChild>
                                     <Link href="/">{continueShoppingText}</Link>
                                 </Button>
-                                <Button variant="ghost" onClick={clearCart} className="text-destructive">
+                                <Button
+                                    variant="ghost"
+                                    onClick={clearCart}
+                                    className="text-destructive"
+                                >
                                     Clear Cart
                                 </Button>
                             </div>
@@ -186,7 +240,9 @@ export default function CartPage({ settings, categories }: CartPageProps) {
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Shipping</span>
-                                        <span className="text-primary">Free</span>
+                                        <span className="text-primary">
+                                            Free
+                                        </span>
                                     </div>
                                     <Separator />
                                     <div className="flex justify-between text-lg font-semibold">
@@ -195,8 +251,14 @@ export default function CartPage({ settings, categories }: CartPageProps) {
                                     </div>
                                 </CardContent>
                                 <CardFooter>
-                                    <Button className="w-full" size="lg" asChild>
-                                        <Link href="/checkout">{checkoutButton}</Link>
+                                    <Button
+                                        className="w-full"
+                                        size="lg"
+                                        asChild
+                                    >
+                                        <Link href="/checkout">
+                                            {checkoutButton}
+                                        </Link>
                                     </Button>
                                 </CardFooter>
                             </Card>

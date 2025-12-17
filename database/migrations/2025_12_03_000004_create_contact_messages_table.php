@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('reply_content')->nullable();
             $table->string('replied_by')->nullable();
             $table->timestamps();
-            
+
             $table->index('status');
             $table->index('email');
             $table->index('created_at');

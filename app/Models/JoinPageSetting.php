@@ -18,11 +18,11 @@ class JoinPageSetting extends Model
     public static function get(string $key, $default = null)
     {
         $setting = static::where('setting_key', $key)->first();
-        
-        if (!$setting) {
+
+        if (! $setting) {
             return $default;
         }
-        
+
         return match ($setting->setting_type) {
             'json' => json_decode($setting->setting_value, true),
             'boolean' => (bool) $setting->setting_value,
@@ -41,7 +41,7 @@ class JoinPageSetting extends Model
             'boolean' => (int) $value,
             default => (string) $value,
         };
-        
+
         return static::updateOrCreate(
             ['setting_key' => $key],
             [
@@ -63,7 +63,7 @@ class JoinPageSetting extends Model
                 'number' => (float) $setting->setting_value,
                 default => $setting->setting_value,
             };
-            
+
             return [$setting->setting_key => $value];
         });
     }

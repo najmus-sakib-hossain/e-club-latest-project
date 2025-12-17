@@ -72,7 +72,7 @@ class CategoryController extends Controller
         }
 
         // Handle sort_order alias for order
-        if (isset($validated['sort_order']) && !isset($validated['order'])) {
+        if (isset($validated['sort_order']) && ! isset($validated['order'])) {
             $validated['order'] = $validated['sort_order'];
         }
         unset($validated['sort_order']);
@@ -93,7 +93,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
+            'slug' => 'nullable|string|max:255|unique:categories,slug,'.$category->id,
             'image' => 'nullable|image|max:5120',
             'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:categories,id',
@@ -104,7 +104,7 @@ class CategoryController extends Controller
         ]);
 
         // Handle sort_order alias for order
-        if (isset($validated['sort_order']) && !isset($validated['order'])) {
+        if (isset($validated['sort_order']) && ! isset($validated['order'])) {
             $validated['order'] = $validated['sort_order'];
         }
         unset($validated['sort_order']);

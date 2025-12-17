@@ -196,7 +196,7 @@ class NavigationMenu extends Model
     public static function getHeaderStructure(): array
     {
         $items = self::getNavigationTree('header');
-        
+
         return $items->map(function ($item) {
             return [
                 'id' => $item->id,

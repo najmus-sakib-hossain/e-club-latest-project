@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist, devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 
 export interface WishlistItem {
     productId: number;
@@ -13,7 +13,7 @@ export interface WishlistItem {
 
 interface WishlistState {
     items: WishlistItem[];
-    
+
     // Actions
     addItem: (item: Omit<WishlistItem, 'addedAt'>) => void;
     removeItem: (productId: number) => void;
@@ -30,17 +30,26 @@ export const useWishlistStore = create<WishlistState>()(
 
                 addItem: (item) => {
                     const { items } = get();
-                    const existingItem = items.find((i) => i.productId === item.productId);
-                    
+                    const existingItem = items.find(
+                        (i) => i.productId === item.productId,
+                    );
+
                     if (!existingItem) {
                         set({
-                            items: [...items, { ...item, addedAt: new Date().toISOString() }],
+                            items: [
+                                ...items,
+                                { ...item, addedAt: new Date().toISOString() },
+                            ],
                         });
                     }
                 },
 
                 removeItem: (productId) => {
-                    set({ items: get().items.filter((i) => i.productId !== productId) });
+                    set({
+                        items: get().items.filter(
+                            (i) => i.productId !== productId,
+                        ),
+                    });
                 },
 
                 isInWishlist: (productId) => {
@@ -60,8 +69,8 @@ export const useWishlistStore = create<WishlistState>()(
             }),
             {
                 name: 'wishlist-storage',
-            }
+            },
         ),
-        { name: 'WishlistStore' }
-    )
+        { name: 'WishlistStore' },
+    ),
 );

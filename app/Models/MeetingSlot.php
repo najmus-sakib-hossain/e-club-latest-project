@@ -64,18 +64,18 @@ class MeetingSlot extends Model
     {
         $dayOfWeek = $date->dayOfWeek;
         $slots = self::active()->forDay($dayOfWeek)->orderBy('start_time')->get();
-        
+
         $timeSlots = [];
         foreach ($slots as $slot) {
             $start = \Carbon\Carbon::parse($slot->start_time);
             $end = \Carbon\Carbon::parse($slot->end_time);
-            
+
             while ($start < $end) {
                 $timeSlots[] = $start->format('h:i A');
                 $start->addMinutes(30);
             }
         }
-        
+
         return $timeSlots;
     }
 
@@ -86,10 +86,10 @@ class MeetingSlot extends Model
     {
         $schedule = [];
         $slots = self::active()->orderBy('day_of_week')->orderBy('start_time')->get();
-        
+
         foreach ($slots as $slot) {
             $dayName = $slot->day_name;
-            if (!isset($schedule[$dayName])) {
+            if (! isset($schedule[$dayName])) {
                 $schedule[$dayName] = [];
             }
             $schedule[$dayName][] = [
@@ -97,7 +97,7 @@ class MeetingSlot extends Model
                 'end' => \Carbon\Carbon::parse($slot->end_time)->format('h:i A'),
             ];
         }
-        
+
         return $schedule;
     }
 }

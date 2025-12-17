@@ -23,7 +23,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->integer('sort_order')->default(0);
             $table->timestamps();
-            
+
             $table->unique(['page_slug', 'section_key']);
             $table->index('page_slug');
         });

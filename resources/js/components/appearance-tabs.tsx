@@ -17,7 +17,10 @@ export default function AppearanceToggleTab({
 
     return (
         <div
-            className={cn('inline-flex gap-1 rounded-lg bg-muted p-1 text-muted-foreground', className)}
+            className={cn(
+                'inline-flex gap-1 rounded-lg bg-muted p-1 text-muted-foreground',
+                className,
+            )}
             {...props}
         >
             {tabs.map(({ value, icon: Icon, label }) => (

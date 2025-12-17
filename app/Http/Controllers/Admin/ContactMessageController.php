@@ -28,8 +28,8 @@ class ContactMessageController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('subject', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('subject', 'like', "%{$search}%");
             });
         }
 
@@ -102,7 +102,7 @@ class ContactMessageController extends Controller
 
             return back()->with('success', 'Reply sent successfully');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to send reply: ' . $e->getMessage());
+            return back()->with('error', 'Failed to send reply: '.$e->getMessage());
         }
     }
 
@@ -112,6 +112,7 @@ class ContactMessageController extends Controller
     public function destroy(ContactMessage $message)
     {
         $message->delete();
+
         return back()->with('success', 'Message deleted successfully');
     }
 
@@ -121,6 +122,7 @@ class ContactMessageController extends Controller
     public function resolve(ContactMessage $message)
     {
         $message->markAsResolved();
+
         return back()->with('success', 'Message marked as resolved');
     }
 }

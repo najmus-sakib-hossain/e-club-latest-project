@@ -49,7 +49,7 @@ class HeroSlideController extends Controller
         ]);
 
         // Handle sort_order alias for order
-        if (isset($validated['sort_order']) && !isset($validated['order'])) {
+        if (isset($validated['sort_order']) && ! isset($validated['order'])) {
             $validated['order'] = $validated['sort_order'];
         }
         unset($validated['sort_order']);
@@ -81,14 +81,14 @@ class HeroSlideController extends Controller
         ]);
 
         // Handle sort_order alias for order
-        if (isset($validated['sort_order']) && !isset($validated['order'])) {
+        if (isset($validated['sort_order']) && ! isset($validated['order'])) {
             $validated['order'] = $validated['sort_order'];
         }
         unset($validated['sort_order']);
 
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($heroSlide->image && !str_starts_with($heroSlide->image, 'http')) {
+            if ($heroSlide->image && ! str_starts_with($heroSlide->image, 'http')) {
                 Storage::disk('public')->delete($heroSlide->image);
             }
             $validated['image'] = $request->file('image')->store('hero-slides', 'public');
@@ -104,7 +104,7 @@ class HeroSlideController extends Controller
      */
     public function destroy(HeroSlide $heroSlide): RedirectResponse
     {
-        if ($heroSlide->image && !str_starts_with($heroSlide->image, 'http')) {
+        if ($heroSlide->image && ! str_starts_with($heroSlide->image, 'http')) {
             Storage::disk('public')->delete($heroSlide->image);
         }
 

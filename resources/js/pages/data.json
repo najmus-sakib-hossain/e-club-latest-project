@@ -1,182 +1,182 @@
 [
-  {
-    "id": 1,
-    "header": "Modern Sofa Set",
-    "type": "Living Room",
-    "status": "In Stock",
-    "target": "50",
-    "limit": "15",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 2,
-    "header": "Oak Dining Table",
-    "type": "Dining Room",
-    "status": "In Stock",
-    "target": "30",
-    "limit": "8",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 3,
-    "header": "King Size Bed Frame",
-    "type": "Bedroom",
-    "status": "Low Stock",
-    "target": "25",
-    "limit": "5",
-    "reviewer": "Warehouse"
-  },
-  {
-    "id": 4,
-    "header": "Executive Office Chair",
-    "type": "Office",
-    "status": "In Stock",
-    "target": "100",
-    "limit": "25",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 5,
-    "header": "Leather Recliner",
-    "type": "Living Room",
-    "status": "In Stock",
-    "target": "40",
-    "limit": "12",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 6,
-    "header": "Glass Coffee Table",
-    "type": "Living Room",
-    "status": "Out of Stock",
-    "target": "35",
-    "limit": "0",
-    "reviewer": "Warehouse"
-  },
-  {
-    "id": 7,
-    "header": "Bookshelf Unit",
-    "type": "Office",
-    "status": "In Stock",
-    "target": "45",
-    "limit": "18",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 8,
-    "header": "Wardrobe Cabinet",
-    "type": "Bedroom",
-    "status": "In Stock",
-    "target": "20",
-    "limit": "7",
-    "reviewer": "Warehouse"
-  },
-  {
-    "id": 9,
-    "header": "Kitchen Island",
-    "type": "Kitchen",
-    "status": "In Stock",
-    "target": "15",
-    "limit": "4",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 10,
-    "header": "Outdoor Patio Set",
-    "type": "Outdoor",
-    "status": "Low Stock",
-    "target": "25",
-    "limit": "3",
-    "reviewer": "Warehouse"
-  },
-  {
-    "id": 11,
-    "header": "Velvet Accent Chair",
-    "type": "Living Room",
-    "status": "In Stock",
-    "target": "60",
-    "limit": "22",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 12,
-    "header": "Nightstand Set",
-    "type": "Bedroom",
-    "status": "In Stock",
-    "target": "80",
-    "limit": "35",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 13,
-    "header": "Standing Desk",
-    "type": "Office",
-    "status": "In Stock",
-    "target": "55",
-    "limit": "20",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 14,
-    "header": "Sectional Couch",
-    "type": "Living Room",
-    "status": "In Stock",
-    "target": "18",
-    "limit": "6",
-    "reviewer": "Warehouse"
-  },
-  {
-    "id": 15,
-    "header": "Bar Stool Set",
-    "type": "Kitchen",
-    "status": "In Stock",
-    "target": "120",
-    "limit": "45",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 16,
-    "header": "TV Console",
-    "type": "Living Room",
-    "status": "Low Stock",
-    "target": "40",
-    "limit": "4",
-    "reviewer": "Warehouse"
-  },
-  {
-    "id": 17,
-    "header": "Dining Chair Set",
-    "type": "Dining Room",
-    "status": "In Stock",
-    "target": "100",
-    "limit": "40",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 18,
-    "header": "Vanity Mirror",
-    "type": "Bedroom",
-    "status": "In Stock",
-    "target": "35",
-    "limit": "15",
-    "reviewer": "Admin"
-  },
-  {
-    "id": 19,
-    "header": "Filing Cabinet",
-    "type": "Office",
-    "status": "In Stock",
-    "target": "70",
-    "limit": "28",
-    "reviewer": "Warehouse"
-  },
-  {
-    "id": 20,
-    "header": "Garden Bench",
-    "type": "Outdoor",
-    "status": "In Stock",
-    "target": "30",
-    "limit": "12",
-    "reviewer": "Admin"
-  }
+    {
+        "id": 1,
+        "header": "Modern Sofa Set",
+        "type": "Living Room",
+        "status": "In Stock",
+        "target": "50",
+        "limit": "15",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 2,
+        "header": "Oak Dining Table",
+        "type": "Dining Room",
+        "status": "In Stock",
+        "target": "30",
+        "limit": "8",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 3,
+        "header": "King Size Bed Frame",
+        "type": "Bedroom",
+        "status": "Low Stock",
+        "target": "25",
+        "limit": "5",
+        "reviewer": "Warehouse"
+    },
+    {
+        "id": 4,
+        "header": "Executive Office Chair",
+        "type": "Office",
+        "status": "In Stock",
+        "target": "100",
+        "limit": "25",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 5,
+        "header": "Leather Recliner",
+        "type": "Living Room",
+        "status": "In Stock",
+        "target": "40",
+        "limit": "12",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 6,
+        "header": "Glass Coffee Table",
+        "type": "Living Room",
+        "status": "Out of Stock",
+        "target": "35",
+        "limit": "0",
+        "reviewer": "Warehouse"
+    },
+    {
+        "id": 7,
+        "header": "Bookshelf Unit",
+        "type": "Office",
+        "status": "In Stock",
+        "target": "45",
+        "limit": "18",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 8,
+        "header": "Wardrobe Cabinet",
+        "type": "Bedroom",
+        "status": "In Stock",
+        "target": "20",
+        "limit": "7",
+        "reviewer": "Warehouse"
+    },
+    {
+        "id": 9,
+        "header": "Kitchen Island",
+        "type": "Kitchen",
+        "status": "In Stock",
+        "target": "15",
+        "limit": "4",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 10,
+        "header": "Outdoor Patio Set",
+        "type": "Outdoor",
+        "status": "Low Stock",
+        "target": "25",
+        "limit": "3",
+        "reviewer": "Warehouse"
+    },
+    {
+        "id": 11,
+        "header": "Velvet Accent Chair",
+        "type": "Living Room",
+        "status": "In Stock",
+        "target": "60",
+        "limit": "22",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 12,
+        "header": "Nightstand Set",
+        "type": "Bedroom",
+        "status": "In Stock",
+        "target": "80",
+        "limit": "35",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 13,
+        "header": "Standing Desk",
+        "type": "Office",
+        "status": "In Stock",
+        "target": "55",
+        "limit": "20",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 14,
+        "header": "Sectional Couch",
+        "type": "Living Room",
+        "status": "In Stock",
+        "target": "18",
+        "limit": "6",
+        "reviewer": "Warehouse"
+    },
+    {
+        "id": 15,
+        "header": "Bar Stool Set",
+        "type": "Kitchen",
+        "status": "In Stock",
+        "target": "120",
+        "limit": "45",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 16,
+        "header": "TV Console",
+        "type": "Living Room",
+        "status": "Low Stock",
+        "target": "40",
+        "limit": "4",
+        "reviewer": "Warehouse"
+    },
+    {
+        "id": 17,
+        "header": "Dining Chair Set",
+        "type": "Dining Room",
+        "status": "In Stock",
+        "target": "100",
+        "limit": "40",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 18,
+        "header": "Vanity Mirror",
+        "type": "Bedroom",
+        "status": "In Stock",
+        "target": "35",
+        "limit": "15",
+        "reviewer": "Admin"
+    },
+    {
+        "id": 19,
+        "header": "Filing Cabinet",
+        "type": "Office",
+        "status": "In Stock",
+        "target": "70",
+        "limit": "28",
+        "reviewer": "Warehouse"
+    },
+    {
+        "id": 20,
+        "header": "Garden Bench",
+        "type": "Outdoor",
+        "status": "In Stock",
+        "target": "30",
+        "limit": "12",
+        "reviewer": "Admin"
+    }
 ]

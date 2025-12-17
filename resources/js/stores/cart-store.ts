@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist, devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 
 export interface CartItem {
     productId: number;
@@ -41,14 +41,16 @@ export const useCartStore = create<CartState>()(
 
                 addItem: (item) => {
                     const { items } = get();
-                    const existingItem = items.find((i) => i.productId === item.productId);
+                    const existingItem = items.find(
+                        (i) => i.productId === item.productId,
+                    );
 
                     if (existingItem) {
                         set({
                             items: items.map((i) =>
                                 i.productId === item.productId
                                     ? { ...i, quantity: i.quantity + 1 }
-                                    : i
+                                    : i,
                             ),
                         });
                     } else {
@@ -57,7 +59,11 @@ export const useCartStore = create<CartState>()(
                 },
 
                 removeItem: (productId) => {
-                    set({ items: get().items.filter((i) => i.productId !== productId) });
+                    set({
+                        items: get().items.filter(
+                            (i) => i.productId !== productId,
+                        ),
+                    });
                 },
 
                 updateQuantity: (productId, quantity) => {
@@ -67,7 +73,7 @@ export const useCartStore = create<CartState>()(
                     }
                     set({
                         items: get().items.map((i) =>
-                            i.productId === productId ? { ...i, quantity } : i
+                            i.productId === productId ? { ...i, quantity } : i,
                         ),
                     });
                 },
@@ -80,10 +86,10 @@ export const useCartStore = create<CartState>()(
             }),
             {
                 name: 'e-club-cart',
-            }
+            },
         ),
-        { name: 'cart-store' }
-    )
+        { name: 'cart-store' },
+    ),
 );
 
 // Selectors

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class SiteSetting extends Model
 {
@@ -22,8 +22,8 @@ class SiteSetting extends Model
     public static function get(string $key, $default = null)
     {
         $setting = static::where('key', $key)->first();
-        
-        if (!$setting) {
+
+        if (! $setting) {
             return $default;
         }
 
@@ -62,7 +62,7 @@ class SiteSetting extends Model
     public static function getAllGrouped(): array
     {
         $settings = static::all()->groupBy('group');
-        
+
         $result = [];
         foreach ($settings as $group => $items) {
             foreach ($items as $item) {
@@ -73,7 +73,7 @@ class SiteSetting extends Model
                 $result[$group][$item->key] = $value;
             }
         }
-        
+
         return $result;
     }
 
@@ -83,7 +83,7 @@ class SiteSetting extends Model
     public static function getByGroup(string $group): array
     {
         $settings = static::where('group', $group)->get();
-        
+
         $result = [];
         foreach ($settings as $item) {
             $value = $item->value;
@@ -92,7 +92,7 @@ class SiteSetting extends Model
             }
             $result[$item->key] = $value;
         }
-        
+
         return $result;
     }
 
@@ -102,7 +102,7 @@ class SiteSetting extends Model
     public static function getAllFlat(): object
     {
         $settings = static::all();
-        
+
         $result = [];
         foreach ($settings as $item) {
             $value = $item->value;
@@ -111,7 +111,7 @@ class SiteSetting extends Model
             }
             $result[$item->key] = $value;
         }
-        
+
         return (object) $result;
     }
 }

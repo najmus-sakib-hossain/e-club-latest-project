@@ -50,9 +50,21 @@ const menuItems = [
         title: 'Administration',
         icon: UserCog,
         items: [
-            { title: 'Role Management', icon: ChevronsRight, href: '/admin/roles' },
-            { title: 'Right Management', icon: ChevronsRight, href: '/admin/permissions' },
-            { title: 'Member Management', icon: ChevronsRight, href: '/admin/members' },
+            {
+                title: 'Role Management',
+                icon: ChevronsRight,
+                href: '/admin/roles',
+            },
+            {
+                title: 'Right Management',
+                icon: ChevronsRight,
+                href: '/admin/permissions',
+            },
+            {
+                title: 'Member Management',
+                icon: ChevronsRight,
+                href: '/admin/members',
+            },
         ],
     },
     {
@@ -135,10 +147,12 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                                                 <Link
                                                     key={subItem.href}
                                                     href={subItem.href}
-                                                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${currentPath === subItem.href
-                                                        ? 'bg-primary text-primary-foreground font-medium shadow-sm'
-                                                        : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-                                                        }`}
+                                                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
+                                                        currentPath ===
+                                                        subItem.href
+                                                            ? 'bg-primary font-medium text-primary-foreground shadow-sm'
+                                                            : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+                                                    }`}
                                                 >
                                                     <subItem.icon className="h-4 w-4" />
                                                     <span>{subItem.title}</span>
@@ -149,10 +163,11 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                                 ) : (
                                     <Link
                                         href={item.href}
-                                        className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${currentPath === item.href
-                                            ? 'bg-primary text-primary-foreground shadow-sm'
-                                            : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-                                            }`}
+                                        className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                                            currentPath === item.href
+                                                ? 'bg-primary text-primary-foreground shadow-sm'
+                                                : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+                                        }`}
                                     >
                                         <item.icon className="h-5 w-5" />
                                         <span>{item.title}</span>
@@ -174,33 +189,48 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                     <div />
 
                     <div className="flex items-center gap-4">
-                        <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-muted-foreground hover:text-foreground"
+                        >
                             <Bell className="h-5 w-5" />
                             <span className="sr-only">Notifications</span>
                         </Button>
 
-                        <div className="flex items-center gap-4 pl-4 border-l">
+                        <div className="flex items-center gap-4 border-l pl-4">
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button
                                         variant="ghost"
                                         className="flex items-center gap-3 pl-0 hover:bg-transparent"
                                     >
-                                        <div className="text-right hidden sm:block">
-                                            <p className="text-sm font-medium leading-none">{auth.user?.name || 'Admin'}</p>
-                                            <p className="text-xs text-muted-foreground mt-1">Administrator</p>
+                                        <div className="hidden text-right sm:block">
+                                            <p className="text-sm leading-none font-medium">
+                                                {auth.user?.name || 'Admin'}
+                                            </p>
+                                            <p className="mt-1 text-xs text-muted-foreground">
+                                                Administrator
+                                            </p>
                                         </div>
-                                        <Avatar className="h-9 w-9 border cursor-pointer">
+                                        <Avatar className="h-9 w-9 cursor-pointer border">
                                             <AvatarFallback className="bg-primary/10 text-primary">
-                                                {auth.user?.name?.charAt(0) || 'A'}
+                                                {auth.user?.name?.charAt(0) ||
+                                                    'A'}
                                             </AvatarFallback>
                                         </Avatar>
                                         <ChevronDown className="h-4 w-4 text-muted-foreground" />
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="w-56">
+                                <DropdownMenuContent
+                                    align="end"
+                                    className="w-56"
+                                >
                                     <DropdownMenuItem asChild>
-                                        <Link href="/" className="flex items-center gap-2">
+                                        <Link
+                                            href="/"
+                                            className="flex items-center gap-2"
+                                        >
                                             <Users className="h-4 w-4" />
                                             View Site
                                         </Link>
@@ -223,7 +253,7 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                 </header>
 
                 {/* Content */}
-                <main className="flex-1 overflow-auto p-6 bg-[#F8F9FA]">
+                <main className="flex-1 overflow-auto bg-[#F8F9FA] p-6">
                     {children}
                 </main>
             </div>

@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
+use App\Models\HomeActivity;
+use App\Models\HomeCoreValue;
+use App\Models\HomePartner;
+use App\Models\HomeProject;
 use App\Models\HomeSection;
 use App\Models\HomeStat;
-use App\Models\HomeActivity;
-use App\Models\HomeProject;
-use App\Models\HomePartner;
-use App\Models\HomeCoreValue;
+use Illuminate\Database\Seeder;
 
 class HomePageSeeder extends Seeder
 {
@@ -163,13 +163,13 @@ class HomePageSeeder extends Seeder
 
         // Partners (placeholder logos)
         $partners = [
-            'BIDA', 'BASIS', 'FBCCI', 'DCCI', 'SME Foundation', 'Bangladesh Bank'
+            'BIDA', 'BASIS', 'FBCCI', 'DCCI', 'SME Foundation', 'Bangladesh Bank',
         ];
 
         foreach ($partners as $index => $partner) {
             HomePartner::create([
                 'name' => $partner,
-                'logo' => 'https://via.placeholder.com/200x80?text=' . urlencode($partner),
+                'logo' => 'https://via.placeholder.com/200x80?text='.urlencode($partner),
                 'url' => '#',
                 'is_active' => true,
                 'sort_order' => $index + 1,

@@ -1,19 +1,6 @@
-import { type ReactNode, useEffect, useMemo, useState } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm, useFieldArray } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
-    Save,
-    Plus,
-    Trash2,
-    CircleHelp,
-    GripVertical,
-} from 'lucide-react';
-import {
-    DndContext,
     closestCenter,
+    DndContext,
     KeyboardSensor,
     MouseSensor,
     TouchSensor,
@@ -21,25 +8,49 @@ import {
     useSensors,
     type DragEndEvent,
 } from '@dnd-kit/core';
-import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import {
+    SortableContext,
+    useSortable,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Phone, Mail, MessageCircle, HelpCircle, Headphones } from 'lucide-react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router } from '@inertiajs/react';
+import {
+    CircleHelp,
+    GripVertical,
+    Headphones,
+    HelpCircle,
+    Mail,
+    MessageCircle,
+    Phone,
+    Plus,
+    Save,
+    Trash2,
+} from 'lucide-react';
+import { motion } from 'motion/react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
-    FormDescription,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -47,6 +58,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -89,12 +103,16 @@ const helpFormSchema = z.object({
     cta_button1_url: z.string().optional(),
     cta_button2_text: z.string().optional(),
     cta_button2_url: z.string().optional(),
-    quick_links: z.array(z.object({
-        icon: z.string().optional(),
-        title: z.string().min(1, 'Title is required'),
-        description: z.string().optional(),
-        button_text: z.string().optional(),
-    })).optional(),
+    quick_links: z
+        .array(
+            z.object({
+                icon: z.string().optional(),
+                title: z.string().min(1, 'Title is required'),
+                description: z.string().optional(),
+                button_text: z.string().optional(),
+            }),
+        )
+        .optional(),
 });
 
 type HelpFormValues = z.infer<typeof helpFormSchema>;
@@ -105,35 +123,75 @@ export default function HelpPage({ content }: Props) {
 
     const sensors = useSensors(
         useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
-        useSensor(TouchSensor, { activationConstraint: { delay: 100, tolerance: 8 } }),
-        useSensor(KeyboardSensor)
+        useSensor(TouchSensor, {
+            activationConstraint: { delay: 100, tolerance: 8 },
+        }),
+        useSensor(KeyboardSensor),
     );
 
     const parsedCtaContent = useMemo(() => {
         try {
-            return content.cta?.content ? JSON.parse(content.cta.content) : null;
+            return content.cta?.content
+                ? JSON.parse(content.cta.content)
+                : null;
         } catch (err) {
             return null;
         }
     }, [content.cta?.content]);
 
-    const defaultValues = useMemo<HelpFormValues>(() => ({
-        hero_title: content.hero?.title || 'How Can We Help?',
-        hero_subtitle: content.hero?.subtitle || 'Find answers to commonly asked questions or contact our support team.',
-        search_placeholder: content.search?.title || 'Search for answers...',
-        faq_section_title: content.faq_section?.title || 'Frequently Asked Questions',
-        cta_title: content.cta?.title || 'Still Need Help?',
-        cta_subtitle: content.cta?.subtitle || 'Can\'t find what you\'re looking for? Our support team is here to help.',
-        cta_button1_text: parsedCtaContent?.button1_text || 'Contact Us',
-        cta_button1_url: parsedCtaContent?.button1_url || '/contact',
-        cta_button2_text: parsedCtaContent?.button2_text || 'Schedule a Meeting',
-        cta_button2_url: parsedCtaContent?.button2_url || '/meeting/schedule',
-        quick_links: (content.quick_links?.items as HelpFormValues['quick_links']) || [
-            { icon: 'phone', title: 'Call Us', description: 'Speak directly with our team', button_text: 'Call Now' },
-            { icon: 'mail', title: 'Email Support', description: 'We\'ll respond within 24 hours', button_text: 'Send Email' },
-            { icon: 'message', title: 'Live Chat', description: 'Chat with us in real-time', button_text: 'Start Chat' },
+    const defaultValues = useMemo<HelpFormValues>(
+        () => ({
+            hero_title: content.hero?.title || 'How Can We Help?',
+            hero_subtitle:
+                content.hero?.subtitle ||
+                'Find answers to commonly asked questions or contact our support team.',
+            search_placeholder:
+                content.search?.title || 'Search for answers...',
+            faq_section_title:
+                content.faq_section?.title || 'Frequently Asked Questions',
+            cta_title: content.cta?.title || 'Still Need Help?',
+            cta_subtitle:
+                content.cta?.subtitle ||
+                "Can't find what you're looking for? Our support team is here to help.",
+            cta_button1_text: parsedCtaContent?.button1_text || 'Contact Us',
+            cta_button1_url: parsedCtaContent?.button1_url || '/contact',
+            cta_button2_text:
+                parsedCtaContent?.button2_text || 'Schedule a Meeting',
+            cta_button2_url:
+                parsedCtaContent?.button2_url || '/meeting/schedule',
+            quick_links: (content.quick_links
+                ?.items as HelpFormValues['quick_links']) || [
+                {
+                    icon: 'phone',
+                    title: 'Call Us',
+                    description: 'Speak directly with our team',
+                    button_text: 'Call Now',
+                },
+                {
+                    icon: 'mail',
+                    title: 'Email Support',
+                    description: "We'll respond within 24 hours",
+                    button_text: 'Send Email',
+                },
+                {
+                    icon: 'message',
+                    title: 'Live Chat',
+                    description: 'Chat with us in real-time',
+                    button_text: 'Start Chat',
+                },
+            ],
+        }),
+        [
+            content.hero?.title,
+            content.hero?.subtitle,
+            content.search?.title,
+            content.faq_section?.title,
+            content.cta?.title,
+            content.cta?.subtitle,
+            content.quick_links?.items,
+            parsedCtaContent,
         ],
-    }), [content.hero?.title, content.hero?.subtitle, content.search?.title, content.faq_section?.title, content.cta?.title, content.cta?.subtitle, content.quick_links?.items, parsedCtaContent]);
+    );
 
     const form = useForm<HelpFormValues>({
         resolver: zodResolver(helpFormSchema),
@@ -159,8 +217,21 @@ export default function HelpPage({ content }: Props) {
         }
     };
 
-    const SortableCard = ({ id, children }: { id: string; children: ReactNode }) => {
-        const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+    const SortableCard = ({
+        id,
+        children,
+    }: {
+        id: string;
+        children: ReactNode;
+    }) => {
+        const {
+            attributes,
+            listeners,
+            setNodeRef,
+            transform,
+            transition,
+            isDragging,
+        } = useSortable({ id });
         const style = {
             transform: CSS.Translate.toString(transform),
             transition,
@@ -173,7 +244,7 @@ export default function HelpPage({ content }: Props) {
                 style={style}
                 {...attributes}
                 {...listeners}
-                className="p-4 border rounded-lg space-y-4 bg-card"
+                className="space-y-4 rounded-lg border bg-card p-4"
             >
                 {children}
             </motion.div>
@@ -190,37 +261,41 @@ export default function HelpPage({ content }: Props) {
             button2_url: data.cta_button2_url,
         };
 
-        router.post('/admin/content-pages/help', {
-            sections: {
-                hero: {
-                    title: data.hero_title,
-                    subtitle: data.hero_subtitle,
-                },
-                search: {
-                    title: data.search_placeholder,
-                },
-                quick_links: {
-                    items: data.quick_links || [],
-                },
-                faq_section: {
-                    title: data.faq_section_title,
-                },
-                cta: {
-                    title: data.cta_title,
-                    subtitle: data.cta_subtitle,
-                    content: JSON.stringify(ctaContent),
+        router.post(
+            '/admin/content-pages/help',
+            {
+                sections: {
+                    hero: {
+                        title: data.hero_title,
+                        subtitle: data.hero_subtitle,
+                    },
+                    search: {
+                        title: data.search_placeholder,
+                    },
+                    quick_links: {
+                        items: data.quick_links || [],
+                    },
+                    faq_section: {
+                        title: data.faq_section_title,
+                    },
+                    cta: {
+                        title: data.cta_title,
+                        subtitle: data.cta_subtitle,
+                        content: JSON.stringify(ctaContent),
+                    },
                 },
             },
-        }, {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success('Help Center page saved successfully');
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success('Help Center page saved successfully');
+                },
+                onError: () => {
+                    toast.error('Failed to save Help Center page');
+                },
+                onFinish: () => setIsSubmitting(false),
             },
-            onError: () => {
-                toast.error('Failed to save Help Center page');
-            },
-            onFinish: () => setIsSubmitting(false),
-        });
+        );
     };
 
     return (
@@ -234,7 +309,9 @@ export default function HelpPage({ content }: Props) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
                 >
-                    <h1 className="text-3xl font-bold tracking-tight">Help Center Page</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        Help Center Page
+                    </h1>
                     <p className="text-muted-foreground">
                         Manage the help center page content and quick links
                     </p>
@@ -242,13 +319,27 @@ export default function HelpPage({ content }: Props) {
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(handleSave)}>
-                        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+                        <Tabs
+                            value={activeTab}
+                            onValueChange={setActiveTab}
+                            className="space-y-6"
+                        >
                             <TabsList className="grid w-full grid-cols-5">
-                                <TabsTrigger value="hero">Hero Section</TabsTrigger>
-                                <TabsTrigger value="search">Search Section</TabsTrigger>
-                                <TabsTrigger value="quick-links">Quick Links</TabsTrigger>
-                                <TabsTrigger value="faq">FAQ Section</TabsTrigger>
-                                <TabsTrigger value="cta">CTA Section</TabsTrigger>
+                                <TabsTrigger value="hero">
+                                    Hero Section
+                                </TabsTrigger>
+                                <TabsTrigger value="search">
+                                    Search Section
+                                </TabsTrigger>
+                                <TabsTrigger value="quick-links">
+                                    Quick Links
+                                </TabsTrigger>
+                                <TabsTrigger value="faq">
+                                    FAQ Section
+                                </TabsTrigger>
+                                <TabsTrigger value="cta">
+                                    CTA Section
+                                </TabsTrigger>
                             </TabsList>
 
                             {/* Hero Section */}
@@ -257,7 +348,8 @@ export default function HelpPage({ content }: Props) {
                                     <CardHeader>
                                         <CardTitle>Hero Section</CardTitle>
                                         <CardDescription>
-                                            The main heading and search area for the help center
+                                            The main heading and search area for
+                                            the help center
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
@@ -266,9 +358,14 @@ export default function HelpPage({ content }: Props) {
                                             name="hero_title"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Page Title</FormLabel>
+                                                    <FormLabel>
+                                                        Page Title
+                                                    </FormLabel>
                                                     <FormControl>
-                                                        <Input placeholder="How Can We Help?" {...field} />
+                                                        <Input
+                                                            placeholder="How Can We Help?"
+                                                            {...field}
+                                                        />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -279,7 +376,9 @@ export default function HelpPage({ content }: Props) {
                                             name="hero_subtitle"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Page Subtitle</FormLabel>
+                                                    <FormLabel>
+                                                        Page Subtitle
+                                                    </FormLabel>
                                                     <FormControl>
                                                         <Textarea
                                                             placeholder="Find answers to commonly asked questions or contact our support team."
@@ -296,20 +395,29 @@ export default function HelpPage({ content }: Props) {
                                             name="search_placeholder"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Search Placeholder Text</FormLabel>
+                                                    <FormLabel>
+                                                        Search Placeholder Text
+                                                    </FormLabel>
                                                     <FormControl>
-                                                        <Input placeholder="Search for answers..." {...field} />
+                                                        <Input
+                                                            placeholder="Search for answers..."
+                                                            {...field}
+                                                        />
                                                     </FormControl>
                                                     <FormDescription>
-                                                        Placeholder text shown in the search box
+                                                        Placeholder text shown
+                                                        in the search box
                                                     </FormDescription>
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
                                         />
                                         <div className="flex justify-end">
-                                            <Button type="submit" disabled={isSubmitting}>
-                                                <Save className="h-4 w-4 mr-2" />
+                                            <Button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                            >
+                                                <Save className="mr-2 h-4 w-4" />
                                                 Save Hero Section
                                             </Button>
                                         </div>
@@ -323,7 +431,8 @@ export default function HelpPage({ content }: Props) {
                                     <CardHeader>
                                         <CardTitle>Search Section</CardTitle>
                                         <CardDescription>
-                                            Configure the search input placeholder shown under the hero
+                                            Configure the search input
+                                            placeholder shown under the hero
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
@@ -332,18 +441,29 @@ export default function HelpPage({ content }: Props) {
                                             name="search_placeholder"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Search Placeholder</FormLabel>
+                                                    <FormLabel>
+                                                        Search Placeholder
+                                                    </FormLabel>
                                                     <FormControl>
-                                                        <Input placeholder="Search for answers..." {...field} />
+                                                        <Input
+                                                            placeholder="Search for answers..."
+                                                            {...field}
+                                                        />
                                                     </FormControl>
-                                                    <FormDescription>Appears inside the help search box.</FormDescription>
+                                                    <FormDescription>
+                                                        Appears inside the help
+                                                        search box.
+                                                    </FormDescription>
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
                                         />
                                         <div className="flex justify-end">
-                                            <Button type="submit" disabled={isSubmitting}>
-                                                <Save className="h-4 w-4 mr-2" />
+                                            <Button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                            >
+                                                <Save className="mr-2 h-4 w-4" />
                                                 Save Search Section
                                             </Button>
                                         </div>
@@ -357,136 +477,247 @@ export default function HelpPage({ content }: Props) {
                                     <CardHeader>
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <CardTitle>Quick Links</CardTitle>
+                                                <CardTitle>
+                                                    Quick Links
+                                                </CardTitle>
                                                 <CardDescription>
-                                                    Contact methods displayed prominently (phone, email, chat)
+                                                    Contact methods displayed
+                                                    prominently (phone, email,
+                                                    chat)
                                                 </CardDescription>
                                             </div>
                                             <Button
                                                 type="button"
                                                 variant="outline"
-                                                onClick={() => append({ icon: 'phone', title: '', description: '', button_text: '' })}
+                                                onClick={() =>
+                                                    append({
+                                                        icon: 'phone',
+                                                        title: '',
+                                                        description: '',
+                                                        button_text: '',
+                                                    })
+                                                }
                                             >
-                                                <Plus className="h-4 w-4 mr-2" />
+                                                <Plus className="mr-2 h-4 w-4" />
                                                 Add Quick Link
                                             </Button>
                                         </div>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
                                         {fields.length === 0 && (
-                                            <div className="text-center py-8 border-2 border-dashed rounded-lg">
-                                                <p className="text-muted-foreground mb-2">No quick links yet</p>
+                                            <div className="rounded-lg border-2 border-dashed py-8 text-center">
+                                                <p className="mb-2 text-muted-foreground">
+                                                    No quick links yet
+                                                </p>
                                                 <Button
                                                     type="button"
                                                     variant="outline"
-                                                    onClick={() => append({ icon: 'phone', title: '', description: '', button_text: '' })}
+                                                    onClick={() =>
+                                                        append({
+                                                            icon: 'phone',
+                                                            title: '',
+                                                            description: '',
+                                                            button_text: '',
+                                                        })
+                                                    }
                                                 >
-                                                    <Plus className="h-4 w-4 mr-2" />
+                                                    <Plus className="mr-2 h-4 w-4" />
                                                     Add First Quick Link
                                                 </Button>
                                             </div>
                                         )}
                                         {fields.length > 0 && (
-                                            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                                                <SortableContext items={fields.map((f) => f.id)} strategy={verticalListSortingStrategy}>
+                                            <DndContext
+                                                sensors={sensors}
+                                                collisionDetection={
+                                                    closestCenter
+                                                }
+                                                onDragEnd={handleDragEnd}
+                                            >
+                                                <SortableContext
+                                                    items={fields.map(
+                                                        (f) => f.id,
+                                                    )}
+                                                    strategy={
+                                                        verticalListSortingStrategy
+                                                    }
+                                                >
                                                     <div className="space-y-4">
-                                                        {fields.map((field, index) => (
-                                                            <SortableCard key={field.id} id={field.id}>
-                                                                <div className="flex items-center justify-between">
-                                                                    <div className="flex items-center gap-2">
-                                                                        <GripVertical className="h-5 w-5 text-muted-foreground cursor-grab" />
-                                                                        <span className="font-medium">Quick Link {index + 1}</span>
+                                                        {fields.map(
+                                                            (field, index) => (
+                                                                <SortableCard
+                                                                    key={
+                                                                        field.id
+                                                                    }
+                                                                    id={
+                                                                        field.id
+                                                                    }
+                                                                >
+                                                                    <div className="flex items-center justify-between">
+                                                                        <div className="flex items-center gap-2">
+                                                                            <GripVertical className="h-5 w-5 cursor-grab text-muted-foreground" />
+                                                                            <span className="font-medium">
+                                                                                Quick
+                                                                                Link{' '}
+                                                                                {index +
+                                                                                    1}
+                                                                            </span>
+                                                                        </div>
+                                                                        <Button
+                                                                            type="button"
+                                                                            variant="ghost"
+                                                                            size="icon"
+                                                                            onClick={() =>
+                                                                                remove(
+                                                                                    index,
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <Trash2 className="h-4 w-4 text-destructive" />
+                                                                        </Button>
                                                                     </div>
-                                                                    <Button
-                                                                        type="button"
-                                                                        variant="ghost"
-                                                                        size="icon"
-                                                                        onClick={() => remove(index)}
-                                                                    >
-                                                                        <Trash2 className="h-4 w-4 text-destructive" />
-                                                                    </Button>
-                                                                </div>
-                                                                <div className="grid gap-4 sm:grid-cols-2">
-                                                                    <FormField
-                                                                        control={form.control}
-                                                                        name={`quick_links.${index}.icon`}
-                                                                        render={({ field }) => (
-                                                                            <FormItem>
-                                                                                <FormLabel>Icon</FormLabel>
-                                                                                <Select onValueChange={field.onChange} value={field.value}>
+                                                                    <div className="grid gap-4 sm:grid-cols-2">
+                                                                        <FormField
+                                                                            control={
+                                                                                form.control
+                                                                            }
+                                                                            name={`quick_links.${index}.icon`}
+                                                                            render={({
+                                                                                field,
+                                                                            }) => (
+                                                                                <FormItem>
+                                                                                    <FormLabel>
+                                                                                        Icon
+                                                                                    </FormLabel>
+                                                                                    <Select
+                                                                                        onValueChange={
+                                                                                            field.onChange
+                                                                                        }
+                                                                                        value={
+                                                                                            field.value
+                                                                                        }
+                                                                                    >
+                                                                                        <FormControl>
+                                                                                            <SelectTrigger>
+                                                                                                <SelectValue placeholder="Select icon" />
+                                                                                            </SelectTrigger>
+                                                                                        </FormControl>
+                                                                                        <SelectContent>
+                                                                                            {iconOptions.map(
+                                                                                                (
+                                                                                                    option,
+                                                                                                ) => {
+                                                                                                    const IconComponent =
+                                                                                                        option.icon;
+                                                                                                    return (
+                                                                                                        <SelectItem
+                                                                                                            key={
+                                                                                                                option.value
+                                                                                                            }
+                                                                                                            value={
+                                                                                                                option.value
+                                                                                                            }
+                                                                                                        >
+                                                                                                            <div className="flex items-center gap-2">
+                                                                                                                <IconComponent className="h-4 w-4" />
+                                                                                                                <span>
+                                                                                                                    {
+                                                                                                                        option.label
+                                                                                                                    }
+                                                                                                                </span>
+                                                                                                            </div>
+                                                                                                        </SelectItem>
+                                                                                                    );
+                                                                                                },
+                                                                                            )}
+                                                                                        </SelectContent>
+                                                                                    </Select>
+                                                                                    <FormMessage />
+                                                                                </FormItem>
+                                                                            )}
+                                                                        />
+                                                                        <FormField
+                                                                            control={
+                                                                                form.control
+                                                                            }
+                                                                            name={`quick_links.${index}.title`}
+                                                                            render={({
+                                                                                field,
+                                                                            }) => (
+                                                                                <FormItem>
+                                                                                    <FormLabel>
+                                                                                        Title
+                                                                                    </FormLabel>
                                                                                     <FormControl>
-                                                                                        <SelectTrigger>
-                                                                                            <SelectValue placeholder="Select icon" />
-                                                                                        </SelectTrigger>
+                                                                                        <Input
+                                                                                            placeholder="Call Us"
+                                                                                            {...field}
+                                                                                        />
                                                                                     </FormControl>
-                                                                                    <SelectContent>
-                                                                                        {iconOptions.map((option) => {
-                                                                                            const IconComponent = option.icon;
-                                                                                            return (
-                                                                                                <SelectItem key={option.value} value={option.value}>
-                                                                                                    <div className="flex items-center gap-2">
-                                                                                                        <IconComponent className="h-4 w-4" />
-                                                                                                        <span>{option.label}</span>
-                                                                                                    </div>
-                                                                                                </SelectItem>
-                                                                                            );
-                                                                                        })}
-                                                                                    </SelectContent>
-                                                                                </Select>
-                                                                                <FormMessage />
-                                                                            </FormItem>
-                                                                        )}
-                                                                    />
+                                                                                    <FormMessage />
+                                                                                </FormItem>
+                                                                            )}
+                                                                        />
+                                                                    </div>
                                                                     <FormField
-                                                                        control={form.control}
-                                                                        name={`quick_links.${index}.title`}
-                                                                        render={({ field }) => (
+                                                                        control={
+                                                                            form.control
+                                                                        }
+                                                                        name={`quick_links.${index}.description`}
+                                                                        render={({
+                                                                            field,
+                                                                        }) => (
                                                                             <FormItem>
-                                                                                <FormLabel>Title</FormLabel>
+                                                                                <FormLabel>
+                                                                                    Description
+                                                                                </FormLabel>
                                                                                 <FormControl>
-                                                                                    <Input placeholder="Call Us" {...field} />
+                                                                                    <Input
+                                                                                        placeholder="Speak directly with our team"
+                                                                                        {...field}
+                                                                                    />
                                                                                 </FormControl>
                                                                                 <FormMessage />
                                                                             </FormItem>
                                                                         )}
                                                                     />
-                                                                </div>
-                                                                <FormField
-                                                                    control={form.control}
-                                                                    name={`quick_links.${index}.description`}
-                                                                    render={({ field }) => (
-                                                                        <FormItem>
-                                                                            <FormLabel>Description</FormLabel>
-                                                                            <FormControl>
-                                                                                <Input placeholder="Speak directly with our team" {...field} />
-                                                                            </FormControl>
-                                                                            <FormMessage />
-                                                                        </FormItem>
-                                                                    )}
-                                                                />
-                                                                <FormField
-                                                                    control={form.control}
-                                                                    name={`quick_links.${index}.button_text`}
-                                                                    render={({ field }) => (
-                                                                        <FormItem>
-                                                                            <FormLabel>Button Text</FormLabel>
-                                                                            <FormControl>
-                                                                                <Input placeholder="Call Now" {...field} />
-                                                                            </FormControl>
-                                                                            <FormMessage />
-                                                                        </FormItem>
-                                                                    )}
-                                                                />
-                                                            </SortableCard>
-                                                        ))}
+                                                                    <FormField
+                                                                        control={
+                                                                            form.control
+                                                                        }
+                                                                        name={`quick_links.${index}.button_text`}
+                                                                        render={({
+                                                                            field,
+                                                                        }) => (
+                                                                            <FormItem>
+                                                                                <FormLabel>
+                                                                                    Button
+                                                                                    Text
+                                                                                </FormLabel>
+                                                                                <FormControl>
+                                                                                    <Input
+                                                                                        placeholder="Call Now"
+                                                                                        {...field}
+                                                                                    />
+                                                                                </FormControl>
+                                                                                <FormMessage />
+                                                                            </FormItem>
+                                                                        )}
+                                                                    />
+                                                                </SortableCard>
+                                                            ),
+                                                        )}
                                                     </div>
                                                 </SortableContext>
                                             </DndContext>
                                         )}
 
-                                        <div className="flex justify-end mt-4">
-                                            <Button type="submit" disabled={isSubmitting}>
-                                                <Save className="h-4 w-4 mr-2" />
+                                        <div className="mt-4 flex justify-end">
+                                            <Button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                            >
+                                                <Save className="mr-2 h-4 w-4" />
                                                 Save Quick Links
                                             </Button>
                                         </div>
@@ -503,7 +734,8 @@ export default function HelpPage({ content }: Props) {
                                             FAQ Section
                                         </CardTitle>
                                         <CardDescription>
-                                            Configure the FAQ section displayed on the help center
+                                            Configure the FAQ section displayed
+                                            on the help center
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
@@ -512,17 +744,24 @@ export default function HelpPage({ content }: Props) {
                                             name="faq_section_title"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Section Title</FormLabel>
+                                                    <FormLabel>
+                                                        Section Title
+                                                    </FormLabel>
                                                     <FormControl>
-                                                        <Input placeholder="Frequently Asked Questions" {...field} />
+                                                        <Input
+                                                            placeholder="Frequently Asked Questions"
+                                                            {...field}
+                                                        />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
                                         />
-                                        <div className="rounded-lg border p-4 bg-muted/50">
-                                            <p className="text-sm text-muted-foreground mb-2">
-                                                FAQs are managed separately. Visit the FAQs management page to add/edit questions.
+                                        <div className="rounded-lg border bg-muted/50 p-4">
+                                            <p className="mb-2 text-sm text-muted-foreground">
+                                                FAQs are managed separately.
+                                                Visit the FAQs management page
+                                                to add/edit questions.
                                             </p>
                                             <Button variant="outline" asChild>
                                                 <a href="/admin/content-pages/faqs">
@@ -531,8 +770,11 @@ export default function HelpPage({ content }: Props) {
                                             </Button>
                                         </div>
                                         <div className="flex justify-end">
-                                            <Button type="submit" disabled={isSubmitting}>
-                                                <Save className="h-4 w-4 mr-2" />
+                                            <Button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                            >
+                                                <Save className="mr-2 h-4 w-4" />
                                                 Save FAQ Section
                                             </Button>
                                         </div>
@@ -544,9 +786,12 @@ export default function HelpPage({ content }: Props) {
                             <TabsContent value="cta">
                                 <Card>
                                     <CardHeader>
-                                        <CardTitle>Call-to-Action Section</CardTitle>
+                                        <CardTitle>
+                                            Call-to-Action Section
+                                        </CardTitle>
                                         <CardDescription>
-                                            The "Still Need Help?" section at the bottom of the page
+                                            The "Still Need Help?" section at
+                                            the bottom of the page
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
@@ -555,9 +800,14 @@ export default function HelpPage({ content }: Props) {
                                             name="cta_title"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>CTA Title</FormLabel>
+                                                    <FormLabel>
+                                                        CTA Title
+                                                    </FormLabel>
                                                     <FormControl>
-                                                        <Input placeholder="Still Need Help?" {...field} />
+                                                        <Input
+                                                            placeholder="Still Need Help?"
+                                                            {...field}
+                                                        />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -568,7 +818,9 @@ export default function HelpPage({ content }: Props) {
                                             name="cta_subtitle"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>CTA Subtitle</FormLabel>
+                                                    <FormLabel>
+                                                        CTA Subtitle
+                                                    </FormLabel>
                                                     <FormControl>
                                                         <Textarea
                                                             placeholder="Can't find what you're looking for? Our support team is here to help."
@@ -586,9 +838,14 @@ export default function HelpPage({ content }: Props) {
                                                 name="cta_button1_text"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Button 1 Text</FormLabel>
+                                                        <FormLabel>
+                                                            Button 1 Text
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Contact Us" {...field} />
+                                                            <Input
+                                                                placeholder="Contact Us"
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -599,9 +856,14 @@ export default function HelpPage({ content }: Props) {
                                                 name="cta_button1_url"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Button 1 URL</FormLabel>
+                                                        <FormLabel>
+                                                            Button 1 URL
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="/contact" {...field} />
+                                                            <Input
+                                                                placeholder="/contact"
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -614,9 +876,14 @@ export default function HelpPage({ content }: Props) {
                                                 name="cta_button2_text"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Button 2 Text</FormLabel>
+                                                        <FormLabel>
+                                                            Button 2 Text
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Schedule a Meeting" {...field} />
+                                                            <Input
+                                                                placeholder="Schedule a Meeting"
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -627,9 +894,14 @@ export default function HelpPage({ content }: Props) {
                                                 name="cta_button2_url"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Button 2 URL</FormLabel>
+                                                        <FormLabel>
+                                                            Button 2 URL
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="/meeting/schedule" {...field} />
+                                                            <Input
+                                                                placeholder="/meeting/schedule"
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -637,8 +909,11 @@ export default function HelpPage({ content }: Props) {
                                             />
                                         </div>
                                         <div className="flex justify-end">
-                                            <Button type="submit" disabled={isSubmitting}>
-                                                <Save className="h-4 w-4 mr-2" />
+                                            <Button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                            >
+                                                <Save className="mr-2 h-4 w-4" />
                                                 Save CTA Section
                                             </Button>
                                         </div>

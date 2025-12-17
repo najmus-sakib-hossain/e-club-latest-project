@@ -26,7 +26,7 @@ class CallbackRequestController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
+                    ->orWhere('phone', 'like', "%{$search}%");
             });
         }
 
@@ -102,6 +102,7 @@ class CallbackRequestController extends Controller
     public function destroy(CallbackRequest $callback)
     {
         $callback->delete();
+
         return back()->with('success', 'Callback request deleted successfully');
     }
 }

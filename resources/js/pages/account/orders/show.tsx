@@ -1,26 +1,26 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import {
-    ChevronRight,
-    Package,
-    Truck,
-    CheckCircle,
-    Clock,
-    XCircle,
     ArrowLeft,
-    User,
-    MapPin,
+    CheckCircle,
+    ChevronRight,
+    Clock,
     CreditCard,
-    Phone,
     Mail,
+    MapPin,
+    Package,
+    Phone,
+    Truck,
+    User,
+    XCircle,
 } from 'lucide-react';
 
 import { SiteLayout } from '@/components/site';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import type { Category, SiteSettings } from '@/types/cms';
 import type { SharedData } from '@/types';
+import type { Category, SiteSettings } from '@/types/cms';
 
 interface OrderItem {
     id: number;
@@ -84,7 +84,11 @@ const statusSteps = [
     { key: 'delivered', label: 'Delivered', icon: CheckCircle },
 ];
 
-export default function OrderDetail({ settings, categories, order }: OrderDetailProps) {
+export default function OrderDetail({
+    settings,
+    categories,
+    order,
+}: OrderDetailProps) {
     const { auth } = usePage<SharedData>().props;
     const user = auth?.user;
 
@@ -95,10 +99,12 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                 <Head title="Order Details" />
 
                 <div className="container mx-auto px-4 py-16">
-                    <div className="max-w-md mx-auto text-center">
-                        <User className="h-16 w-16 text-muted-foreground mx-auto mb-6" />
-                        <h1 className="text-2xl font-bold mb-4">Sign in to View Order</h1>
-                        <p className="text-muted-foreground mb-8">
+                    <div className="mx-auto max-w-md text-center">
+                        <User className="mx-auto mb-6 h-16 w-16 text-muted-foreground" />
+                        <h1 className="mb-4 text-2xl font-bold">
+                            Sign in to View Order
+                        </h1>
+                        <p className="mb-8 text-muted-foreground">
                             Please sign in to view your order details.
                         </p>
                         <Button asChild size="lg">
@@ -143,39 +149,68 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
             <div className="bg-muted py-4">
                 <div className="container mx-auto px-4">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Link href="/" className="hover:text-primary">Home</Link>
+                        <Link href="/" className="hover:text-primary">
+                            Home
+                        </Link>
                         <ChevronRight className="h-4 w-4" />
-                        <Link href="/account" className="hover:text-primary">Account</Link>
+                        <Link href="/account" className="hover:text-primary">
+                            Account
+                        </Link>
                         <ChevronRight className="h-4 w-4" />
-                        <Link href="/account/orders" className="hover:text-primary">Orders</Link>
+                        <Link
+                            href="/account/orders"
+                            className="hover:text-primary"
+                        >
+                            Orders
+                        </Link>
                         <ChevronRight className="h-4 w-4" />
-                        <span className="text-foreground font-medium">#{order.order_number}</span>
+                        <span className="font-medium text-foreground">
+                            #{order.order_number}
+                        </span>
                     </div>
                 </div>
             </div>
 
             <div className="container mx-auto px-4 py-8">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <Button variant="ghost" size="sm" asChild className="mb-2 -ml-2">
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            asChild
+                            className="mb-2 -ml-2"
+                        >
                             <Link href="/account/orders">
-                                <ArrowLeft className="h-4 w-4 mr-2" />
+                                <ArrowLeft className="mr-2 h-4 w-4" />
                                 Back to Orders
                             </Link>
                         </Button>
-                        <h1 className="text-2xl font-bold">Order #{order.order_number}</h1>
+                        <h1 className="text-2xl font-bold">
+                            Order #{order.order_number}
+                        </h1>
                         <p className="text-muted-foreground">
                             Placed on {formatDate(order.created_at)}
                         </p>
                     </div>
                     <div className="flex gap-2">
-                        <Badge className={statusColors[order.status]} variant="outline">
-                            {order.status === 'cancelled' && <XCircle className="h-3 w-3 mr-1" />}
-                            {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                        <Badge
+                            className={statusColors[order.status]}
+                            variant="outline"
+                        >
+                            {order.status === 'cancelled' && (
+                                <XCircle className="mr-1 h-3 w-3" />
+                            )}
+                            {order.status.charAt(0).toUpperCase() +
+                                order.status.slice(1)}
                         </Badge>
-                        <Badge className={paymentStatusColors[order.payment_status]}>
-                            {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1)}
+                        <Badge
+                            className={
+                                paymentStatusColors[order.payment_status]
+                            }
+                        >
+                            {order.payment_status.charAt(0).toUpperCase() +
+                                order.payment_status.slice(1)}
                         </Badge>
                     </div>
                 </div>
@@ -187,19 +222,21 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                             <div className="relative">
                                 <div className="flex justify-between">
                                     {statusSteps.map((step, index) => {
-                                        const isCompleted = index <= currentStepIndex;
-                                        const isCurrent = index === currentStepIndex;
+                                        const isCompleted =
+                                            index <= currentStepIndex;
+                                        const isCurrent =
+                                            index === currentStepIndex;
                                         const StepIcon = step.icon;
 
                                         return (
                                             <div
                                                 key={step.key}
-                                                className={`flex flex-col items-center relative z-10 ${
+                                                className={`relative z-10 flex flex-col items-center ${
                                                     index === 0 ? '' : 'flex-1'
                                                 }`}
                                             >
                                                 <div
-                                                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                                    className={`flex h-10 w-10 items-center justify-center rounded-full ${
                                                         isCompleted
                                                             ? 'bg-primary text-primary-foreground'
                                                             : 'bg-muted text-muted-foreground'
@@ -208,8 +245,10 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                                                     <StepIcon className="h-5 w-5" />
                                                 </div>
                                                 <span
-                                                    className={`mt-2 text-xs font-medium text-center ${
-                                                        isCompleted ? 'text-foreground' : 'text-muted-foreground'
+                                                    className={`mt-2 text-center text-xs font-medium ${
+                                                        isCompleted
+                                                            ? 'text-foreground'
+                                                            : 'text-muted-foreground'
                                                     }`}
                                                 >
                                                     {step.label}
@@ -219,7 +258,7 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                                     })}
                                 </div>
                                 {/* Progress Line */}
-                                <div className="absolute top-5 left-5 right-5 h-0.5 bg-muted -z-0">
+                                <div className="absolute top-5 right-5 left-5 -z-0 h-0.5 bg-muted">
                                     <div
                                         className="h-full bg-primary transition-all"
                                         style={{
@@ -239,9 +278,13 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                             <div className="flex items-center gap-3 text-destructive">
                                 <XCircle className="h-6 w-6" />
                                 <div>
-                                    <p className="font-semibold">Order Cancelled</p>
+                                    <p className="font-semibold">
+                                        Order Cancelled
+                                    </p>
                                     <p className="text-sm">
-                                        This order has been cancelled. If you have any questions, please contact support.
+                                        This order has been cancelled. If you
+                                        have any questions, please contact
+                                        support.
                                     </p>
                                 </div>
                             </div>
@@ -249,7 +292,7 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                     </Card>
                 )}
 
-                <div className="grid lg:grid-cols-3 gap-6">
+                <div className="grid gap-6 lg:grid-cols-3">
                     {/* Order Items */}
                     <div className="lg:col-span-2">
                         <Card>
@@ -264,25 +307,33 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                                     {order.items.map((item) => (
                                         <div
                                             key={item.id}
-                                            className="flex gap-4 p-4 bg-muted rounded-lg"
+                                            className="flex gap-4 rounded-lg bg-muted p-4"
                                         >
-                                            <div className="w-20 h-20 bg-white rounded-md overflow-hidden flex-shrink-0">
-                                                {item.product?.images?.[0] || item.image ? (
+                                            <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-md bg-white">
+                                                {item.product?.images?.[0] ||
+                                                item.image ? (
                                                     <img
-                                                        src={item.product?.images?.[0] || `/storage/${item.image}`}
+                                                        src={
+                                                            item.product
+                                                                ?.images?.[0] ||
+                                                            `/storage/${item.image}`
+                                                        }
                                                         alt={item.name}
-                                                        className="w-full h-full object-cover"
+                                                        className="h-full w-full object-cover"
                                                     />
                                                 ) : (
-                                                    <div className="w-full h-full flex items-center justify-center">
+                                                    <div className="flex h-full w-full items-center justify-center">
                                                         <Package className="h-8 w-8 text-muted-foreground" />
                                                     </div>
                                                 )}
                                             </div>
-                                            <div className="flex-1 min-w-0">
-                                                <h4 className="font-medium truncate">{item.name}</h4>
+                                            <div className="min-w-0 flex-1">
+                                                <h4 className="truncate font-medium">
+                                                    {item.name}
+                                                </h4>
                                                 <p className="text-sm text-muted-foreground">
-                                                    Qty: {item.quantity} × {formatPrice(item.price)}
+                                                    Qty: {item.quantity} ×{' '}
+                                                    {formatPrice(item.price)}
                                                 </p>
                                                 {item.product?.slug && (
                                                     <Link
@@ -295,7 +346,10 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                                             </div>
                                             <div className="text-right">
                                                 <p className="font-semibold">
-                                                    {formatPrice(item.price * item.quantity)}
+                                                    {formatPrice(
+                                                        item.price *
+                                                            item.quantity,
+                                                    )}
                                                 </p>
                                             </div>
                                         </div>
@@ -307,27 +361,42 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                                 {/* Order Summary */}
                                 <div className="space-y-2">
                                     <div className="flex justify-between text-sm">
-                                        <span className="text-muted-foreground">Subtotal</span>
-                                        <span>{formatPrice(order.subtotal)}</span>
+                                        <span className="text-muted-foreground">
+                                            Subtotal
+                                        </span>
+                                        <span>
+                                            {formatPrice(order.subtotal)}
+                                        </span>
                                     </div>
                                     {order.discount_amount > 0 && (
                                         <div className="flex justify-between text-sm text-primary">
                                             <span>Discount</span>
-                                            <span>-{formatPrice(order.discount_amount)}</span>
+                                            <span>
+                                                -
+                                                {formatPrice(
+                                                    order.discount_amount,
+                                                )}
+                                            </span>
                                         </div>
                                     )}
                                     <div className="flex justify-between text-sm">
-                                        <span className="text-muted-foreground">Shipping</span>
+                                        <span className="text-muted-foreground">
+                                            Shipping
+                                        </span>
                                         <span>
                                             {order.shipping_amount === 0
                                                 ? 'Free'
-                                                : formatPrice(order.shipping_amount)}
+                                                : formatPrice(
+                                                      order.shipping_amount,
+                                                  )}
                                         </span>
                                     </div>
                                     <Separator />
-                                    <div className="flex justify-between font-semibold text-lg">
+                                    <div className="flex justify-between text-lg font-semibold">
                                         <span>Total</span>
-                                        <span>{formatPrice(order.total_amount)}</span>
+                                        <span>
+                                            {formatPrice(order.total_amount)}
+                                        </span>
                                     </div>
                                 </div>
                             </CardContent>
@@ -339,14 +408,16 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                         {/* Shipping Address */}
                         <Card>
                             <CardHeader className="pb-3">
-                                <CardTitle className="text-base flex items-center gap-2">
+                                <CardTitle className="flex items-center gap-2 text-base">
                                     <MapPin className="h-4 w-4" />
                                     Shipping Address
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p className="font-medium">{order.customer_name}</p>
-                                <p className="text-sm text-muted-foreground whitespace-pre-line">
+                                <p className="font-medium">
+                                    {order.customer_name}
+                                </p>
+                                <p className="text-sm whitespace-pre-line text-muted-foreground">
                                     {order.shipping_address}
                                 </p>
                             </CardContent>
@@ -355,7 +426,7 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                         {/* Contact Info */}
                         <Card>
                             <CardHeader className="pb-3">
-                                <CardTitle className="text-base flex items-center gap-2">
+                                <CardTitle className="flex items-center gap-2 text-base">
                                     <User className="h-4 w-4" />
                                     Contact Information
                                 </CardTitle>
@@ -375,26 +446,42 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                         {/* Payment Info */}
                         <Card>
                             <CardHeader className="pb-3">
-                                <CardTitle className="text-base flex items-center gap-2">
+                                <CardTitle className="flex items-center gap-2 text-base">
                                     <CreditCard className="h-4 w-4" />
                                     Payment Information
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">Method</span>
-                                    <span className="capitalize">{order.payment_method}</span>
+                                    <span className="text-muted-foreground">
+                                        Method
+                                    </span>
+                                    <span className="capitalize">
+                                        {order.payment_method}
+                                    </span>
                                 </div>
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">Status</span>
-                                    <Badge className={paymentStatusColors[order.payment_status]}>
+                                    <span className="text-muted-foreground">
+                                        Status
+                                    </span>
+                                    <Badge
+                                        className={
+                                            paymentStatusColors[
+                                                order.payment_status
+                                            ]
+                                        }
+                                    >
                                         {order.payment_status}
                                     </Badge>
                                 </div>
                                 {order.transaction_id && (
                                     <div className="flex justify-between text-sm">
-                                        <span className="text-muted-foreground">Transaction ID</span>
-                                        <span className="font-mono text-xs">{order.transaction_id}</span>
+                                        <span className="text-muted-foreground">
+                                            Transaction ID
+                                        </span>
+                                        <span className="font-mono text-xs">
+                                            {order.transaction_id}
+                                        </span>
                                     </div>
                                 )}
                             </CardContent>
@@ -404,17 +491,25 @@ export default function OrderDetail({ settings, categories, order }: OrderDetail
                         {order.notes && (
                             <Card>
                                 <CardHeader className="pb-3">
-                                    <CardTitle className="text-base">Order Notes</CardTitle>
+                                    <CardTitle className="text-base">
+                                        Order Notes
+                                    </CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-sm text-muted-foreground">{order.notes}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        {order.notes}
+                                    </p>
                                 </CardContent>
                             </Card>
                         )}
 
                         {/* Actions */}
                         <div className="space-y-2">
-                            <Button variant="outline" className="w-full" asChild>
+                            <Button
+                                variant="outline"
+                                className="w-full"
+                                asChild
+                            >
                                 <Link href="/contact">Need Help?</Link>
                             </Button>
                             <Button className="w-full" asChild>

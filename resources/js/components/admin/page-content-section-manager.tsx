@@ -1,20 +1,40 @@
-import { useState } from 'react';
 import { router } from '@inertiajs/react';
-import { motion } from 'motion/react';
 import {
-    Plus,
-    Pencil,
-    Trash2,
-    GripVertical,
-    Eye,
-    EyeOff,
     ChevronDown,
     ChevronRight,
+    Eye,
+    EyeOff,
+    GripVertical,
+    Pencil,
+    Plus,
+    Trash2,
 } from 'lucide-react';
+import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 import {
     Dialog,
     DialogContent,
@@ -26,14 +46,13 @@ import {
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
-    FormDescription,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import {
     Select,
     SelectContent,
@@ -42,24 +61,10 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@/components/ui/collapsible';
-import { toast } from 'sonner';
-import { useForm } from 'react-hook-form';
+import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 // Types
@@ -83,13 +88,41 @@ interface PageContentSectionManagerProps {
 
 // Section types
 const sectionTypes = [
-    { value: 'hero', label: 'Hero Section', description: 'Main page header with title and subtitle' },
-    { value: 'content', label: 'Content Section', description: 'Text content with optional image' },
-    { value: 'cta', label: 'Call to Action', description: 'Promotional section with action buttons' },
-    { value: 'cards', label: 'Card Grid', description: 'Grid of items (features, services, etc.)' },
-    { value: 'gallery', label: 'Image Gallery', description: 'Collection of images' },
-    { value: 'testimonials', label: 'Testimonials', description: 'Customer reviews and feedback' },
-    { value: 'custom', label: 'Custom Section', description: 'Flexible custom content' },
+    {
+        value: 'hero',
+        label: 'Hero Section',
+        description: 'Main page header with title and subtitle',
+    },
+    {
+        value: 'content',
+        label: 'Content Section',
+        description: 'Text content with optional image',
+    },
+    {
+        value: 'cta',
+        label: 'Call to Action',
+        description: 'Promotional section with action buttons',
+    },
+    {
+        value: 'cards',
+        label: 'Card Grid',
+        description: 'Grid of items (features, services, etc.)',
+    },
+    {
+        value: 'gallery',
+        label: 'Image Gallery',
+        description: 'Collection of images',
+    },
+    {
+        value: 'testimonials',
+        label: 'Testimonials',
+        description: 'Customer reviews and feedback',
+    },
+    {
+        value: 'custom',
+        label: 'Custom Section',
+        description: 'Flexible custom content',
+    },
 ];
 
 // Form schema
@@ -106,11 +139,15 @@ const sectionFormSchema = z.object({
 
 type SectionFormValues = z.infer<typeof sectionFormSchema>;
 
-export function PageContentSectionManager({ pageSlug, sections }: PageContentSectionManagerProps) {
+export function PageContentSectionManager({
+    pageSlug,
+    sections,
+}: PageContentSectionManagerProps) {
     const [expandedSections, setExpandedSections] = useState<number[]>([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const [selectedSection, setSelectedSection] = useState<PageContentSection | null>(null);
+    const [selectedSection, setSelectedSection] =
+        useState<PageContentSection | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm<SectionFormValues>({
@@ -131,7 +168,7 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
         setExpandedSections((prev) =>
             prev.includes(sectionId)
                 ? prev.filter((id) => id !== sectionId)
-                : [...prev, sectionId]
+                : [...prev, sectionId],
         );
     };
 
@@ -174,7 +211,9 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
         router.post(url, selectedSection ? { ...data, _method: 'PUT' } : data, {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success(selectedSection ? 'Section updated' : 'Section created');
+                toast.success(
+                    selectedSection ? 'Section updated' : 'Section created',
+                );
                 setIsDialogOpen(false);
             },
             onError: () => {
@@ -188,22 +227,25 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
         if (!selectedSection) return;
 
         setIsSubmitting(true);
-        router.delete(`/admin/content-pages/${pageSlug}/sections/${selectedSection.id}`, {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success('Section deleted');
-                setIsDeleteDialogOpen(false);
-                setSelectedSection(null);
+        router.delete(
+            `/admin/content-pages/${pageSlug}/sections/${selectedSection.id}`,
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success('Section deleted');
+                    setIsDeleteDialogOpen(false);
+                    setSelectedSection(null);
+                },
+                onError: () => {
+                    toast.error('Failed to delete section');
+                },
+                onFinish: () => setIsSubmitting(false),
             },
-            onError: () => {
-                toast.error('Failed to delete section');
-            },
-            onFinish: () => setIsSubmitting(false),
-        });
+        );
     };
 
     const getSectionTypeLabel = (key: string) => {
-        const type = sectionTypes.find(t => key.startsWith(t.value));
+        const type = sectionTypes.find((t) => key.startsWith(t.value));
         return type?.label || 'Custom';
     };
 
@@ -211,13 +253,15 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
         <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-lg font-semibold">Page Content Sections</h3>
+                    <h3 className="text-lg font-semibold">
+                        Page Content Sections
+                    </h3>
                     <p className="text-sm text-muted-foreground">
                         Manage dynamic sections for this page
                     </p>
                 </div>
                 <Button onClick={openAddDialog}>
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="mr-2 h-4 w-4" />
                     Add Section
                 </Button>
             </div>
@@ -225,9 +269,11 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
             {sections.length === 0 ? (
                 <Card>
                     <CardContent className="py-12 text-center">
-                        <p className="text-muted-foreground mb-4">No content sections yet</p>
+                        <p className="mb-4 text-muted-foreground">
+                            No content sections yet
+                        </p>
                         <Button onClick={openAddDialog}>
-                            <Plus className="h-4 w-4 mr-2" />
+                            <Plus className="mr-2 h-4 w-4" />
                             Add First Section
                         </Button>
                     </CardContent>
@@ -243,21 +289,29 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                                 <CardHeader className="py-4">
                                     <div className="flex items-center justify-between">
                                         <CollapsibleTrigger className="flex items-center gap-3 hover:opacity-80">
-                                            {expandedSections.includes(section.id) ? (
+                                            {expandedSections.includes(
+                                                section.id,
+                                            ) ? (
                                                 <ChevronDown className="h-5 w-5" />
                                             ) : (
                                                 <ChevronRight className="h-5 w-5" />
                                             )}
-                                            <GripVertical className="h-5 w-5 text-muted-foreground cursor-grab" />
+                                            <GripVertical className="h-5 w-5 cursor-grab text-muted-foreground" />
                                             <div className="text-left">
-                                                <CardTitle className="text-base flex items-center gap-2">
-                                                    {section.title || section.section_key}
-                                                    <Badge variant="outline" className="text-xs">
-                                                        {getSectionTypeLabel(section.section_key)}
+                                                <CardTitle className="flex items-center gap-2 text-base">
+                                                    {section.title ||
+                                                        section.section_key}
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="text-xs"
+                                                    >
+                                                        {getSectionTypeLabel(
+                                                            section.section_key,
+                                                        )}
                                                     </Badge>
                                                 </CardTitle>
                                                 {section.subtitle && (
-                                                    <CardDescription className="text-xs mt-1">
+                                                    <CardDescription className="mt-1 text-xs">
                                                         {section.subtitle}
                                                     </CardDescription>
                                                 )}
@@ -269,7 +323,9 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                                             ) : (
                                                 <EyeOff className="h-4 w-4 text-gray-400" />
                                             )}
-                                            <Badge variant="secondary">#{section.sort_order}</Badge>
+                                            <Badge variant="secondary">
+                                                #{section.sort_order}
+                                            </Badge>
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
@@ -295,29 +351,39 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                                     </div>
                                 </CardHeader>
                                 <CollapsibleContent>
-                                    <CardContent className="pt-0 space-y-2 text-sm">
+                                    <CardContent className="space-y-2 pt-0 text-sm">
                                         {section.content && (
                                             <div>
-                                                <span className="font-medium">Content:</span>
-                                                <p className="text-muted-foreground line-clamp-3">
+                                                <span className="font-medium">
+                                                    Content:
+                                                </span>
+                                                <p className="line-clamp-3 text-muted-foreground">
                                                     {section.content}
                                                 </p>
                                             </div>
                                         )}
                                         {section.image && (
                                             <div>
-                                                <span className="font-medium">Image:</span>
-                                                <span className="text-muted-foreground ml-2">{section.image}</span>
-                                            </div>
-                                        )}
-                                        {section.items && section.items.length > 0 && (
-                                            <div>
-                                                <span className="font-medium">Items:</span>
-                                                <span className="text-muted-foreground ml-2">
-                                                    {section.items.length} item(s)
+                                                <span className="font-medium">
+                                                    Image:
+                                                </span>
+                                                <span className="ml-2 text-muted-foreground">
+                                                    {section.image}
                                                 </span>
                                             </div>
                                         )}
+                                        {section.items &&
+                                            section.items.length > 0 && (
+                                                <div>
+                                                    <span className="font-medium">
+                                                        Items:
+                                                    </span>
+                                                    <span className="ml-2 text-muted-foreground">
+                                                        {section.items.length}{' '}
+                                                        item(s)
+                                                    </span>
+                                                </div>
+                                            )}
                                     </CardContent>
                                 </CollapsibleContent>
                             </Collapsible>
@@ -328,7 +394,7 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
 
             {/* Add/Edit Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>
                             {selectedSection ? 'Edit Section' : 'Add Section'}
@@ -340,7 +406,10 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleSubmit)}
+                            className="space-y-4"
+                        >
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <FormField
                                     control={form.control}
@@ -349,10 +418,14 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                                         <FormItem>
                                             <FormLabel>Section Key</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="hero_main" {...field} />
+                                                <Input
+                                                    placeholder="hero_main"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormDescription>
-                                                Unique identifier (e.g., hero_main, features_list)
+                                                Unique identifier (e.g.,
+                                                hero_main, features_list)
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>
@@ -364,18 +437,28 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Section Type</FormLabel>
-                                            <Select onValueChange={field.onChange} value={field.value}>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                            >
                                                 <FormControl>
                                                     <SelectTrigger>
                                                         <SelectValue placeholder="Select type" />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    {sectionTypes.map((type) => (
-                                                        <SelectItem key={type.value} value={type.value}>
-                                                            {type.label}
-                                                        </SelectItem>
-                                                    ))}
+                                                    {sectionTypes.map(
+                                                        (type) => (
+                                                            <SelectItem
+                                                                key={type.value}
+                                                                value={
+                                                                    type.value
+                                                                }
+                                                            >
+                                                                {type.label}
+                                                            </SelectItem>
+                                                        ),
+                                                    )}
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />
@@ -390,7 +473,10 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                                     <FormItem>
                                         <FormLabel>Title</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Section Title" {...field} />
+                                            <Input
+                                                placeholder="Section Title"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -403,7 +489,10 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                                     <FormItem>
                                         <FormLabel>Subtitle</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Optional subtitle or description" {...field} />
+                                            <Input
+                                                placeholder="Optional subtitle or description"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -433,7 +522,10 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                                     <FormItem>
                                         <FormLabel>Image URL</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="/images/section-image.jpg" {...field} />
+                                            <Input
+                                                placeholder="/images/section-image.jpg"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormDescription>
                                             Path to image file (optional)
@@ -454,7 +546,13 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                                                     type="number"
                                                     min={0}
                                                     {...field}
-                                                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                            parseInt(
+                                                                e.target.value,
+                                                            ) || 0,
+                                                        )
+                                                    }
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -465,17 +563,20 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                                     control={form.control}
                                     name="is_active"
                                     render={({ field }) => (
-                                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 mt-1">
+                                        <FormItem className="mt-1 flex flex-row items-center justify-between rounded-lg border p-3">
                                             <div className="space-y-0.5">
                                                 <FormLabel>Active</FormLabel>
                                                 <FormDescription className="text-xs">
-                                                    Show this section on the page
+                                                    Show this section on the
+                                                    page
                                                 </FormDescription>
                                             </div>
                                             <FormControl>
                                                 <Switch
                                                     checked={field.value}
-                                                    onCheckedChange={field.onChange}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
                                                 />
                                             </FormControl>
                                         </FormItem>
@@ -483,11 +584,19 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : selectedSection ? 'Update' : 'Create'}
+                                    {isSubmitting
+                                        ? 'Saving...'
+                                        : selectedSection
+                                          ? 'Update'
+                                          : 'Create'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -496,12 +605,17 @@ export function PageContentSectionManager({ pageSlug, sections }: PageContentSec
             </Dialog>
 
             {/* Delete Confirmation */}
-            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <AlertDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Section</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete "{selectedSection?.section_key}"? This action cannot be undone.
+                            Are you sure you want to delete "
+                            {selectedSection?.section_key}"? This action cannot
+                            be undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class CustomerReview extends Model
 {
@@ -46,12 +46,13 @@ class CustomerReview extends Model
      */
     public function getImageUrlAttribute(): ?string
     {
-        if (!$this->image) {
+        if (! $this->image) {
             return null;
         }
         if (str_starts_with($this->image, 'http')) {
             return $this->image;
         }
-        return asset('storage/' . $this->image);
+
+        return asset('storage/'.$this->image);
     }
 }

@@ -10,7 +10,6 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\TrustedCompany;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -74,7 +73,7 @@ class DashboardController extends Controller
                 return [
                     'category' => $category->name,
                     'products' => $category->products_count,
-                    'fill' => 'hsl(var(--chart-' . ($index + 1) . '))',
+                    'fill' => 'hsl(var(--chart-'.($index + 1).'))',
                 ];
             });
 
@@ -104,7 +103,7 @@ class DashboardController extends Controller
         // Add recent orders as activities
         Order::latest()->limit(5)->get()->each(function ($order) use ($activities) {
             $activities->push([
-                'id' => 'order-' . $order->id,
+                'id' => 'order-'.$order->id,
                 'type' => 'order',
                 'title' => 'New order placed',
                 'description' => "Order #{$order->order_number} by {$order->customer_name}",
@@ -118,7 +117,7 @@ class DashboardController extends Controller
         // Add recent products
         Product::latest()->limit(3)->get()->each(function ($product) use ($activities) {
             $activities->push([
-                'id' => 'product-' . $product->id,
+                'id' => 'product-'.$product->id,
                 'type' => 'product',
                 'title' => 'Product added',
                 'description' => $product->name,

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Meeting;
 use App\Models\CallbackRequest;
+use App\Models\Meeting;
 use App\Models\MeetingSlot;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -41,8 +41,8 @@ class MeetingController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
             });
         }
 
@@ -120,6 +120,7 @@ class MeetingController extends Controller
     public function destroy(Meeting $meeting)
     {
         $meeting->delete();
+
         return back()->with('success', 'Meeting deleted successfully');
     }
 
@@ -129,7 +130,7 @@ class MeetingController extends Controller
     public function settings()
     {
         $slots = MeetingSlot::orderBy('day_of_week')->orderBy('start_time')->get();
-        
+
         return Inertia::render('admin/meetings/settings', [
             'slots' => $slots,
         ]);
@@ -175,6 +176,7 @@ class MeetingController extends Controller
     public function destroySlot(MeetingSlot $slot)
     {
         $slot->delete();
+
         return back()->with('success', 'Meeting slot deleted successfully');
     }
 
@@ -195,9 +197,9 @@ class MeetingController extends Controller
         $meetings = $query->get()->map(function ($meeting) {
             return [
                 'id' => $meeting->id,
-                'title' => $meeting->name . ' - ' . ucfirst($meeting->meeting_type),
-                'start' => $meeting->date->format('Y-m-d') . 'T' . date('H:i:s', strtotime($meeting->time)),
-                'end' => $meeting->date->format('Y-m-d') . 'T' . date('H:i:s', strtotime($meeting->time . ' +1 hour')),
+                'title' => $meeting->name.' - '.ucfirst($meeting->meeting_type),
+                'start' => $meeting->date->format('Y-m-d').'T'.date('H:i:s', strtotime($meeting->time)),
+                'end' => $meeting->date->format('Y-m-d').'T'.date('H:i:s', strtotime($meeting->time.' +1 hour')),
                 'backgroundColor' => $this->getStatusColor($meeting->status),
                 'borderColor' => $this->getStatusColor($meeting->status),
                 'extendedProps' => [

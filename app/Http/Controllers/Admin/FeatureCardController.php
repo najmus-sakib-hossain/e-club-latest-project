@@ -45,7 +45,7 @@ class FeatureCardController extends Controller
         ]);
 
         // Handle sort_order alias for order
-        if (isset($validated['sort_order']) && !isset($validated['order'])) {
+        if (isset($validated['sort_order']) && ! isset($validated['order'])) {
             $validated['order'] = $validated['sort_order'];
         }
         unset($validated['sort_order']);
@@ -70,7 +70,7 @@ class FeatureCardController extends Controller
         ]);
 
         // Handle sort_order alias for order
-        if (isset($validated['sort_order']) && !isset($validated['order'])) {
+        if (isset($validated['sort_order']) && ! isset($validated['order'])) {
             $validated['order'] = $validated['sort_order'];
         }
         unset($validated['sort_order']);

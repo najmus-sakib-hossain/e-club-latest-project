@@ -1,10 +1,13 @@
-import { motion } from 'motion/react';
 import { ShoppingCart } from 'lucide-react';
+import { motion } from 'motion/react';
 
 import { Button } from '@/components/ui/button';
 import { slideInLeftVariants, slideInRightVariants } from '@/lib/animations';
 import { useCartStore } from '@/stores/cart-store';
-import type { FeaturedProduct as FeaturedProductType, SiteSettings } from '@/types/cms';
+import type {
+    FeaturedProduct as FeaturedProductType,
+    SiteSettings,
+} from '@/types/cms';
 
 interface FeaturedProductProps {
     featured: FeaturedProductType;
@@ -27,7 +30,9 @@ export function FeaturedProduct({ featured, settings }: FeaturedProductProps) {
     const getProductImage = () => {
         // Prefer featured image, then product images
         if (featured.image) {
-            return featured.image.startsWith('http') ? featured.image : `/storage/${featured.image}`;
+            return featured.image.startsWith('http')
+                ? featured.image
+                : `/storage/${featured.image}`;
         }
         if (product.images && product.images.length > 0) {
             const img = product.images[0];
@@ -75,11 +80,13 @@ export function FeaturedProduct({ featured, settings }: FeaturedProductProps) {
                             />
                         ) : (
                             <div className="flex aspect-square w-full items-center justify-center rounded-lg bg-gradient-to-br from-gray-100 to-gray-200">
-                                <span className="text-gray-400">{labels.noImage}</span>
+                                <span className="text-gray-400">
+                                    {labels.noImage}
+                                </span>
                             </div>
                         )}
                         {featured.badge_text && (
-                            <span className="absolute left-4 top-4 rounded bg-red-500 px-3 py-1 text-sm font-medium text-white">
+                            <span className="absolute top-4 left-4 rounded bg-red-500 px-3 py-1 text-sm font-medium text-white">
                                 {featured.badge_text}
                             </span>
                         )}
@@ -101,34 +108,47 @@ export function FeaturedProduct({ featured, settings }: FeaturedProductProps) {
                             {featured.title || product.name}
                         </h2>
                         {(featured.description || product.description) && (
-                            <p className="mb-6 text-gray-600">{featured.description || product.description}</p>
+                            <p className="mb-6 text-gray-600">
+                                {featured.description || product.description}
+                            </p>
                         )}
 
                         {/* Specifications */}
-                        {product.specifications && Object.keys(product.specifications).length > 0 && (
-                            <div className="mb-6">
-                                <h4 className="mb-3 font-semibold text-gray-900">Dimensions:</h4>
-                                <ul className="space-y-1 text-sm text-gray-600">
-                                    {Object.entries(product.specifications).map(([key, value]) => (
-                                        <li key={key}>
-                                            <span className="font-medium">{key}:</span> {value}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
+                        {product.specifications &&
+                            Object.keys(product.specifications).length > 0 && (
+                                <div className="mb-6">
+                                    <h4 className="mb-3 font-semibold text-gray-900">
+                                        Dimensions:
+                                    </h4>
+                                    <ul className="space-y-1 text-sm text-gray-600">
+                                        {Object.entries(
+                                            product.specifications,
+                                        ).map(([key, value]) => (
+                                            <li key={key}>
+                                                <span className="font-medium">
+                                                    {key}:
+                                                </span>{' '}
+                                                {value}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
 
                         {/* Price */}
                         <div className="mb-6">
                             <div className="flex items-baseline gap-2">
                                 <span className="text-3xl font-bold text-gray-900">
-                                    {formatPrice(product.sale_price ?? product.price)}
+                                    {formatPrice(
+                                        product.sale_price ?? product.price,
+                                    )}
                                 </span>
-                                {product.sale_price && product.sale_price < product.price && (
-                                    <span className="text-lg text-gray-500 line-through">
-                                        {formatPrice(product.price)}
-                                    </span>
-                                )}
+                                {product.sale_price &&
+                                    product.sale_price < product.price && (
+                                        <span className="text-lg text-gray-500 line-through">
+                                            {formatPrice(product.price)}
+                                        </span>
+                                    )}
                             </div>
                         </div>
 

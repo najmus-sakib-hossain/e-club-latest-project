@@ -1,24 +1,51 @@
-import { useState } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router } from '@inertiajs/react';
 import {
-    Plus,
-    Pencil,
-    Trash2,
-    CircleHelp,
     ChevronDown,
     ChevronRight,
+    CircleHelp,
+    CreditCard,
     GripVertical,
+    HelpCircle,
+    Info,
+    Package,
+    Pencil,
+    Plus,
+    RefreshCw,
+    Shield,
+    Trash2,
+    Truck,
+    Wrench,
 } from 'lucide-react';
-import { Package, Truck, CreditCard, Shield, RefreshCw, Wrench, HelpCircle, Info } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 import {
     Dialog,
     DialogContent,
@@ -35,7 +62,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -43,23 +70,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 import { Switch } from '@/components/ui/switch';
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@/components/ui/collapsible';
-import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -122,9 +135,11 @@ export default function FaqsPage({ categories }: Props) {
     const [expandedCategories, setExpandedCategories] = useState<number[]>([]);
     const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
     const [isFaqDialogOpen, setIsFaqDialogOpen] = useState(false);
-    const [isDeleteCategoryDialogOpen, setIsDeleteCategoryDialogOpen] = useState(false);
+    const [isDeleteCategoryDialogOpen, setIsDeleteCategoryDialogOpen] =
+        useState(false);
     const [isDeleteFaqDialogOpen, setIsDeleteFaqDialogOpen] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<FaqCategory | null>(null);
+    const [selectedCategory, setSelectedCategory] =
+        useState<FaqCategory | null>(null);
     const [selectedFaq, setSelectedFaq] = useState<Faq | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -154,7 +169,7 @@ export default function FaqsPage({ categories }: Props) {
         setExpandedCategories((prev) =>
             prev.includes(categoryId)
                 ? prev.filter((id) => id !== categoryId)
-                : [...prev, categoryId]
+                : [...prev, categoryId],
         );
     };
 
@@ -189,45 +204,61 @@ export default function FaqsPage({ categories }: Props) {
             ? `/admin/content-pages/faqs/categories/${selectedCategory.id}`
             : '/admin/content-pages/faqs/categories';
 
-        router.post(url, selectedCategory ? { ...data, _method: 'PUT' } : data, {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success(selectedCategory ? 'Category updated' : 'Category created');
-                setIsCategoryDialogOpen(false);
+        router.post(
+            url,
+            selectedCategory ? { ...data, _method: 'PUT' } : data,
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success(
+                        selectedCategory
+                            ? 'Category updated'
+                            : 'Category created',
+                    );
+                    setIsCategoryDialogOpen(false);
+                },
+                onError: () => {
+                    toast.error('Failed to save category');
+                },
+                onFinish: () => setIsSubmitting(false),
             },
-            onError: () => {
-                toast.error('Failed to save category');
-            },
-            onFinish: () => setIsSubmitting(false),
-        });
+        );
     };
 
     const handleDeleteCategory = () => {
         if (!selectedCategory) return;
 
         setIsSubmitting(true);
-        router.delete(`/admin/content-pages/faqs/categories/${selectedCategory.id}`, {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success('Category deleted');
-                setIsDeleteCategoryDialogOpen(false);
-                setSelectedCategory(null);
+        router.delete(
+            `/admin/content-pages/faqs/categories/${selectedCategory.id}`,
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success('Category deleted');
+                    setIsDeleteCategoryDialogOpen(false);
+                    setSelectedCategory(null);
+                },
+                onError: () => {
+                    toast.error('Failed to delete category');
+                },
+                onFinish: () => setIsSubmitting(false),
             },
-            onError: () => {
-                toast.error('Failed to delete category');
-            },
-            onFinish: () => setIsSubmitting(false),
-        });
+        );
     };
 
     // FAQ handlers
     const openAddFaqDialog = (categoryId?: number) => {
         setSelectedFaq(null);
         const maxSortOrder = categoryId
-            ? Math.max(0, ...categories.find(c => c.id === categoryId)?.faqs.map(f => f.sort_order) || [0])
+            ? Math.max(
+                  0,
+                  ...(categories
+                      .find((c) => c.id === categoryId)
+                      ?.faqs.map((f) => f.sort_order) || [0]),
+              )
             : 0;
         faqForm.reset({
-            faq_category_id: categoryId || (categories[0]?.id || 0),
+            faq_category_id: categoryId || categories[0]?.id || 0,
             question: '',
             answer: '',
             is_active: true,
@@ -300,31 +331,41 @@ export default function FaqsPage({ categories }: Props) {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="flex justify-between items-center"
+                    className="flex items-center justify-between"
                 >
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">FAQs Management</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            FAQs Management
+                        </h1>
                         <p className="text-muted-foreground">
                             Manage FAQ categories and questions
                         </p>
                     </div>
                     <div className="flex gap-2">
-                        <Button variant="outline" onClick={openAddCategoryDialog}>
-                            <Plus className="h-4 w-4 mr-2" />
+                        <Button
+                            variant="outline"
+                            onClick={openAddCategoryDialog}
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
                             Add Category
                         </Button>
                         <Button onClick={() => openAddFaqDialog()}>
-                            <Plus className="h-4 w-4 mr-2" />
+                            <Plus className="mr-2 h-4 w-4" />
                             Add FAQ
                         </Button>
                     </div>
                 </motion.div>
 
                 {/* Stats */}
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                     <div>
                         <p className="text-sm text-muted-foreground">
-                            {categories.length} categories, {categories.reduce((acc, c) => acc + c.faqs.length, 0)} FAQs
+                            {categories.length} categories,{' '}
+                            {categories.reduce(
+                                (acc, c) => acc + c.faqs.length,
+                                0,
+                            )}{' '}
+                            FAQs
                         </p>
                     </div>
                 </div>
@@ -333,10 +374,12 @@ export default function FaqsPage({ categories }: Props) {
                 {categories.length === 0 ? (
                     <Card>
                         <CardContent className="py-12 text-center">
-                            <CircleHelp className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                            <p className="text-muted-foreground mb-4">No FAQ categories yet.</p>
+                            <CircleHelp className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
+                            <p className="mb-4 text-muted-foreground">
+                                No FAQ categories yet.
+                            </p>
                             <Button onClick={openAddCategoryDialog}>
-                                <Plus className="h-4 w-4 mr-2" />
+                                <Plus className="mr-2 h-4 w-4" />
                                 Add First Category
                             </Button>
                         </CardContent>
@@ -346,39 +389,65 @@ export default function FaqsPage({ categories }: Props) {
                         {categories.map((category) => (
                             <Card key={category.id}>
                                 <Collapsible
-                                    open={expandedCategories.includes(category.id)}
-                                    onOpenChange={() => toggleCategory(category.id)}
+                                    open={expandedCategories.includes(
+                                        category.id,
+                                    )}
+                                    onOpenChange={() =>
+                                        toggleCategory(category.id)
+                                    }
                                 >
                                     <CardHeader className="py-4">
                                         <div className="flex items-center justify-between">
                                             <CollapsibleTrigger className="flex items-center gap-3 hover:opacity-80">
-                                                {expandedCategories.includes(category.id) ? (
+                                                {expandedCategories.includes(
+                                                    category.id,
+                                                ) ? (
                                                     <ChevronDown className="h-5 w-5" />
                                                 ) : (
                                                     <ChevronRight className="h-5 w-5" />
                                                 )}
                                                 {(() => {
-                                                    const IconComp = getIconComponent(category.icon);
-                                                    return <IconComp className="h-6 w-6 text-primary" />;
+                                                    const IconComp =
+                                                        getIconComponent(
+                                                            category.icon,
+                                                        );
+                                                    return (
+                                                        <IconComp className="h-6 w-6 text-primary" />
+                                                    );
                                                 })()}
                                                 <div className="text-left">
-                                                    <CardTitle className="text-lg">{category.name}</CardTitle>
+                                                    <CardTitle className="text-lg">
+                                                        {category.name}
+                                                    </CardTitle>
                                                     <CardDescription>
-                                                        {category.faqs.length} questions
+                                                        {category.faqs.length}{' '}
+                                                        questions
                                                     </CardDescription>
                                                 </div>
                                             </CollapsibleTrigger>
                                             <div className="flex items-center gap-2">
-                                                <Badge variant={category.is_active ? 'default' : 'secondary'}>
-                                                    {category.is_active ? 'Active' : 'Inactive'}
+                                                <Badge
+                                                    variant={
+                                                        category.is_active
+                                                            ? 'default'
+                                                            : 'secondary'
+                                                    }
+                                                >
+                                                    {category.is_active
+                                                        ? 'Active'
+                                                        : 'Inactive'}
                                                 </Badge>
-                                                <Badge variant="outline">{category.page_slug}</Badge>
+                                                <Badge variant="outline">
+                                                    {category.page_slug}
+                                                </Badge>
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        openAddFaqDialog(category.id);
+                                                        openAddFaqDialog(
+                                                            category.id,
+                                                        );
                                                     }}
                                                 >
                                                     <Plus className="h-4 w-4" />
@@ -388,7 +457,9 @@ export default function FaqsPage({ categories }: Props) {
                                                     size="icon"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        openEditCategoryDialog(category);
+                                                        openEditCategoryDialog(
+                                                            category,
+                                                        );
                                                     }}
                                                 >
                                                     <Pencil className="h-4 w-4" />
@@ -398,8 +469,12 @@ export default function FaqsPage({ categories }: Props) {
                                                     size="icon"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        setSelectedCategory(category);
-                                                        setIsDeleteCategoryDialogOpen(true);
+                                                        setSelectedCategory(
+                                                            category,
+                                                        );
+                                                        setIsDeleteCategoryDialogOpen(
+                                                            true,
+                                                        );
                                                     }}
                                                 >
                                                     <Trash2 className="h-4 w-4 text-destructive" />
@@ -410,59 +485,85 @@ export default function FaqsPage({ categories }: Props) {
                                     <CollapsibleContent>
                                         <CardContent className="pt-0">
                                             {category.faqs.length === 0 ? (
-                                                <div className="text-center py-8 text-muted-foreground">
-                                                    <p className="mb-2">No FAQs in this category yet.</p>
+                                                <div className="py-8 text-center text-muted-foreground">
+                                                    <p className="mb-2">
+                                                        No FAQs in this category
+                                                        yet.
+                                                    </p>
                                                     <Button
                                                         variant="outline"
                                                         size="sm"
-                                                        onClick={() => openAddFaqDialog(category.id)}
+                                                        onClick={() =>
+                                                            openAddFaqDialog(
+                                                                category.id,
+                                                            )
+                                                        }
                                                     >
-                                                        <Plus className="h-4 w-4 mr-2" />
+                                                        <Plus className="mr-2 h-4 w-4" />
                                                         Add FAQ
                                                     </Button>
                                                 </div>
                                             ) : (
                                                 <div className="space-y-3">
-                                                    {category.faqs.map((faq) => (
-                                                        <div
-                                                            key={faq.id}
-                                                            className="flex items-start gap-3 p-3 rounded-lg border bg-muted/30"
-                                                        >
-                                                            <GripVertical className="h-5 w-5 text-muted-foreground mt-0.5 cursor-grab" />
-                                                            <div className="flex-1 min-w-0">
-                                                                <p className="font-medium text-sm">{faq.question}</p>
-                                                                <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                                                                    {faq.answer}
-                                                                </p>
+                                                    {category.faqs.map(
+                                                        (faq) => (
+                                                            <div
+                                                                key={faq.id}
+                                                                className="flex items-start gap-3 rounded-lg border bg-muted/30 p-3"
+                                                            >
+                                                                <GripVertical className="mt-0.5 h-5 w-5 cursor-grab text-muted-foreground" />
+                                                                <div className="min-w-0 flex-1">
+                                                                    <p className="text-sm font-medium">
+                                                                        {
+                                                                            faq.question
+                                                                        }
+                                                                    </p>
+                                                                    <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                                                                        {
+                                                                            faq.answer
+                                                                        }
+                                                                    </p>
+                                                                </div>
+                                                                <div className="flex items-center gap-1">
+                                                                    {!faq.is_active && (
+                                                                        <Badge
+                                                                            variant="secondary"
+                                                                            className="text-xs"
+                                                                        >
+                                                                            Inactive
+                                                                        </Badge>
+                                                                    )}
+                                                                    <Button
+                                                                        variant="ghost"
+                                                                        size="icon"
+                                                                        className="h-8 w-8"
+                                                                        onClick={() =>
+                                                                            openEditFaqDialog(
+                                                                                faq,
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <Pencil className="h-4 w-4" />
+                                                                    </Button>
+                                                                    <Button
+                                                                        variant="ghost"
+                                                                        size="icon"
+                                                                        className="h-8 w-8"
+                                                                        onClick={() => {
+                                                                            setSelectedFaq(
+                                                                                faq,
+                                                                            );
+                                                                            setIsDeleteFaqDialogOpen(
+                                                                                true,
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        <Trash2 className="h-4 w-4 text-destructive" />
+                                                                    </Button>
+                                                                </div>
                                                             </div>
-                                                            <div className="flex items-center gap-1">
-                                                                {!faq.is_active && (
-                                                                    <Badge variant="secondary" className="text-xs">
-                                                                        Inactive
-                                                                    </Badge>
-                                                                )}
-                                                                <Button
-                                                                    variant="ghost"
-                                                                    size="icon"
-                                                                    className="h-8 w-8"
-                                                                    onClick={() => openEditFaqDialog(faq)}
-                                                                >
-                                                                    <Pencil className="h-4 w-4" />
-                                                                </Button>
-                                                                <Button
-                                                                    variant="ghost"
-                                                                    size="icon"
-                                                                    className="h-8 w-8"
-                                                                    onClick={() => {
-                                                                        setSelectedFaq(faq);
-                                                                        setIsDeleteFaqDialogOpen(true);
-                                                                    }}
-                                                                >
-                                                                    <Trash2 className="h-4 w-4 text-destructive" />
-                                                                </Button>
-                                                            </div>
-                                                        </div>
-                                                    ))}
+                                                        ),
+                                                    )}
                                                 </div>
                                             )}
                                         </CardContent>
@@ -475,11 +576,16 @@ export default function FaqsPage({ categories }: Props) {
             </div>
 
             {/* Category Dialog */}
-            <Dialog open={isCategoryDialogOpen} onOpenChange={setIsCategoryDialogOpen}>
+            <Dialog
+                open={isCategoryDialogOpen}
+                onOpenChange={setIsCategoryDialogOpen}
+            >
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>
-                            {selectedCategory ? 'Edit Category' : 'Add Category'}
+                            {selectedCategory
+                                ? 'Edit Category'
+                                : 'Add Category'}
                         </DialogTitle>
                         <DialogDescription>
                             {selectedCategory
@@ -488,7 +594,12 @@ export default function FaqsPage({ categories }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...categoryForm}>
-                        <form onSubmit={categoryForm.handleSubmit(handleCategorySubmit)} className="space-y-4">
+                        <form
+                            onSubmit={categoryForm.handleSubmit(
+                                handleCategorySubmit,
+                            )}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={categoryForm.control}
                                 name="name"
@@ -496,7 +607,10 @@ export default function FaqsPage({ categories }: Props) {
                                     <FormItem>
                                         <FormLabel>Category Name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Orders & Shipping" {...field} />
+                                            <Input
+                                                placeholder="Orders & Shipping"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -508,7 +622,10 @@ export default function FaqsPage({ categories }: Props) {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Icon</FormLabel>
-                                        <Select onValueChange={field.onChange} value={field.value}>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            value={field.value}
+                                        >
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select icon" />
@@ -516,12 +633,20 @@ export default function FaqsPage({ categories }: Props) {
                                             </FormControl>
                                             <SelectContent>
                                                 {iconOptions.map((option) => {
-                                                    const IconComp = option.icon;
+                                                    const IconComp =
+                                                        option.icon;
                                                     return (
-                                                        <SelectItem key={option.value} value={option.value}>
+                                                        <SelectItem
+                                                            key={option.value}
+                                                            value={option.value}
+                                                        >
                                                             <div className="flex items-center gap-2">
                                                                 <IconComp className="h-4 w-4" />
-                                                                <span>{option.label}</span>
+                                                                <span>
+                                                                    {
+                                                                        option.label
+                                                                    }
+                                                                </span>
                                                             </div>
                                                         </SelectItem>
                                                     );
@@ -538,15 +663,22 @@ export default function FaqsPage({ categories }: Props) {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Page</FormLabel>
-                                        <Select onValueChange={field.onChange} value={field.value}>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            value={field.value}
+                                        >
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select page" />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="faqs">FAQs Page</SelectItem>
-                                                <SelectItem value="help">Help Center</SelectItem>
+                                                <SelectItem value="faqs">
+                                                    FAQs Page
+                                                </SelectItem>
+                                                <SelectItem value="help">
+                                                    Help Center
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -566,7 +698,13 @@ export default function FaqsPage({ categories }: Props) {
                                                     min={0}
                                                     placeholder="0"
                                                     {...field}
-                                                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                            parseInt(
+                                                                e.target.value,
+                                                            ) || 0,
+                                                        )
+                                                    }
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -577,12 +715,16 @@ export default function FaqsPage({ categories }: Props) {
                                     control={categoryForm.control}
                                     name="is_active"
                                     render={({ field }) => (
-                                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 mt-1">
-                                            <FormLabel className="text-sm font-normal">Active</FormLabel>
+                                        <FormItem className="mt-1 flex flex-row items-center justify-between rounded-lg border p-3">
+                                            <FormLabel className="text-sm font-normal">
+                                                Active
+                                            </FormLabel>
                                             <FormControl>
                                                 <Switch
                                                     checked={field.value}
-                                                    onCheckedChange={field.onChange}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
                                                 />
                                             </FormControl>
                                         </FormItem>
@@ -590,11 +732,21 @@ export default function FaqsPage({ categories }: Props) {
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsCategoryDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() =>
+                                        setIsCategoryDialogOpen(false)
+                                    }
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : selectedCategory ? 'Update' : 'Create'}
+                                    {isSubmitting
+                                        ? 'Saving...'
+                                        : selectedCategory
+                                          ? 'Update'
+                                          : 'Create'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -616,7 +768,10 @@ export default function FaqsPage({ categories }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...faqForm}>
-                        <form onSubmit={faqForm.handleSubmit(handleFaqSubmit)} className="space-y-4">
+                        <form
+                            onSubmit={faqForm.handleSubmit(handleFaqSubmit)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={faqForm.control}
                                 name="faq_category_id"
@@ -624,7 +779,9 @@ export default function FaqsPage({ categories }: Props) {
                                     <FormItem>
                                         <FormLabel>Category</FormLabel>
                                         <Select
-                                            onValueChange={(value) => field.onChange(parseInt(value))}
+                                            onValueChange={(value) =>
+                                                field.onChange(parseInt(value))
+                                            }
                                             value={String(field.value)}
                                         >
                                             <FormControl>
@@ -634,12 +791,24 @@ export default function FaqsPage({ categories }: Props) {
                                             </FormControl>
                                             <SelectContent>
                                                 {categories.map((category) => {
-                                                    const IconComp = getIconComponent(category.icon);
+                                                    const IconComp =
+                                                        getIconComponent(
+                                                            category.icon,
+                                                        );
                                                     return (
-                                                        <SelectItem key={category.id} value={String(category.id)}>
+                                                        <SelectItem
+                                                            key={category.id}
+                                                            value={String(
+                                                                category.id,
+                                                            )}
+                                                        >
                                                             <div className="flex items-center gap-2">
                                                                 <IconComp className="h-4 w-4" />
-                                                                <span>{category.name}</span>
+                                                                <span>
+                                                                    {
+                                                                        category.name
+                                                                    }
+                                                                </span>
                                                             </div>
                                                         </SelectItem>
                                                     );
@@ -657,7 +826,10 @@ export default function FaqsPage({ categories }: Props) {
                                     <FormItem>
                                         <FormLabel>Question</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="How do I track my order?" {...field} />
+                                            <Input
+                                                placeholder="How do I track my order?"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -693,7 +865,13 @@ export default function FaqsPage({ categories }: Props) {
                                                     min={0}
                                                     placeholder="0"
                                                     {...field}
-                                                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                            parseInt(
+                                                                e.target.value,
+                                                            ) || 0,
+                                                        )
+                                                    }
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -704,12 +882,16 @@ export default function FaqsPage({ categories }: Props) {
                                     control={faqForm.control}
                                     name="is_active"
                                     render={({ field }) => (
-                                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 mt-1">
-                                            <FormLabel className="text-sm font-normal">Active</FormLabel>
+                                        <FormItem className="mt-1 flex flex-row items-center justify-between rounded-lg border p-3">
+                                            <FormLabel className="text-sm font-normal">
+                                                Active
+                                            </FormLabel>
                                             <FormControl>
                                                 <Switch
                                                     checked={field.value}
-                                                    onCheckedChange={field.onChange}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
                                                 />
                                             </FormControl>
                                         </FormItem>
@@ -717,11 +899,19 @@ export default function FaqsPage({ categories }: Props) {
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsFaqDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsFaqDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : selectedFaq ? 'Update' : 'Create'}
+                                    {isSubmitting
+                                        ? 'Saving...'
+                                        : selectedFaq
+                                          ? 'Update'
+                                          : 'Create'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -730,14 +920,18 @@ export default function FaqsPage({ categories }: Props) {
             </Dialog>
 
             {/* Delete Category Dialog */}
-            <AlertDialog open={isDeleteCategoryDialogOpen} onOpenChange={setIsDeleteCategoryDialogOpen}>
+            <AlertDialog
+                open={isDeleteCategoryDialogOpen}
+                onOpenChange={setIsDeleteCategoryDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Category</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete "{selectedCategory?.name}"?
-                            This will also delete all {selectedCategory?.faqs.length || 0} FAQs in this category.
-                            This action cannot be undone.
+                            Are you sure you want to delete "
+                            {selectedCategory?.name}"? This will also delete all{' '}
+                            {selectedCategory?.faqs.length || 0} FAQs in this
+                            category. This action cannot be undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
@@ -753,12 +947,16 @@ export default function FaqsPage({ categories }: Props) {
             </AlertDialog>
 
             {/* Delete FAQ Dialog */}
-            <AlertDialog open={isDeleteFaqDialogOpen} onOpenChange={setIsDeleteFaqDialogOpen}>
+            <AlertDialog
+                open={isDeleteFaqDialogOpen}
+                onOpenChange={setIsDeleteFaqDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete FAQ</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete this FAQ? This action cannot be undone.
+                            Are you sure you want to delete this FAQ? This
+                            action cannot be undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

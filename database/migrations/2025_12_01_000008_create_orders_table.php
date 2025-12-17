@@ -14,28 +14,28 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('order_number')->unique();
-            
+
             // Guest checkout info
             $table->string('customer_name');
             $table->string('customer_email');
             $table->string('customer_phone');
             $table->text('shipping_address');
             $table->text('notes')->nullable();
-            
+
             // Order totals
             $table->decimal('subtotal', 12, 2);
             $table->decimal('discount_amount', 12, 2)->default(0);
             $table->decimal('shipping_amount', 12, 2)->default(0);
             $table->decimal('total_amount', 12, 2);
-            
+
             // Payment info
             $table->string('payment_method'); // bkash, nagad, rocket, cod
             $table->string('payment_status')->default('pending'); // pending, paid, failed, refunded
             $table->string('transaction_id')->nullable();
-            
+
             // Order status
             $table->string('status')->default('pending'); // pending, processing, shipped, delivered, cancelled
-            
+
             $table->timestamps();
         });
 

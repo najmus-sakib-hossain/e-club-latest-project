@@ -1,37 +1,48 @@
-import { useState, useRef } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import FullCalendar from '@fullcalendar/react';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router } from '@inertiajs/react';
 import {
     Calendar,
-    Phone,
-    Mail,
-    User,
-    Clock,
-    MapPin,
-    Video,
+    CalendarDays,
     Check,
-    X,
+    Clock,
     Eye,
     Filter,
-    Search,
-    CalendarDays,
+    MapPin,
+    Phone,
     PhoneCall,
     RefreshCw,
+    Search,
+    Video,
+    X,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
@@ -48,7 +59,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -57,16 +68,6 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import {
     Table,
     TableBody,
     TableCell,
@@ -74,6 +75,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -138,7 +142,13 @@ const meetingUpdateSchema = z.object({
 });
 
 const callbackUpdateSchema = z.object({
-    status: z.enum(['pending', 'called', 'no_answer', 'completed', 'cancelled']),
+    status: z.enum([
+        'pending',
+        'called',
+        'no_answer',
+        'completed',
+        'cancelled',
+    ]),
     admin_notes: z.string().max(1000).nullable().optional(),
 });
 
@@ -165,13 +175,25 @@ const getStatusColor = (status: string) => {
 };
 
 const getMeetingTypeIcon = (type: string) => {
-    return type === 'video' ? <Video className="h-4 w-4" /> : <MapPin className="h-4 w-4" />;
+    return type === 'video' ? (
+        <Video className="h-4 w-4" />
+    ) : (
+        <MapPin className="h-4 w-4" />
+    );
 };
 
-export default function MeetingsIndex({ meetings, callbacks, stats, filters }: Props) {
+export default function MeetingsIndex({
+    meetings,
+    callbacks,
+    stats,
+    filters,
+}: Props) {
     const [activeTab, setActiveTab] = useState('calendar');
-    const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
-    const [selectedCallback, setSelectedCallback] = useState<CallbackRequest | null>(null);
+    const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(
+        null,
+    );
+    const [selectedCallback, setSelectedCallback] =
+        useState<CallbackRequest | null>(null);
     const [isViewMeetingOpen, setIsViewMeetingOpen] = useState(false);
     const [isEditMeetingOpen, setIsEditMeetingOpen] = useState(false);
     const [isViewCallbackOpen, setIsViewCallbackOpen] = useState(false);
@@ -323,14 +345,19 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
     };
 
     const handleSearch = () => {
-        router.get('/admin/meetings', {
-            search: searchQuery,
-            status: statusFilter !== 'all' ? statusFilter : undefined
-        }, { preserveState: true });
+        router.get(
+            '/admin/meetings',
+            {
+                search: searchQuery,
+                status: statusFilter !== 'all' ? statusFilter : undefined,
+            },
+            { preserveState: true },
+        );
     };
 
     const filteredMeetings = meetings.filter((meeting) => {
-        if (statusFilter !== 'all' && meeting.status !== statusFilter) return false;
+        if (statusFilter !== 'all' && meeting.status !== statusFilter)
+            return false;
         if (searchQuery) {
             const search = searchQuery.toLowerCase();
             return (
@@ -366,12 +393,17 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                     transition={{ duration: 0.3 }}
                 >
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Meetings & Callbacks</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Meetings & Callbacks
+                        </h1>
                         <p className="text-muted-foreground">
                             Manage scheduled meetings and callback requests.
                         </p>
                     </div>
-                    <Button variant="outline" onClick={() => router.visit('/admin/meetings/settings')}>
+                    <Button
+                        variant="outline"
+                        onClick={() => router.visit('/admin/meetings/settings')}
+                    >
                         <Clock className="mr-2 h-4 w-4" />
                         Availability Settings
                     </Button>
@@ -386,11 +418,15 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                 >
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Meetings</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Total Meetings
+                            </CardTitle>
                             <Calendar className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.total_meetings}</div>
+                            <div className="text-2xl font-bold">
+                                {stats.total_meetings}
+                            </div>
                             <p className="text-xs text-muted-foreground">
                                 {stats.today_meetings} scheduled today
                             </p>
@@ -398,32 +434,50 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Pending Meetings</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Pending Meetings
+                            </CardTitle>
                             <Clock className="h-4 w-4 text-yellow-500" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.pending_meetings}</div>
-                            <p className="text-xs text-muted-foreground">Awaiting confirmation</p>
+                            <div className="text-2xl font-bold">
+                                {stats.pending_meetings}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Awaiting confirmation
+                            </p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Confirmed Meetings</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Confirmed Meetings
+                            </CardTitle>
                             <Check className="h-4 w-4 text-blue-500" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.confirmed_meetings}</div>
-                            <p className="text-xs text-muted-foreground">Ready to proceed</p>
+                            <div className="text-2xl font-bold">
+                                {stats.confirmed_meetings}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Ready to proceed
+                            </p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Pending Callbacks</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Pending Callbacks
+                            </CardTitle>
                             <PhoneCall className="h-4 w-4 text-orange-500" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.pending_callbacks}</div>
-                            <p className="text-xs text-muted-foreground">Need to call back</p>
+                            <div className="text-2xl font-bold">
+                                {stats.pending_callbacks}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Need to call back
+                            </p>
                         </CardContent>
                     </Card>
                 </motion.div>
@@ -435,17 +489,22 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.15 }}
                 >
-                    <div className="relative flex-1 max-w-sm">
-                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <div className="relative max-w-sm flex-1">
+                        <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
                             placeholder="Search by name, email, or phone..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                            onKeyDown={(e) =>
+                                e.key === 'Enter' && handleSearch()
+                            }
                             className="pl-9"
                         />
                     </div>
-                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <Select
+                        value={statusFilter}
+                        onValueChange={setStatusFilter}
+                    >
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Filter by status" />
                         </SelectTrigger>
@@ -461,7 +520,10 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                         <Filter className="mr-2 h-4 w-4" />
                         Apply
                     </Button>
-                    <Button variant="ghost" onClick={() => router.visit('/admin/meetings')}>
+                    <Button
+                        variant="ghost"
+                        onClick={() => router.visit('/admin/meetings')}
+                    >
                         <RefreshCw className="mr-2 h-4 w-4" />
                         Reset
                     </Button>
@@ -495,7 +557,11 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                                 <CardContent className="p-4">
                                     <FullCalendar
                                         ref={calendarRef}
-                                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                                        plugins={[
+                                            dayGridPlugin,
+                                            timeGridPlugin,
+                                            interactionPlugin,
+                                        ]}
                                         initialView="dayGridMonth"
                                         headerToolbar={{
                                             left: 'prev,next today',
@@ -523,98 +589,156 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                                 </CardHeader>
                                 <CardContent>
                                     {filteredMeetings.length === 0 ? (
-                                        <div className="text-center py-12 text-muted-foreground">
-                                            <Calendar className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                                        <div className="py-12 text-center text-muted-foreground">
+                                            <Calendar className="mx-auto mb-4 h-12 w-12 opacity-50" />
                                             <p>No meetings found.</p>
                                         </div>
                                     ) : (
                                         <Table>
                                             <TableHeader>
                                                 <TableRow>
-                                                    <TableHead>Customer</TableHead>
+                                                    <TableHead>
+                                                        Customer
+                                                    </TableHead>
                                                     <TableHead>Type</TableHead>
-                                                    <TableHead>Date & Time</TableHead>
-                                                    <TableHead>Purpose</TableHead>
-                                                    <TableHead>Status</TableHead>
-                                                    <TableHead className="text-right">Actions</TableHead>
+                                                    <TableHead>
+                                                        Date & Time
+                                                    </TableHead>
+                                                    <TableHead>
+                                                        Purpose
+                                                    </TableHead>
+                                                    <TableHead>
+                                                        Status
+                                                    </TableHead>
+                                                    <TableHead className="text-right">
+                                                        Actions
+                                                    </TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
-                                                {filteredMeetings.map((meeting) => (
-                                                    <TableRow key={meeting.id}>
-                                                        <TableCell>
-                                                            <div>
-                                                                <div className="font-medium">{meeting.name}</div>
-                                                                <div className="text-sm text-muted-foreground">
-                                                                    {meeting.email}
+                                                {filteredMeetings.map(
+                                                    (meeting) => (
+                                                        <TableRow
+                                                            key={meeting.id}
+                                                        >
+                                                            <TableCell>
+                                                                <div>
+                                                                    <div className="font-medium">
+                                                                        {
+                                                                            meeting.name
+                                                                        }
+                                                                    </div>
+                                                                    <div className="text-sm text-muted-foreground">
+                                                                        {
+                                                                            meeting.email
+                                                                        }
+                                                                    </div>
+                                                                    <div className="text-sm text-muted-foreground">
+                                                                        {
+                                                                            meeting.phone
+                                                                        }
+                                                                    </div>
                                                                 </div>
-                                                                <div className="text-sm text-muted-foreground">
-                                                                    {meeting.phone}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <div className="flex items-center gap-2">
+                                                                    {getMeetingTypeIcon(
+                                                                        meeting.meeting_type,
+                                                                    )}
+                                                                    <span className="capitalize">
+                                                                        {
+                                                                            meeting.meeting_type
+                                                                        }
+                                                                    </span>
                                                                 </div>
-                                                            </div>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <div className="flex items-center gap-2">
-                                                                {getMeetingTypeIcon(meeting.meeting_type)}
-                                                                <span className="capitalize">{meeting.meeting_type}</span>
-                                                            </div>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <div>
-                                                                <div className="font-medium">
-                                                                    {new Date(meeting.date).toLocaleDateString('en-US', {
-                                                                        weekday: 'short',
-                                                                        month: 'short',
-                                                                        day: 'numeric',
-                                                                    })}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <div>
+                                                                    <div className="font-medium">
+                                                                        {new Date(
+                                                                            meeting.date,
+                                                                        ).toLocaleDateString(
+                                                                            'en-US',
+                                                                            {
+                                                                                weekday:
+                                                                                    'short',
+                                                                                month: 'short',
+                                                                                day: 'numeric',
+                                                                            },
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="text-sm text-muted-foreground">
+                                                                        {
+                                                                            meeting.time
+                                                                        }
+                                                                    </div>
                                                                 </div>
-                                                                <div className="text-sm text-muted-foreground">
-                                                                    {meeting.time}
-                                                                </div>
-                                                            </div>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <span className="line-clamp-1">{meeting.purpose}</span>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <Badge className={getStatusColor(meeting.status)}>
-                                                                {meeting.status}
-                                                            </Badge>
-                                                        </TableCell>
-                                                        <TableCell className="text-right">
-                                                            <div className="flex justify-end gap-2">
-                                                                <Button
-                                                                    size="icon"
-                                                                    variant="ghost"
-                                                                    onClick={() => {
-                                                                        setSelectedMeeting(meeting);
-                                                                        setIsViewMeetingOpen(true);
-                                                                    }}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <span className="line-clamp-1">
+                                                                    {
+                                                                        meeting.purpose
+                                                                    }
+                                                                </span>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Badge
+                                                                    className={getStatusColor(
+                                                                        meeting.status,
+                                                                    )}
                                                                 >
-                                                                    <Eye className="h-4 w-4" />
-                                                                </Button>
-                                                                <Button
-                                                                    size="icon"
-                                                                    variant="ghost"
-                                                                    onClick={() => openEditMeeting(meeting)}
-                                                                >
-                                                                    <Check className="h-4 w-4" />
-                                                                </Button>
-                                                                <Button
-                                                                    size="icon"
-                                                                    variant="ghost"
-                                                                    className="text-destructive"
-                                                                    onClick={() => {
-                                                                        setSelectedMeeting(meeting);
-                                                                        setIsDeleteMeetingOpen(true);
-                                                                    }}
-                                                                >
-                                                                    <X className="h-4 w-4" />
-                                                                </Button>
-                                                            </div>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
+                                                                    {
+                                                                        meeting.status
+                                                                    }
+                                                                </Badge>
+                                                            </TableCell>
+                                                            <TableCell className="text-right">
+                                                                <div className="flex justify-end gap-2">
+                                                                    <Button
+                                                                        size="icon"
+                                                                        variant="ghost"
+                                                                        onClick={() => {
+                                                                            setSelectedMeeting(
+                                                                                meeting,
+                                                                            );
+                                                                            setIsViewMeetingOpen(
+                                                                                true,
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        <Eye className="h-4 w-4" />
+                                                                    </Button>
+                                                                    <Button
+                                                                        size="icon"
+                                                                        variant="ghost"
+                                                                        onClick={() =>
+                                                                            openEditMeeting(
+                                                                                meeting,
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <Check className="h-4 w-4" />
+                                                                    </Button>
+                                                                    <Button
+                                                                        size="icon"
+                                                                        variant="ghost"
+                                                                        className="text-destructive"
+                                                                        onClick={() => {
+                                                                            setSelectedMeeting(
+                                                                                meeting,
+                                                                            );
+                                                                            setIsDeleteMeetingOpen(
+                                                                                true,
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        <X className="h-4 w-4" />
+                                                                    </Button>
+                                                                </div>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ),
+                                                )}
                                             </TableBody>
                                         </Table>
                                     )}
@@ -633,76 +757,126 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                                 </CardHeader>
                                 <CardContent>
                                     {filteredCallbacks.length === 0 ? (
-                                        <div className="text-center py-12 text-muted-foreground">
-                                            <PhoneCall className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                                        <div className="py-12 text-center text-muted-foreground">
+                                            <PhoneCall className="mx-auto mb-4 h-12 w-12 opacity-50" />
                                             <p>No callback requests found.</p>
                                         </div>
                                     ) : (
                                         <Table>
                                             <TableHeader>
                                                 <TableRow>
-                                                    <TableHead>Customer</TableHead>
+                                                    <TableHead>
+                                                        Customer
+                                                    </TableHead>
                                                     <TableHead>Phone</TableHead>
-                                                    <TableHead>Preferred Time</TableHead>
-                                                    <TableHead>Reason</TableHead>
-                                                    <TableHead>Status</TableHead>
-                                                    <TableHead className="text-right">Actions</TableHead>
+                                                    <TableHead>
+                                                        Preferred Time
+                                                    </TableHead>
+                                                    <TableHead>
+                                                        Reason
+                                                    </TableHead>
+                                                    <TableHead>
+                                                        Status
+                                                    </TableHead>
+                                                    <TableHead className="text-right">
+                                                        Actions
+                                                    </TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
-                                                {filteredCallbacks.map((callback) => (
-                                                    <TableRow key={callback.id}>
-                                                        <TableCell>
-                                                            <div className="font-medium">{callback.name}</div>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <a href={`tel:${callback.phone}`} className="text-primary hover:underline">
-                                                                {callback.phone}
-                                                            </a>
-                                                        </TableCell>
-                                                        <TableCell>{callback.preferred_time}</TableCell>
-                                                        <TableCell>
-                                                            <span className="line-clamp-1">{callback.reason}</span>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <Badge className={getStatusColor(callback.status)}>
-                                                                {callback.status.replace('_', ' ')}
-                                                            </Badge>
-                                                        </TableCell>
-                                                        <TableCell className="text-right">
-                                                            <div className="flex justify-end gap-2">
-                                                                <Button
-                                                                    size="icon"
-                                                                    variant="ghost"
-                                                                    onClick={() => {
-                                                                        setSelectedCallback(callback);
-                                                                        setIsViewCallbackOpen(true);
-                                                                    }}
+                                                {filteredCallbacks.map(
+                                                    (callback) => (
+                                                        <TableRow
+                                                            key={callback.id}
+                                                        >
+                                                            <TableCell>
+                                                                <div className="font-medium">
+                                                                    {
+                                                                        callback.name
+                                                                    }
+                                                                </div>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <a
+                                                                    href={`tel:${callback.phone}`}
+                                                                    className="text-primary hover:underline"
                                                                 >
-                                                                    <Eye className="h-4 w-4" />
-                                                                </Button>
-                                                                <Button
-                                                                    size="icon"
-                                                                    variant="ghost"
-                                                                    onClick={() => openEditCallback(callback)}
+                                                                    {
+                                                                        callback.phone
+                                                                    }
+                                                                </a>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {
+                                                                    callback.preferred_time
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <span className="line-clamp-1">
+                                                                    {
+                                                                        callback.reason
+                                                                    }
+                                                                </span>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Badge
+                                                                    className={getStatusColor(
+                                                                        callback.status,
+                                                                    )}
                                                                 >
-                                                                    <Phone className="h-4 w-4" />
-                                                                </Button>
-                                                                <Button
-                                                                    size="icon"
-                                                                    variant="ghost"
-                                                                    className="text-destructive"
-                                                                    onClick={() => {
-                                                                        setSelectedCallback(callback);
-                                                                        setIsDeleteCallbackOpen(true);
-                                                                    }}
-                                                                >
-                                                                    <X className="h-4 w-4" />
-                                                                </Button>
-                                                            </div>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
+                                                                    {callback.status.replace(
+                                                                        '_',
+                                                                        ' ',
+                                                                    )}
+                                                                </Badge>
+                                                            </TableCell>
+                                                            <TableCell className="text-right">
+                                                                <div className="flex justify-end gap-2">
+                                                                    <Button
+                                                                        size="icon"
+                                                                        variant="ghost"
+                                                                        onClick={() => {
+                                                                            setSelectedCallback(
+                                                                                callback,
+                                                                            );
+                                                                            setIsViewCallbackOpen(
+                                                                                true,
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        <Eye className="h-4 w-4" />
+                                                                    </Button>
+                                                                    <Button
+                                                                        size="icon"
+                                                                        variant="ghost"
+                                                                        onClick={() =>
+                                                                            openEditCallback(
+                                                                                callback,
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <Phone className="h-4 w-4" />
+                                                                    </Button>
+                                                                    <Button
+                                                                        size="icon"
+                                                                        variant="ghost"
+                                                                        className="text-destructive"
+                                                                        onClick={() => {
+                                                                            setSelectedCallback(
+                                                                                callback,
+                                                                            );
+                                                                            setIsDeleteCallbackOpen(
+                                                                                true,
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        <X className="h-4 w-4" />
+                                                                    </Button>
+                                                                </div>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ),
+                                                )}
                                             </TableBody>
                                         </Table>
                                     )}
@@ -714,7 +888,10 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
             </div>
 
             {/* View Meeting Dialog */}
-            <Dialog open={isViewMeetingOpen} onOpenChange={setIsViewMeetingOpen}>
+            <Dialog
+                open={isViewMeetingOpen}
+                onOpenChange={setIsViewMeetingOpen}
+            >
                 <DialogContent className="max-w-lg">
                     <DialogHeader>
                         <DialogTitle>Meeting Details</DialogTitle>
@@ -726,65 +903,102 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Customer</label>
-                                    <p className="font-medium">{selectedMeeting.name}</p>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Customer
+                                    </label>
+                                    <p className="font-medium">
+                                        {selectedMeeting.name}
+                                    </p>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Status</label>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Status
+                                    </label>
                                     <div>
-                                        <Badge className={getStatusColor(selectedMeeting.status)}>
+                                        <Badge
+                                            className={getStatusColor(
+                                                selectedMeeting.status,
+                                            )}
+                                        >
                                             {selectedMeeting.status}
                                         </Badge>
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Email</label>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Email
+                                    </label>
                                     <p>{selectedMeeting.email}</p>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Phone</label>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Phone
+                                    </label>
                                     <p>{selectedMeeting.phone}</p>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Type</label>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Type
+                                    </label>
                                     <p className="flex items-center gap-2 capitalize">
-                                        {getMeetingTypeIcon(selectedMeeting.meeting_type)}
+                                        {getMeetingTypeIcon(
+                                            selectedMeeting.meeting_type,
+                                        )}
                                         {selectedMeeting.meeting_type}
                                     </p>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Date & Time</label>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Date & Time
+                                    </label>
                                     <p>
-                                        {new Date(selectedMeeting.date).toLocaleDateString()} at {selectedMeeting.time}
+                                        {new Date(
+                                            selectedMeeting.date,
+                                        ).toLocaleDateString()}{' '}
+                                        at {selectedMeeting.time}
                                     </p>
                                 </div>
                             </div>
                             <div>
-                                <label className="text-sm font-medium text-muted-foreground">Purpose</label>
+                                <label className="text-sm font-medium text-muted-foreground">
+                                    Purpose
+                                </label>
                                 <p>{selectedMeeting.purpose}</p>
                             </div>
                             {selectedMeeting.notes && (
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Customer Notes</label>
-                                    <p className="text-sm">{selectedMeeting.notes}</p>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Customer Notes
+                                    </label>
+                                    <p className="text-sm">
+                                        {selectedMeeting.notes}
+                                    </p>
                                 </div>
                             )}
                             {selectedMeeting.admin_notes && (
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Admin Notes</label>
-                                    <p className="text-sm">{selectedMeeting.admin_notes}</p>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Admin Notes
+                                    </label>
+                                    <p className="text-sm">
+                                        {selectedMeeting.admin_notes}
+                                    </p>
                                 </div>
                             )}
                         </div>
                     )}
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsViewMeetingOpen(false)}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setIsViewMeetingOpen(false)}
+                        >
                             Close
                         </Button>
                         <Button
                             onClick={() => {
                                 setIsViewMeetingOpen(false);
-                                if (selectedMeeting) openEditMeeting(selectedMeeting);
+                                if (selectedMeeting)
+                                    openEditMeeting(selectedMeeting);
                             }}
                         >
                             Update Status
@@ -794,7 +1008,10 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
             </Dialog>
 
             {/* Edit Meeting Dialog */}
-            <Dialog open={isEditMeetingOpen} onOpenChange={setIsEditMeetingOpen}>
+            <Dialog
+                open={isEditMeetingOpen}
+                onOpenChange={setIsEditMeetingOpen}
+            >
                 <DialogContent className="max-w-md">
                     <DialogHeader>
                         <DialogTitle>Update Meeting</DialogTitle>
@@ -803,24 +1020,40 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...meetingForm}>
-                        <form onSubmit={meetingForm.handleSubmit(handleUpdateMeeting)} className="space-y-4">
+                        <form
+                            onSubmit={meetingForm.handleSubmit(
+                                handleUpdateMeeting,
+                            )}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={meetingForm.control}
                                 name="status"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Status</FormLabel>
-                                        <Select value={field.value} onValueChange={field.onChange}>
+                                        <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                        >
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select status" />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="pending">Pending</SelectItem>
-                                                <SelectItem value="confirmed">Confirmed</SelectItem>
-                                                <SelectItem value="completed">Completed</SelectItem>
-                                                <SelectItem value="cancelled">Cancelled</SelectItem>
+                                                <SelectItem value="pending">
+                                                    Pending
+                                                </SelectItem>
+                                                <SelectItem value="confirmed">
+                                                    Confirmed
+                                                </SelectItem>
+                                                <SelectItem value="completed">
+                                                    Completed
+                                                </SelectItem>
+                                                <SelectItem value="cancelled">
+                                                    Cancelled
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -846,11 +1079,17 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                                 )}
                             />
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsEditMeetingOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsEditMeetingOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Updating...' : 'Update Meeting'}
+                                    {isSubmitting
+                                        ? 'Updating...'
+                                        : 'Update Meeting'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -859,7 +1098,10 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
             </Dialog>
 
             {/* View Callback Dialog */}
-            <Dialog open={isViewCallbackOpen} onOpenChange={setIsViewCallbackOpen}>
+            <Dialog
+                open={isViewCallbackOpen}
+                onOpenChange={setIsViewCallbackOpen}
+            >
                 <DialogContent className="max-w-lg">
                     <DialogHeader>
                         <DialogTitle>Callback Request Details</DialogTitle>
@@ -871,60 +1113,98 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Customer</label>
-                                    <p className="font-medium">{selectedCallback.name}</p>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Customer
+                                    </label>
+                                    <p className="font-medium">
+                                        {selectedCallback.name}
+                                    </p>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Status</label>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Status
+                                    </label>
                                     <div>
-                                        <Badge className={getStatusColor(selectedCallback.status)}>
-                                            {selectedCallback.status.replace('_', ' ')}
+                                        <Badge
+                                            className={getStatusColor(
+                                                selectedCallback.status,
+                                            )}
+                                        >
+                                            {selectedCallback.status.replace(
+                                                '_',
+                                                ' ',
+                                            )}
                                         </Badge>
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Phone</label>
-                                    <a href={`tel:${selectedCallback.phone}`} className="text-primary hover:underline">
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Phone
+                                    </label>
+                                    <a
+                                        href={`tel:${selectedCallback.phone}`}
+                                        className="text-primary hover:underline"
+                                    >
                                         {selectedCallback.phone}
                                     </a>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Preferred Time</label>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Preferred Time
+                                    </label>
                                     <p>{selectedCallback.preferred_time}</p>
                                 </div>
                             </div>
                             <div>
-                                <label className="text-sm font-medium text-muted-foreground">Reason</label>
+                                <label className="text-sm font-medium text-muted-foreground">
+                                    Reason
+                                </label>
                                 <p>{selectedCallback.reason}</p>
                             </div>
                             {selectedCallback.notes && (
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Customer Notes</label>
-                                    <p className="text-sm">{selectedCallback.notes}</p>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Customer Notes
+                                    </label>
+                                    <p className="text-sm">
+                                        {selectedCallback.notes}
+                                    </p>
                                 </div>
                             )}
                             {selectedCallback.admin_notes && (
                                 <div>
-                                    <label className="text-sm font-medium text-muted-foreground">Admin Notes</label>
-                                    <p className="text-sm">{selectedCallback.admin_notes}</p>
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Admin Notes
+                                    </label>
+                                    <p className="text-sm">
+                                        {selectedCallback.admin_notes}
+                                    </p>
                                 </div>
                             )}
                             <div>
-                                <label className="text-sm font-medium text-muted-foreground">Requested</label>
+                                <label className="text-sm font-medium text-muted-foreground">
+                                    Requested
+                                </label>
                                 <p className="text-sm">
-                                    {new Date(selectedCallback.created_at).toLocaleString()}
+                                    {new Date(
+                                        selectedCallback.created_at,
+                                    ).toLocaleString()}
                                 </p>
                             </div>
                         </div>
                     )}
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsViewCallbackOpen(false)}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setIsViewCallbackOpen(false)}
+                        >
                             Close
                         </Button>
                         <Button
                             onClick={() => {
                                 setIsViewCallbackOpen(false);
-                                if (selectedCallback) openEditCallback(selectedCallback);
+                                if (selectedCallback)
+                                    openEditCallback(selectedCallback);
                             }}
                         >
                             Update Status
@@ -934,7 +1214,10 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
             </Dialog>
 
             {/* Edit Callback Dialog */}
-            <Dialog open={isEditCallbackOpen} onOpenChange={setIsEditCallbackOpen}>
+            <Dialog
+                open={isEditCallbackOpen}
+                onOpenChange={setIsEditCallbackOpen}
+            >
                 <DialogContent className="max-w-md">
                     <DialogHeader>
                         <DialogTitle>Update Callback Request</DialogTitle>
@@ -943,25 +1226,43 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...callbackForm}>
-                        <form onSubmit={callbackForm.handleSubmit(handleUpdateCallback)} className="space-y-4">
+                        <form
+                            onSubmit={callbackForm.handleSubmit(
+                                handleUpdateCallback,
+                            )}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={callbackForm.control}
                                 name="status"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Status</FormLabel>
-                                        <Select value={field.value} onValueChange={field.onChange}>
+                                        <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                        >
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select status" />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="pending">Pending</SelectItem>
-                                                <SelectItem value="called">Called</SelectItem>
-                                                <SelectItem value="no_answer">No Answer</SelectItem>
-                                                <SelectItem value="completed">Completed</SelectItem>
-                                                <SelectItem value="cancelled">Cancelled</SelectItem>
+                                                <SelectItem value="pending">
+                                                    Pending
+                                                </SelectItem>
+                                                <SelectItem value="called">
+                                                    Called
+                                                </SelectItem>
+                                                <SelectItem value="no_answer">
+                                                    No Answer
+                                                </SelectItem>
+                                                <SelectItem value="completed">
+                                                    Completed
+                                                </SelectItem>
+                                                <SelectItem value="cancelled">
+                                                    Cancelled
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -987,11 +1288,17 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
                                 )}
                             />
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsEditCallbackOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsEditCallbackOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Updating...' : 'Update Callback'}
+                                    {isSubmitting
+                                        ? 'Updating...'
+                                        : 'Update Callback'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -1000,12 +1307,17 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
             </Dialog>
 
             {/* Delete Meeting Dialog */}
-            <AlertDialog open={isDeleteMeetingOpen} onOpenChange={setIsDeleteMeetingOpen}>
+            <AlertDialog
+                open={isDeleteMeetingOpen}
+                onOpenChange={setIsDeleteMeetingOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Meeting</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete this meeting with {selectedMeeting?.name}? This action cannot be undone.
+                            Are you sure you want to delete this meeting with{' '}
+                            {selectedMeeting?.name}? This action cannot be
+                            undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
@@ -1022,12 +1334,19 @@ export default function MeetingsIndex({ meetings, callbacks, stats, filters }: P
             </AlertDialog>
 
             {/* Delete Callback Dialog */}
-            <AlertDialog open={isDeleteCallbackOpen} onOpenChange={setIsDeleteCallbackOpen}>
+            <AlertDialog
+                open={isDeleteCallbackOpen}
+                onOpenChange={setIsDeleteCallbackOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Callback Request</AlertDialogTitle>
+                        <AlertDialogTitle>
+                            Delete Callback Request
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete this callback request from {selectedCallback?.name}? This action cannot be undone.
+                            Are you sure you want to delete this callback
+                            request from {selectedCallback?.name}? This action
+                            cannot be undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

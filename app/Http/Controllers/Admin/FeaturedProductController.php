@@ -78,7 +78,7 @@ class FeaturedProductController extends Controller
 
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($featuredProduct->image && !str_starts_with($featuredProduct->image, 'http')) {
+            if ($featuredProduct->image && ! str_starts_with($featuredProduct->image, 'http')) {
                 Storage::disk('public')->delete($featuredProduct->image);
             }
             $validated['image'] = $request->file('image')->store('featured-products', 'public');
@@ -94,7 +94,7 @@ class FeaturedProductController extends Controller
      */
     public function destroy(FeaturedProduct $featuredProduct): RedirectResponse
     {
-        if ($featuredProduct->image && !str_starts_with($featuredProduct->image, 'http')) {
+        if ($featuredProduct->image && ! str_starts_with($featuredProduct->image, 'http')) {
             Storage::disk('public')->delete($featuredProduct->image);
         }
 

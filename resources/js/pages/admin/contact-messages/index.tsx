@@ -1,27 +1,41 @@
-import { useState } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router } from '@inertiajs/react';
 import {
+    Check,
+    Eye,
+    Filter,
+    Inbox,
     Mail,
     MailOpen,
-    Send,
-    Eye,
-    Trash2,
-    Check,
-    Filter,
-    Search,
     RefreshCw,
-    Inbox,
+    Search,
+    Send,
+    Trash2,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
@@ -38,7 +52,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -47,16 +61,6 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import {
     Table,
     TableBody,
     TableCell,
@@ -64,6 +68,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { Textarea } from '@/components/ui/textarea';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -99,7 +105,10 @@ interface Props {
 
 // Form Schema
 const replySchema = z.object({
-    reply_content: z.string().min(10, 'Reply must be at least 10 characters').max(5000),
+    reply_content: z
+        .string()
+        .min(10, 'Reply must be at least 10 characters')
+        .max(5000),
 });
 
 type ReplyFormValues = z.infer<typeof replySchema>;
@@ -136,10 +145,16 @@ const statusOptions = [
     { value: 'resolved', label: 'Resolved' },
 ];
 
-const statusLabel = (status: string) => statusOptions.find((o) => o.value === status)?.label || status;
+const statusLabel = (status: string) =>
+    statusOptions.find((o) => o.value === status)?.label || status;
 
-export default function ContactMessagesIndex({ messages, stats, filters }: Props) {
-    const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
+export default function ContactMessagesIndex({
+    messages,
+    stats,
+    filters,
+}: Props) {
+    const [selectedMessage, setSelectedMessage] =
+        useState<ContactMessage | null>(null);
     const [isViewOpen, setIsViewOpen] = useState(false);
     const [isReplyOpen, setIsReplyOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -169,35 +184,46 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
         if (!selectedMessage) return;
         setIsSubmitting(true);
 
-        router.post(`/admin/contact-messages/${selectedMessage.id}/reply`, values, {
-            onSuccess: () => {
-                toast.success('Reply sent successfully');
-                setIsReplyOpen(false);
-                setSelectedMessage(null);
-                replyForm.reset();
+        router.post(
+            `/admin/contact-messages/${selectedMessage.id}/reply`,
+            values,
+            {
+                onSuccess: () => {
+                    toast.success('Reply sent successfully');
+                    setIsReplyOpen(false);
+                    setSelectedMessage(null);
+                    replyForm.reset();
+                },
+                onError: (errors) => {
+                    Object.values(errors).forEach((error) => {
+                        toast.error(error as string);
+                    });
+                },
+                onFinish: () => setIsSubmitting(false),
             },
-            onError: (errors) => {
-                Object.values(errors).forEach((error) => {
-                    toast.error(error as string);
-                });
-            },
-            onFinish: () => setIsSubmitting(false),
-        });
+        );
     };
 
     const handleMarkResolved = (message: ContactMessage) => {
         handleStatusChange(message.id, 'resolved');
     };
 
-    const handleStatusChange = (messageId: number, status: ContactMessage['status']) => {
-        router.put(`/admin/contact-messages/${messageId}`, { status }, {
-            onSuccess: () => {
-                toast.success(`Status updated to ${statusLabel(status)}`);
+    const handleStatusChange = (
+        messageId: number,
+        status: ContactMessage['status'],
+    ) => {
+        router.put(
+            `/admin/contact-messages/${messageId}`,
+            { status },
+            {
+                onSuccess: () => {
+                    toast.success(`Status updated to ${statusLabel(status)}`);
+                },
+                onError: () => {
+                    toast.error('Failed to update status');
+                },
             },
-            onError: () => {
-                toast.error('Failed to update status');
-            },
-        });
+        );
     };
 
     const handleDelete = () => {
@@ -218,14 +244,19 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
     };
 
     const handleSearch = () => {
-        router.get('/admin/contact-messages', {
-            search: searchQuery,
-            status: statusFilter !== 'all' ? statusFilter : undefined,
-        }, { preserveState: true });
+        router.get(
+            '/admin/contact-messages',
+            {
+                search: searchQuery,
+                status: statusFilter !== 'all' ? statusFilter : undefined,
+            },
+            { preserveState: true },
+        );
     };
 
     const filteredMessages = messages.filter((message) => {
-        if (statusFilter !== 'all' && message.status !== statusFilter) return false;
+        if (statusFilter !== 'all' && message.status !== statusFilter)
+            return false;
         if (searchQuery) {
             const search = searchQuery.toLowerCase();
             return (
@@ -250,7 +281,9 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                     transition={{ duration: 0.3 }}
                 >
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Contact Messages</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Contact Messages
+                        </h1>
                         <p className="text-muted-foreground">
                             Manage and respond to customer inquiries.
                         </p>
@@ -266,42 +299,66 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                 >
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Messages</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Total Messages
+                            </CardTitle>
                             <Inbox className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.total}</div>
-                            <p className="text-xs text-muted-foreground">All time messages</p>
+                            <div className="text-2xl font-bold">
+                                {stats.total}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                All time messages
+                            </p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Pending</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Pending
+                            </CardTitle>
                             <Mail className="h-4 w-4 text-blue-500" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.pending}</div>
-                            <p className="text-xs text-muted-foreground">Awaiting review</p>
+                            <div className="text-2xl font-bold">
+                                {stats.pending}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Awaiting review
+                            </p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                In Progress
+                            </CardTitle>
                             <MailOpen className="h-4 w-4 text-yellow-500" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.in_progress}</div>
-                            <p className="text-xs text-muted-foreground">Being handled</p>
+                            <div className="text-2xl font-bold">
+                                {stats.in_progress}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Being handled
+                            </p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Resolved</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Resolved
+                            </CardTitle>
                             <Check className="h-4 w-4 text-green-500" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.resolved}</div>
-                            <p className="text-xs text-muted-foreground">Closed cases</p>
+                            <div className="text-2xl font-bold">
+                                {stats.resolved}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Closed cases
+                            </p>
                         </CardContent>
                     </Card>
                 </motion.div>
@@ -313,24 +370,31 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.15 }}
                 >
-                    <div className="relative flex-1 max-w-sm">
-                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <div className="relative max-w-sm flex-1">
+                        <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
                             placeholder="Search by name, email, or subject..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                            onKeyDown={(e) =>
+                                e.key === 'Enter' && handleSearch()
+                            }
                             className="pl-9"
                         />
                     </div>
-                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <Select
+                        value={statusFilter}
+                        onValueChange={setStatusFilter}
+                    >
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Filter by status" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all">All Statuses</SelectItem>
                             <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="in_progress">In Progress</SelectItem>
+                            <SelectItem value="in_progress">
+                                In Progress
+                            </SelectItem>
                             <SelectItem value="resolved">Resolved</SelectItem>
                         </SelectContent>
                     </Select>
@@ -338,7 +402,10 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                         <Filter className="mr-2 h-4 w-4" />
                         Apply
                     </Button>
-                    <Button variant="ghost" onClick={() => router.visit('/admin/contact-messages')}>
+                    <Button
+                        variant="ghost"
+                        onClick={() => router.visit('/admin/contact-messages')}
+                    >
                         <RefreshCw className="mr-2 h-4 w-4" />
                         Reset
                     </Button>
@@ -354,13 +421,14 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                         <CardHeader>
                             <CardTitle>All Messages</CardTitle>
                             <CardDescription>
-                                View and respond to customer contact form submissions.
+                                View and respond to customer contact form
+                                submissions.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             {filteredMessages.length === 0 ? (
-                                <div className="text-center py-12 text-muted-foreground">
-                                    <Inbox className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                                <div className="py-12 text-center text-muted-foreground">
+                                    <Inbox className="mx-auto mb-4 h-12 w-12 opacity-50" />
                                     <p>No messages found.</p>
                                 </div>
                             ) : (
@@ -372,21 +440,31 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                                             <TableHead>Subject</TableHead>
                                             <TableHead>Received</TableHead>
                                             <TableHead>Status</TableHead>
-                                            <TableHead className="text-right">Actions</TableHead>
+                                            <TableHead className="text-right">
+                                                Actions
+                                            </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {filteredMessages.map((message) => (
                                             <TableRow
                                                 key={message.id}
-                                                className={message.status === 'pending' ? 'bg-blue-50/50' : ''}
+                                                className={
+                                                    message.status === 'pending'
+                                                        ? 'bg-blue-50/50'
+                                                        : ''
+                                                }
                                             >
                                                 <TableCell>
-                                                    {getStatusIcon(message.status)}
+                                                    {getStatusIcon(
+                                                        message.status,
+                                                    )}
                                                 </TableCell>
                                                 <TableCell>
                                                     <div>
-                                                        <div className={`font-medium ${message.status === 'pending' ? 'font-bold' : ''}`}>
+                                                        <div
+                                                            className={`font-medium ${message.status === 'pending' ? 'font-bold' : ''}`}
+                                                        >
                                                             {message.name}
                                                         </div>
                                                         <div className="text-sm text-muted-foreground">
@@ -395,31 +473,54 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                                                     </div>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <div className={message.status === 'pending' ? 'font-semibold' : ''}>
+                                                    <div
+                                                        className={
+                                                            message.status ===
+                                                            'pending'
+                                                                ? 'font-semibold'
+                                                                : ''
+                                                        }
+                                                    >
                                                         {message.subject}
                                                     </div>
-                                                    <div className="text-sm text-muted-foreground line-clamp-1">
+                                                    <div className="line-clamp-1 text-sm text-muted-foreground">
                                                         {message.message}
                                                     </div>
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="text-sm">
-                                                        {new Date(message.created_at).toLocaleDateString('en-US', {
-                                                            month: 'short',
-                                                            day: 'numeric',
-                                                            year: 'numeric',
-                                                        })}
+                                                        {new Date(
+                                                            message.created_at,
+                                                        ).toLocaleDateString(
+                                                            'en-US',
+                                                            {
+                                                                month: 'short',
+                                                                day: 'numeric',
+                                                                year: 'numeric',
+                                                            },
+                                                        )}
                                                     </div>
                                                     <div className="text-xs text-muted-foreground">
-                                                        {new Date(message.created_at).toLocaleTimeString('en-US', {
-                                                            hour: 'numeric',
-                                                            minute: '2-digit',
-                                                        })}
+                                                        {new Date(
+                                                            message.created_at,
+                                                        ).toLocaleTimeString(
+                                                            'en-US',
+                                                            {
+                                                                hour: 'numeric',
+                                                                minute: '2-digit',
+                                                            },
+                                                        )}
                                                     </div>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <Badge className={getStatusColor(message.status)}>
-                                                        {statusLabel(message.status)}
+                                                    <Badge
+                                                        className={getStatusColor(
+                                                            message.status,
+                                                        )}
+                                                    >
+                                                        {statusLabel(
+                                                            message.status,
+                                                        )}
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell className="text-right">
@@ -427,31 +528,62 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                                                         <Button
                                                             size="icon"
                                                             variant="ghost"
-                                                            onClick={() => openViewMessage(message)}
+                                                            onClick={() =>
+                                                                openViewMessage(
+                                                                    message,
+                                                                )
+                                                            }
                                                             title="View message"
                                                         >
                                                             <Eye className="h-4 w-4" />
                                                         </Button>
                                                         <Select
-                                                            value={message.status}
-                                                            onValueChange={(value) => handleStatusChange(message.id, value as ContactMessage['status'])}
+                                                            value={
+                                                                message.status
+                                                            }
+                                                            onValueChange={(
+                                                                value,
+                                                            ) =>
+                                                                handleStatusChange(
+                                                                    message.id,
+                                                                    value as ContactMessage['status'],
+                                                                )
+                                                            }
                                                         >
                                                             <SelectTrigger className="w-[140px]">
                                                                 <SelectValue />
                                                             </SelectTrigger>
                                                             <SelectContent>
-                                                                {statusOptions.map((option) => (
-                                                                    <SelectItem key={option.value} value={option.value}>
-                                                                        {option.label}
-                                                                    </SelectItem>
-                                                                ))}
+                                                                {statusOptions.map(
+                                                                    (
+                                                                        option,
+                                                                    ) => (
+                                                                        <SelectItem
+                                                                            key={
+                                                                                option.value
+                                                                            }
+                                                                            value={
+                                                                                option.value
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                option.label
+                                                                            }
+                                                                        </SelectItem>
+                                                                    ),
+                                                                )}
                                                             </SelectContent>
                                                         </Select>
-                                                        {message.status !== 'resolved' && (
+                                                        {message.status !==
+                                                            'resolved' && (
                                                             <Button
                                                                 size="icon"
                                                                 variant="ghost"
-                                                                onClick={() => handleMarkResolved(message)}
+                                                                onClick={() =>
+                                                                    handleMarkResolved(
+                                                                        message,
+                                                                    )
+                                                                }
                                                                 title="Mark as resolved"
                                                             >
                                                                 <Check className="h-4 w-4" />
@@ -462,8 +594,12 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                                                             variant="ghost"
                                                             className="text-destructive"
                                                             onClick={() => {
-                                                                setSelectedMessage(message);
-                                                                setIsDeleteOpen(true);
+                                                                setSelectedMessage(
+                                                                    message,
+                                                                );
+                                                                setIsDeleteOpen(
+                                                                    true,
+                                                                );
                                                             }}
                                                             title="Delete"
                                                         >
@@ -494,51 +630,87 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4 text-sm">
                                 <div>
-                                    <label className="font-medium text-muted-foreground">From</label>
-                                    <p className="font-medium">{selectedMessage.name}</p>
+                                    <label className="font-medium text-muted-foreground">
+                                        From
+                                    </label>
+                                    <p className="font-medium">
+                                        {selectedMessage.name}
+                                    </p>
                                 </div>
                                 <div>
-                                    <label className="font-medium text-muted-foreground">Status</label>
+                                    <label className="font-medium text-muted-foreground">
+                                        Status
+                                    </label>
                                     <div>
-                                        <Badge className={getStatusColor(selectedMessage.status)}>
-                                            {statusLabel(selectedMessage.status)}
+                                        <Badge
+                                            className={getStatusColor(
+                                                selectedMessage.status,
+                                            )}
+                                        >
+                                            {statusLabel(
+                                                selectedMessage.status,
+                                            )}
                                         </Badge>
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="font-medium text-muted-foreground">Email</label>
+                                    <label className="font-medium text-muted-foreground">
+                                        Email
+                                    </label>
                                     <p>
-                                        <a href={`mailto:${selectedMessage.email}`} className="text-primary hover:underline">
+                                        <a
+                                            href={`mailto:${selectedMessage.email}`}
+                                            className="text-primary hover:underline"
+                                        >
                                             {selectedMessage.email}
                                         </a>
                                     </p>
                                 </div>
                                 <div>
-                                    <label className="font-medium text-muted-foreground">Phone</label>
-                                    <p>{selectedMessage.phone || 'Not provided'}</p>
+                                    <label className="font-medium text-muted-foreground">
+                                        Phone
+                                    </label>
+                                    <p>
+                                        {selectedMessage.phone ||
+                                            'Not provided'}
+                                    </p>
                                 </div>
                                 <div className="col-span-2">
-                                    <label className="font-medium text-muted-foreground">Received</label>
-                                    <p>{new Date(selectedMessage.created_at).toLocaleString()}</p>
+                                    <label className="font-medium text-muted-foreground">
+                                        Received
+                                    </label>
+                                    <p>
+                                        {new Date(
+                                            selectedMessage.created_at,
+                                        ).toLocaleString()}
+                                    </p>
                                 </div>
                             </div>
 
                             <div className="border-t pt-4">
-                                <label className="font-medium text-muted-foreground text-sm">Message</label>
-                                <div className="mt-2 bg-muted/50 rounded-lg p-4 whitespace-pre-wrap">
+                                <label className="text-sm font-medium text-muted-foreground">
+                                    Message
+                                </label>
+                                <div className="mt-2 rounded-lg bg-muted/50 p-4 whitespace-pre-wrap">
                                     {selectedMessage.message}
                                 </div>
                             </div>
 
                             {selectedMessage.reply_content && (
                                 <div className="border-t pt-4">
-                                    <label className="font-medium text-muted-foreground text-sm">
-                                        Reply {selectedMessage.replied_by && `by ${selectedMessage.replied_by}`}
+                                    <label className="text-sm font-medium text-muted-foreground">
+                                        Reply{' '}
+                                        {selectedMessage.replied_by &&
+                                            `by ${selectedMessage.replied_by}`}
                                     </label>
-                                    <p className="text-xs text-muted-foreground mb-2">
-                                        Sent on {selectedMessage.replied_at && new Date(selectedMessage.replied_at).toLocaleString()}
+                                    <p className="mb-2 text-xs text-muted-foreground">
+                                        Sent on{' '}
+                                        {selectedMessage.replied_at &&
+                                            new Date(
+                                                selectedMessage.replied_at,
+                                            ).toLocaleString()}
                                     </p>
-                                    <div className="bg-green-50 border border-green-200 rounded-lg p-4 whitespace-pre-wrap">
+                                    <div className="rounded-lg border border-green-200 bg-green-50 p-4 whitespace-pre-wrap">
                                         {selectedMessage.reply_content}
                                     </div>
                                 </div>
@@ -546,20 +718,24 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                         </div>
                     )}
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsViewOpen(false)}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setIsViewOpen(false)}
+                        >
                             Close
                         </Button>
-                        {selectedMessage && selectedMessage.status !== 'resolved' && (
-                            <Button
-                                onClick={() => {
-                                    setIsViewOpen(false);
-                                    openReplyDialog(selectedMessage);
-                                }}
-                            >
-                                <Send className="mr-2 h-4 w-4" />
-                                Reply
-                            </Button>
-                        )}
+                        {selectedMessage &&
+                            selectedMessage.status !== 'resolved' && (
+                                <Button
+                                    onClick={() => {
+                                        setIsViewOpen(false);
+                                        openReplyDialog(selectedMessage);
+                                    }}
+                                >
+                                    <Send className="mr-2 h-4 w-4" />
+                                    Reply
+                                </Button>
+                            )}
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
@@ -568,29 +744,42 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
             <Dialog open={isReplyOpen} onOpenChange={setIsReplyOpen}>
                 <DialogContent className="max-w-2xl">
                     <DialogHeader>
-                        <DialogTitle>Reply to {selectedMessage?.name}</DialogTitle>
+                        <DialogTitle>
+                            Reply to {selectedMessage?.name}
+                        </DialogTitle>
                         <DialogDescription>
                             Send a response to: {selectedMessage?.email}
                         </DialogDescription>
                     </DialogHeader>
                     {selectedMessage && (
                         <div className="space-y-4">
-                            <div className="bg-muted/50 rounded-lg p-4">
-                                <p className="text-sm font-medium text-muted-foreground mb-2">Original Message:</p>
-                                <p className="text-sm font-medium">{selectedMessage.subject}</p>
-                                <p className="text-sm text-muted-foreground line-clamp-3 mt-1">
+                            <div className="rounded-lg bg-muted/50 p-4">
+                                <p className="mb-2 text-sm font-medium text-muted-foreground">
+                                    Original Message:
+                                </p>
+                                <p className="text-sm font-medium">
+                                    {selectedMessage.subject}
+                                </p>
+                                <p className="mt-1 line-clamp-3 text-sm text-muted-foreground">
                                     {selectedMessage.message}
                                 </p>
                             </div>
 
                             <Form {...replyForm}>
-                                <form onSubmit={replyForm.handleSubmit(handleSendReply)} className="space-y-4">
+                                <form
+                                    onSubmit={replyForm.handleSubmit(
+                                        handleSendReply,
+                                    )}
+                                    className="space-y-4"
+                                >
                                     <FormField
                                         control={replyForm.control}
                                         name="reply_content"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Your Reply</FormLabel>
+                                                <FormLabel>
+                                                    Your Reply
+                                                </FormLabel>
                                                 <FormControl>
                                                     <Textarea
                                                         placeholder="Type your response here..."
@@ -603,10 +792,19 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                                         )}
                                     />
                                     <DialogFooter>
-                                        <Button type="button" variant="outline" onClick={() => setIsReplyOpen(false)}>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            onClick={() =>
+                                                setIsReplyOpen(false)
+                                            }
+                                        >
                                             Cancel
                                         </Button>
-                                        <Button type="submit" disabled={isSubmitting}>
+                                        <Button
+                                            type="submit"
+                                            disabled={isSubmitting}
+                                        >
                                             {isSubmitting ? (
                                                 'Sending...'
                                             ) : (
@@ -630,7 +828,9 @@ export default function ContactMessagesIndex({ messages, stats, filters }: Props
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Message</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete this message from {selectedMessage?.name}? This action cannot be undone.
+                            Are you sure you want to delete this message from{' '}
+                            {selectedMessage?.name}? This action cannot be
+                            undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

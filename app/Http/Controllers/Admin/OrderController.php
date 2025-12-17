@@ -27,10 +27,10 @@ class OrderController extends Controller
         // Apply search filter
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('order_number', 'like', "%{$search}%")
-                  ->orWhere('customer_name', 'like', "%{$search}%")
-                  ->orWhere('customer_email', 'like', "%{$search}%");
+                    ->orWhere('customer_name', 'like', "%{$search}%")
+                    ->orWhere('customer_email', 'like', "%{$search}%");
             });
         }
 
@@ -94,14 +94,14 @@ class OrderController extends Controller
         ]);
 
         // Generate unique order number
-        $orderNumber = 'ORD-' . strtoupper(Str::random(8));
+        $orderNumber = 'ORD-'.strtoupper(Str::random(8));
         while (Order::where('order_number', $orderNumber)->exists()) {
-            $orderNumber = 'ORD-' . strtoupper(Str::random(8));
+            $orderNumber = 'ORD-'.strtoupper(Str::random(8));
         }
 
         // Determine payment status based on payment method
         $paymentStatus = 'pending';
-        if (in_array($validated['payment_method'], ['bkash', 'nagad', 'rocket', 'card']) && !empty($validated['transaction_id'])) {
+        if (in_array($validated['payment_method'], ['bkash', 'nagad', 'rocket', 'card']) && ! empty($validated['transaction_id'])) {
             $paymentStatus = 'paid'; // Payment was processed successfully
         }
 
@@ -126,7 +126,7 @@ class OrderController extends Controller
         // Create order items
         foreach ($validated['items'] as $item) {
             $product = Product::find($item['product_id']);
-            
+
             OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $item['product_id'],
@@ -142,7 +142,7 @@ class OrderController extends Controller
             Mail::to($order->customer_email)->send(new OrderConfirmationMail($order->load('items')));
         } catch (\Exception $e) {
             // Log the error but don't fail the order
-            \Log::error('Failed to send order confirmation email: ' . $e->getMessage());
+            \Log::error('Failed to send order confirmation email: '.$e->getMessage());
         }
 
         return response()->json([

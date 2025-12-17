@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\FooterSection;
 use App\Models\FooterAddress;
 use App\Models\FooterLink;
+use App\Models\FooterSection;
 use App\Models\SocialLink;
+use Illuminate\Database\Seeder;
 
 class FooterSeeder extends Seeder
 {

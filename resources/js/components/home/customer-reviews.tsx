@@ -1,9 +1,12 @@
+import { Quote, Star } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Star, Quote } from 'lucide-react';
 
-import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { staggerContainerVariants, staggerItemVariants } from '@/lib/animations';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+    staggerContainerVariants,
+    staggerItemVariants,
+} from '@/lib/animations';
 import type { CustomerReview, SiteSettings } from '@/types/cms';
 
 interface CustomerReviewsProps {
@@ -15,8 +18,11 @@ export function CustomerReviews({ reviews, settings }: CustomerReviewsProps) {
     if (reviews.length === 0) return null;
 
     // Get dynamic text from settings
-    const sectionTitle = settings?.homepage?.customer_reviews_title || 'What Our Customers Say';
-    const sectionSubtitle = settings?.homepage?.customer_reviews_subtitle || 'Real feedback from our valued customers';
+    const sectionTitle =
+        settings?.homepage?.customer_reviews_title || 'What Our Customers Say';
+    const sectionSubtitle =
+        settings?.homepage?.customer_reviews_subtitle ||
+        'Real feedback from our valued customers';
 
     const getImageUrl = (review: CustomerReview) => {
         if (!review.image) return null;
@@ -34,7 +40,7 @@ export function CustomerReviews({ reviews, settings }: CustomerReviewsProps) {
     const getInitials = (name: string) => {
         return name
             .split(' ')
-            .map(n => n[0])
+            .map((n) => n[0])
             .join('')
             .toUpperCase()
             .slice(0, 2);
@@ -58,11 +64,11 @@ export function CustomerReviews({ reviews, settings }: CustomerReviewsProps) {
     };
 
     return (
-        <section className="py-16 bg-gray-50">
+        <section className="bg-gray-50 py-16">
             <div className="container mx-auto px-4">
                 {/* Section Header */}
                 <motion.div
-                    className="text-center mb-12"
+                    className="mb-12 text-center"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -72,13 +78,15 @@ export function CustomerReviews({ reviews, settings }: CustomerReviewsProps) {
                         {sectionTitle.includes(' ') ? (
                             <>
                                 {sectionTitle.split(' ').slice(0, -1).join(' ')}{' '}
-                                <span className="text-primary">{sectionTitle.split(' ').slice(-1)}</span>
+                                <span className="text-primary">
+                                    {sectionTitle.split(' ').slice(-1)}
+                                </span>
                             </>
                         ) : (
                             <span className="text-primary">{sectionTitle}</span>
                         )}
                     </h2>
-                    <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
+                    <p className="mx-auto mt-3 max-w-2xl text-gray-600">
                         {sectionSubtitle}
                     </p>
                 </motion.div>
@@ -92,11 +100,14 @@ export function CustomerReviews({ reviews, settings }: CustomerReviewsProps) {
                     viewport={{ once: true }}
                 >
                     {reviews.map((review) => (
-                        <motion.div key={review.id} variants={staggerItemVariants}>
-                            <Card className="h-full bg-white border-0 shadow-sm hover:shadow-lg transition-shadow duration-300">
+                        <motion.div
+                            key={review.id}
+                            variants={staggerItemVariants}
+                        >
+                            <Card className="h-full border-0 bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg">
                                 <CardContent className="p-6">
                                     {/* Quote Icon */}
-                                    <Quote className="h-8 w-8 text-primary/20 mb-4" />
+                                    <Quote className="mb-4 h-8 w-8 text-primary/20" />
 
                                     {/* Rating */}
                                     <div className="mb-4">
@@ -104,18 +115,21 @@ export function CustomerReviews({ reviews, settings }: CustomerReviewsProps) {
                                     </div>
 
                                     {/* Review Text */}
-                                    <p className="text-gray-600 mb-6 line-clamp-4">
+                                    <p className="mb-6 line-clamp-4 text-gray-600">
                                         "{review.review}"
                                     </p>
 
                                     {/* Reviewer Info */}
                                     <div className="flex items-center gap-4">
                                         <Avatar className="h-12 w-12">
-                                            <AvatarImage 
-                                                src={getImageUrl(review) || undefined} 
-                                                alt={review.name} 
+                                            <AvatarImage
+                                                src={
+                                                    getImageUrl(review) ||
+                                                    undefined
+                                                }
+                                                alt={review.name}
                                             />
-                                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                                            <AvatarFallback className="bg-primary/10 font-semibold text-primary">
                                                 {getInitials(review.name)}
                                             </AvatarFallback>
                                         </Avatar>

@@ -1,38 +1,40 @@
-import { useState } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router } from '@inertiajs/react';
 import {
+    GripVertical,
+    MapPin,
+    Pencil,
     Plus,
     Save,
     Search,
-    Pencil,
-    Trash2,
-    MapPin,
-    Phone,
-    Mail,
-    Clock,
     Star,
+    Trash2,
     X,
-    GripVertical,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useState } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
@@ -50,7 +52,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -58,17 +60,18 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 import { Switch } from '@/components/ui/switch';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -149,10 +152,26 @@ const commonFeatures = [
 ];
 
 const defaultStoreServices = [
-    { icon: 'check', title: 'Quality Guarantee', description: 'Inspect e-club quality in person before you buy' },
-    { icon: 'users', title: 'Expert Staff', description: 'Get personalized recommendations from our team' },
-    { icon: 'grid', title: 'Room Displays', description: 'See how e-club looks in real room settings' },
-    { icon: 'dollar', title: 'Easy Financing', description: 'Flexible EMI options available at our stores' },
+    {
+        icon: 'check',
+        title: 'Quality Guarantee',
+        description: 'Inspect e-club quality in person before you buy',
+    },
+    {
+        icon: 'users',
+        title: 'Expert Staff',
+        description: 'Get personalized recommendations from our team',
+    },
+    {
+        icon: 'grid',
+        title: 'Room Displays',
+        description: 'See how e-club looks in real room settings',
+    },
+    {
+        icon: 'dollar',
+        title: 'Easy Financing',
+        description: 'Flexible EMI options available at our stores',
+    },
 ];
 
 // Form Schema
@@ -161,12 +180,24 @@ const storeSchema = z.object({
     type: z.string().min(1, 'Store type is required'),
     address: z.string().min(1, 'Address is required'),
     phone: z.string().max(50).nullable().optional(),
-    email: z.string().email('Invalid email').max(255).nullable().optional().or(z.literal('')),
+    email: z
+        .string()
+        .email('Invalid email')
+        .max(255)
+        .nullable()
+        .optional()
+        .or(z.literal('')),
     hours: z.string().max(255).nullable().optional(),
     features: z.array(z.string()).optional(),
     is_open: z.boolean(),
     rating: z.number().min(0).max(5),
-    map_url: z.string().url('Invalid URL').max(500).nullable().optional().or(z.literal('')),
+    map_url: z
+        .string()
+        .url('Invalid URL')
+        .max(500)
+        .nullable()
+        .optional()
+        .or(z.literal('')),
     city: z.string().min(1, 'City is required'),
     is_active: z.boolean(),
     sort_order: z.number().min(0),
@@ -178,11 +209,15 @@ const contentSchema = z.object({
     hero_title: z.string().min(1, 'Title is required'),
     hero_subtitle: z.string().optional(),
     locations_section_title: z.string().optional(),
-    store_services: z.array(z.object({
-        icon: z.string().optional(),
-        title: z.string().min(1, 'Title is required'),
-        description: z.string().optional(),
-    })).optional(),
+    store_services: z
+        .array(
+            z.object({
+                icon: z.string().optional(),
+                title: z.string().min(1, 'Title is required'),
+                description: z.string().optional(),
+            }),
+        )
+        .optional(),
     cta_title: z.string().optional(),
     cta_subtitle: z.string().optional(),
 });
@@ -194,7 +229,9 @@ export default function StoresPage({ stores, content }: Props) {
     const [cityFilter, setCityFilter] = useState('all');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const [selectedStore, setSelectedStore] = useState<StoreLocation | null>(null);
+    const [selectedStore, setSelectedStore] = useState<StoreLocation | null>(
+        null,
+    );
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
     const [customFeature, setCustomFeature] = useState('');
@@ -223,15 +260,27 @@ export default function StoresPage({ stores, content }: Props) {
         resolver: zodResolver(contentSchema),
         defaultValues: {
             hero_title: content.hero?.title || 'Find a Store Near You',
-            hero_subtitle: content.hero?.subtitle || 'Visit one of our showrooms to experience our e-club in person. Our expert staff is ready to help you find the perfect pieces.',
-            locations_section_title: content.locations_section?.title || 'All Locations',
-            store_services: (content.store_services?.items as ContentFormValues['store_services']) || defaultStoreServices,
+            hero_subtitle:
+                content.hero?.subtitle ||
+                'Visit one of our showrooms to experience our e-club in person. Our expert staff is ready to help you find the perfect pieces.',
+            locations_section_title:
+                content.locations_section?.title || 'All Locations',
+            store_services:
+                (content.store_services
+                    ?.items as ContentFormValues['store_services']) ||
+                defaultStoreServices,
             cta_title: content.cta?.title || "Can't Visit a Store?",
-            cta_subtitle: content.cta?.subtitle || 'Shop our entire collection online with nationwide delivery, or schedule a video consultation with our design experts.',
+            cta_subtitle:
+                content.cta?.subtitle ||
+                'Shop our entire collection online with nationwide delivery, or schedule a video consultation with our design experts.',
         },
     });
 
-    const { fields: serviceFields, append: appendService, remove: removeService } = useFieldArray({
+    const {
+        fields: serviceFields,
+        append: appendService,
+        remove: removeService,
+    } = useFieldArray({
         control: contentForm.control,
         name: 'store_services',
     });
@@ -304,18 +353,26 @@ export default function StoresPage({ stores, content }: Props) {
             ? `/admin/content-pages/stores/${selectedStore.id}`
             : '/admin/content-pages/stores';
 
-        router.post(url, selectedStore ? { ...formData, _method: 'PUT' } : formData, {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success(selectedStore ? 'Store updated successfully' : 'Store added successfully');
-                setIsDialogOpen(false);
+        router.post(
+            url,
+            selectedStore ? { ...formData, _method: 'PUT' } : formData,
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success(
+                        selectedStore
+                            ? 'Store updated successfully'
+                            : 'Store added successfully',
+                    );
+                    setIsDialogOpen(false);
+                },
+                onError: (errors) => {
+                    toast.error('Failed to save store');
+                    console.error(errors);
+                },
+                onFinish: () => setIsSubmitting(false),
             },
-            onError: (errors) => {
-                toast.error('Failed to save store');
-                console.error(errors);
-            },
-            onFinish: () => setIsSubmitting(false),
-        });
+        );
     };
 
     const handleContentSubmit = (data: ContentFormValues) => {
@@ -355,12 +412,15 @@ export default function StoresPage({ stores, content }: Props) {
         setSelectedFeatures((prev) =>
             prev.includes(feature)
                 ? prev.filter((f) => f !== feature)
-                : [...prev, feature]
+                : [...prev, feature],
         );
     };
 
     const addCustomFeature = () => {
-        if (customFeature.trim() && !selectedFeatures.includes(customFeature.trim())) {
+        if (
+            customFeature.trim() &&
+            !selectedFeatures.includes(customFeature.trim())
+        ) {
             setSelectedFeatures([...selectedFeatures, customFeature.trim()]);
             setCustomFeature('');
         }
@@ -370,7 +430,11 @@ export default function StoresPage({ stores, content }: Props) {
         <AdminPageLayout>
             <Head title="Store Locations - Admin" />
 
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="space-y-6"
+            >
                 <TabsList className="w-fit">
                     <TabsTrigger value="locations">Locations</TabsTrigger>
                     <TabsTrigger value="content">Page Content</TabsTrigger>
@@ -384,38 +448,53 @@ export default function StoresPage({ stores, content }: Props) {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <h1 className="text-3xl font-bold tracking-tight">Store Locations</h1>
+                            <h1 className="text-3xl font-bold tracking-tight">
+                                Store Locations
+                            </h1>
                             <p className="text-muted-foreground">
-                                Manage store locations shown on the Store Locator page
+                                Manage store locations shown on the Store
+                                Locator page
                             </p>
                         </motion.div>
 
                         {/* Filters */}
                         <Card>
                             <CardContent className="pt-6">
-                                <div className="flex flex-col sm:flex-row gap-4">
+                                <div className="flex flex-col gap-4 sm:flex-row">
                                     <div className="relative flex-1">
-                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                        <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                         <Input
                                             placeholder="Search stores..."
                                             value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            onChange={(e) =>
+                                                setSearchQuery(e.target.value)
+                                            }
                                             className="pl-9"
                                         />
                                     </div>
-                                    <Select value={cityFilter} onValueChange={setCityFilter}>
+                                    <Select
+                                        value={cityFilter}
+                                        onValueChange={setCityFilter}
+                                    >
                                         <SelectTrigger className="w-full sm:w-[180px]">
                                             <SelectValue placeholder="Filter by city" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="all">All Cities</SelectItem>
+                                            <SelectItem value="all">
+                                                All Cities
+                                            </SelectItem>
                                             {cities.map((city) => (
-                                                <SelectItem key={city} value={city}>{city}</SelectItem>
+                                                <SelectItem
+                                                    key={city}
+                                                    value={city}
+                                                >
+                                                    {city}
+                                                </SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
                                     <Button onClick={openAddDialog}>
-                                        <Plus className="h-4 w-4 mr-2" />
+                                        <Plus className="mr-2 h-4 w-4" />
                                         Add Store
                                     </Button>
                                 </div>
@@ -442,14 +521,20 @@ export default function StoresPage({ stores, content }: Props) {
                                             <TableHead>City</TableHead>
                                             <TableHead>Rating</TableHead>
                                             <TableHead>Status</TableHead>
-                                            <TableHead className="text-right">Actions</TableHead>
+                                            <TableHead className="text-right">
+                                                Actions
+                                            </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {filteredStores.length === 0 ? (
                                             <TableRow>
-                                                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                                                    No stores found. Add your first store location.
+                                                <TableCell
+                                                    colSpan={6}
+                                                    className="py-8 text-center text-muted-foreground"
+                                                >
+                                                    No stores found. Add your
+                                                    first store location.
                                                 </TableCell>
                                             </TableRow>
                                         ) : (
@@ -457,31 +542,51 @@ export default function StoresPage({ stores, content }: Props) {
                                                 <TableRow key={store.id}>
                                                     <TableCell>
                                                         <div>
-                                                            <p className="font-medium">{store.name}</p>
-                                                            <p className="text-sm text-muted-foreground truncate max-w-[250px]">
+                                                            <p className="font-medium">
+                                                                {store.name}
+                                                            </p>
+                                                            <p className="max-w-[250px] truncate text-sm text-muted-foreground">
                                                                 {store.address}
                                                             </p>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <Badge variant="outline">{store.type}</Badge>
+                                                        <Badge variant="outline">
+                                                            {store.type}
+                                                        </Badge>
                                                     </TableCell>
-                                                    <TableCell>{store.city}</TableCell>
+                                                    <TableCell>
+                                                        {store.city}
+                                                    </TableCell>
                                                     <TableCell>
                                                         <div className="flex items-center gap-1">
-                                                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                                                            <span>{store.rating}</span>
+                                                            <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
+                                                            <span>
+                                                                {store.rating}
+                                                            </span>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="flex flex-col gap-1">
-                                                            <Badge variant={store.is_active ? 'default' : 'secondary'}>
-                                                                {store.is_active ? 'Active' : 'Inactive'}
+                                                            <Badge
+                                                                variant={
+                                                                    store.is_active
+                                                                        ? 'default'
+                                                                        : 'secondary'
+                                                                }
+                                                            >
+                                                                {store.is_active
+                                                                    ? 'Active'
+                                                                    : 'Inactive'}
                                                             </Badge>
                                                             {store.is_open ? (
-                                                                <span className="text-xs text-green-600">Open</span>
+                                                                <span className="text-xs text-green-600">
+                                                                    Open
+                                                                </span>
                                                             ) : (
-                                                                <span className="text-xs text-red-600">Closed</span>
+                                                                <span className="text-xs text-red-600">
+                                                                    Closed
+                                                                </span>
                                                             )}
                                                         </div>
                                                     </TableCell>
@@ -490,7 +595,11 @@ export default function StoresPage({ stores, content }: Props) {
                                                             <Button
                                                                 variant="ghost"
                                                                 size="icon"
-                                                                onClick={() => openEditDialog(store)}
+                                                                onClick={() =>
+                                                                    openEditDialog(
+                                                                        store,
+                                                                    )
+                                                                }
                                                             >
                                                                 <Pencil className="h-4 w-4" />
                                                             </Button>
@@ -498,8 +607,12 @@ export default function StoresPage({ stores, content }: Props) {
                                                                 variant="ghost"
                                                                 size="icon"
                                                                 onClick={() => {
-                                                                    setSelectedStore(store);
-                                                                    setIsDeleteDialogOpen(true);
+                                                                    setSelectedStore(
+                                                                        store,
+                                                                    );
+                                                                    setIsDeleteDialogOpen(
+                                                                        true,
+                                                                    );
                                                                 }}
                                                             >
                                                                 <Trash2 className="h-4 w-4 text-destructive" />
@@ -514,7 +627,6 @@ export default function StoresPage({ stores, content }: Props) {
                             </CardContent>
                         </Card>
                     </div>
-
                 </TabsContent>
 
                 <TabsContent value="content">
@@ -522,20 +634,33 @@ export default function StoresPage({ stores, content }: Props) {
                         <Card>
                             <CardHeader>
                                 <CardTitle>Store Page Content</CardTitle>
-                                <CardDescription>Edit hero, services, and CTA shown on the public Store Locator page.</CardDescription>
+                                <CardDescription>
+                                    Edit hero, services, and CTA shown on the
+                                    public Store Locator page.
+                                </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Form {...contentForm}>
-                                    <form onSubmit={contentForm.handleSubmit(handleContentSubmit)} className="space-y-6">
+                                    <form
+                                        onSubmit={contentForm.handleSubmit(
+                                            handleContentSubmit,
+                                        )}
+                                        className="space-y-6"
+                                    >
                                         <div className="grid gap-4 sm:grid-cols-2">
                                             <FormField
                                                 control={contentForm.control}
                                                 name="hero_title"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Hero Title</FormLabel>
+                                                        <FormLabel>
+                                                            Hero Title
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Find a Store Near You" {...field} />
+                                                            <Input
+                                                                placeholder="Find a Store Near You"
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -546,9 +671,15 @@ export default function StoresPage({ stores, content }: Props) {
                                                 name="hero_subtitle"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Hero Subtitle</FormLabel>
+                                                        <FormLabel>
+                                                            Hero Subtitle
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Textarea rows={3} placeholder="Visit one of our showrooms..." {...field} />
+                                                            <Textarea
+                                                                rows={3}
+                                                                placeholder="Visit one of our showrooms..."
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -561,9 +692,14 @@ export default function StoresPage({ stores, content }: Props) {
                                             name="locations_section_title"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Locations Section Title</FormLabel>
+                                                    <FormLabel>
+                                                        Locations Section Title
+                                                    </FormLabel>
                                                     <FormControl>
-                                                        <Input placeholder="All Locations" {...field} />
+                                                        <Input
+                                                            placeholder="All Locations"
+                                                            {...field}
+                                                        />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -573,84 +709,156 @@ export default function StoresPage({ stores, content }: Props) {
                                         <div className="space-y-4">
                                             <div className="flex items-center justify-between">
                                                 <div>
-                                                    <FormLabel>Store Services</FormLabel>
-                                                    <FormDescription>These cards appear under "What to Expect at Our Stores"</FormDescription>
+                                                    <FormLabel>
+                                                        Store Services
+                                                    </FormLabel>
+                                                    <FormDescription>
+                                                        These cards appear under
+                                                        "What to Expect at Our
+                                                        Stores"
+                                                    </FormDescription>
                                                 </div>
-                                                <Button type="button" variant="outline" onClick={() => appendService({ icon: 'check', title: '', description: '' })}>
-                                                    <Plus className="h-4 w-4 mr-2" />
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    onClick={() =>
+                                                        appendService({
+                                                            icon: 'check',
+                                                            title: '',
+                                                            description: '',
+                                                        })
+                                                    }
+                                                >
+                                                    <Plus className="mr-2 h-4 w-4" />
                                                     Add Service
                                                 </Button>
                                             </div>
 
                                             {serviceFields.length === 0 && (
-                                                <div className="text-center py-8 border-2 border-dashed rounded-lg">
-                                                    <p className="text-muted-foreground mb-2">No services yet</p>
-                                                    <Button type="button" variant="outline" onClick={() => appendService({ icon: 'check', title: '', description: '' })}>
-                                                        <Plus className="h-4 w-4 mr-2" />
+                                                <div className="rounded-lg border-2 border-dashed py-8 text-center">
+                                                    <p className="mb-2 text-muted-foreground">
+                                                        No services yet
+                                                    </p>
+                                                    <Button
+                                                        type="button"
+                                                        variant="outline"
+                                                        onClick={() =>
+                                                            appendService({
+                                                                icon: 'check',
+                                                                title: '',
+                                                                description: '',
+                                                            })
+                                                        }
+                                                    >
+                                                        <Plus className="mr-2 h-4 w-4" />
                                                         Add First Service
                                                     </Button>
                                                 </div>
                                             )}
 
-                                            {serviceFields.map((field: any, index: number) => (
-                                                <motion.div
-                                                    key={field.id}
-                                                    initial={{ opacity: 0 }}
-                                                    animate={{ opacity: 1 }}
-                                                    className="p-4 border rounded-lg space-y-4"
-                                                >
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="flex items-center gap-2">
-                                                            <GripVertical className="h-5 w-5 text-muted-foreground" />
-                                                            <span className="font-medium">Service {index + 1}</span>
+                                            {serviceFields.map(
+                                                (field: any, index: number) => (
+                                                    <motion.div
+                                                        key={field.id}
+                                                        initial={{ opacity: 0 }}
+                                                        animate={{ opacity: 1 }}
+                                                        className="space-y-4 rounded-lg border p-4"
+                                                    >
+                                                        <div className="flex items-center justify-between">
+                                                            <div className="flex items-center gap-2">
+                                                                <GripVertical className="h-5 w-5 text-muted-foreground" />
+                                                                <span className="font-medium">
+                                                                    Service{' '}
+                                                                    {index + 1}
+                                                                </span>
+                                                            </div>
+                                                            <Button
+                                                                type="button"
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                onClick={() =>
+                                                                    removeService(
+                                                                        index,
+                                                                    )
+                                                                }
+                                                            >
+                                                                <Trash2 className="h-4 w-4 text-destructive" />
+                                                            </Button>
                                                         </div>
-                                                        <Button type="button" variant="ghost" size="icon" onClick={() => removeService(index)}>
-                                                            <Trash2 className="h-4 w-4 text-destructive" />
-                                                        </Button>
-                                                    </div>
-                                                    <div className="grid gap-4 sm:grid-cols-2">
+                                                        <div className="grid gap-4 sm:grid-cols-2">
+                                                            <FormField
+                                                                control={
+                                                                    contentForm.control
+                                                                }
+                                                                name={`store_services.${index}.icon`}
+                                                                render={({
+                                                                    field,
+                                                                }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>
+                                                                            Icon
+                                                                        </FormLabel>
+                                                                        <FormControl>
+                                                                            <Input
+                                                                                placeholder="check"
+                                                                                {...field}
+                                                                            />
+                                                                        </FormControl>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                            <FormField
+                                                                control={
+                                                                    contentForm.control
+                                                                }
+                                                                name={`store_services.${index}.title`}
+                                                                render={({
+                                                                    field,
+                                                                }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>
+                                                                            Title
+                                                                        </FormLabel>
+                                                                        <FormControl>
+                                                                            <Input
+                                                                                placeholder="Quality Guarantee"
+                                                                                {...field}
+                                                                            />
+                                                                        </FormControl>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        </div>
                                                         <FormField
-                                                            control={contentForm.control}
-                                                            name={`store_services.${index}.icon`}
-                                                            render={({ field }) => (
+                                                            control={
+                                                                contentForm.control
+                                                            }
+                                                            name={`store_services.${index}.description`}
+                                                            render={({
+                                                                field,
+                                                            }) => (
                                                                 <FormItem>
-                                                                    <FormLabel>Icon</FormLabel>
+                                                                    <FormLabel>
+                                                                        Description
+                                                                    </FormLabel>
                                                                     <FormControl>
-                                                                        <Input placeholder="check" {...field} />
+                                                                        <Textarea
+                                                                            rows={
+                                                                                3
+                                                                            }
+                                                                            placeholder="Describe this service"
+                                                                            {...field}
+                                                                        />
                                                                     </FormControl>
                                                                     <FormMessage />
                                                                 </FormItem>
                                                             )}
                                                         />
-                                                        <FormField
-                                                            control={contentForm.control}
-                                                            name={`store_services.${index}.title`}
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Title</FormLabel>
-                                                                    <FormControl>
-                                                                        <Input placeholder="Quality Guarantee" {...field} />
-                                                                    </FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                    </div>
-                                                    <FormField
-                                                        control={contentForm.control}
-                                                        name={`store_services.${index}.description`}
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Description</FormLabel>
-                                                                <FormControl>
-                                                                    <Textarea rows={3} placeholder="Describe this service" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                </motion.div>
-                                            ))}
+                                                    </motion.div>
+                                                ),
+                                            )}
                                         </div>
 
                                         <div className="grid gap-4 sm:grid-cols-2">
@@ -659,9 +867,14 @@ export default function StoresPage({ stores, content }: Props) {
                                                 name="cta_title"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>CTA Title</FormLabel>
+                                                        <FormLabel>
+                                                            CTA Title
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Can't Visit a Store?" {...field} />
+                                                            <Input
+                                                                placeholder="Can't Visit a Store?"
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -672,9 +885,15 @@ export default function StoresPage({ stores, content }: Props) {
                                                 name="cta_subtitle"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>CTA Subtitle</FormLabel>
+                                                        <FormLabel>
+                                                            CTA Subtitle
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Textarea rows={3} placeholder="Shop our entire collection online..." {...field} />
+                                                            <Textarea
+                                                                rows={3}
+                                                                placeholder="Shop our entire collection online..."
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -683,8 +902,11 @@ export default function StoresPage({ stores, content }: Props) {
                                         </div>
 
                                         <div className="flex justify-end">
-                                            <Button type="submit" disabled={isSubmitting}>
-                                                <Save className="h-4 w-4 mr-2" />
+                                            <Button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                            >
+                                                <Save className="mr-2 h-4 w-4" />
                                                 Save Page Content
                                             </Button>
                                         </div>
@@ -698,7 +920,7 @@ export default function StoresPage({ stores, content }: Props) {
 
             {/* Add/Edit Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>
                             {selectedStore ? 'Edit Store' : 'Add Store'}
@@ -710,7 +932,10 @@ export default function StoresPage({ stores, content }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleSubmit)}
+                            className="space-y-4"
+                        >
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <FormField
                                     control={form.control}
@@ -719,7 +944,10 @@ export default function StoresPage({ stores, content }: Props) {
                                         <FormItem>
                                             <FormLabel>Store Name</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Dhanmondi Showroom" {...field} />
+                                                <Input
+                                                    placeholder="Dhanmondi Showroom"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -731,7 +959,10 @@ export default function StoresPage({ stores, content }: Props) {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Store Type</FormLabel>
-                                            <Select onValueChange={field.onChange} value={field.value}>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                            >
                                                 <FormControl>
                                                     <SelectTrigger>
                                                         <SelectValue placeholder="Select type" />
@@ -739,7 +970,12 @@ export default function StoresPage({ stores, content }: Props) {
                                                 </FormControl>
                                                 <SelectContent>
                                                     {storeTypes.map((type) => (
-                                                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                                                        <SelectItem
+                                                            key={type}
+                                                            value={type}
+                                                        >
+                                                            {type}
+                                                        </SelectItem>
                                                     ))}
                                                 </SelectContent>
                                             </Select>
@@ -749,41 +985,71 @@ export default function StoresPage({ stores, content }: Props) {
                                 />
 
                                 <div className="grid gap-4 sm:grid-cols-2">
-
-
-
-
                                     <TabsContent value="content">
                                         <Card>
                                             <CardHeader>
-                                                <CardTitle>Store Page Content</CardTitle>
-                                                <CardDescription>Edit hero, services, and CTA shown on the public Store Locator page.</CardDescription>
+                                                <CardTitle>
+                                                    Store Page Content
+                                                </CardTitle>
+                                                <CardDescription>
+                                                    Edit hero, services, and CTA
+                                                    shown on the public Store
+                                                    Locator page.
+                                                </CardDescription>
                                             </CardHeader>
                                             <CardContent>
                                                 <Form {...contentForm}>
-                                                    <form onSubmit={contentForm.handleSubmit(handleContentSubmit)} className="space-y-6">
+                                                    <form
+                                                        onSubmit={contentForm.handleSubmit(
+                                                            handleContentSubmit,
+                                                        )}
+                                                        className="space-y-6"
+                                                    >
                                                         <div className="grid gap-4 sm:grid-cols-2">
                                                             <FormField
-                                                                control={contentForm.control}
+                                                                control={
+                                                                    contentForm.control
+                                                                }
                                                                 name="hero_title"
-                                                                render={({ field }) => (
+                                                                render={({
+                                                                    field,
+                                                                }) => (
                                                                     <FormItem>
-                                                                        <FormLabel>Hero Title</FormLabel>
+                                                                        <FormLabel>
+                                                                            Hero
+                                                                            Title
+                                                                        </FormLabel>
                                                                         <FormControl>
-                                                                            <Input placeholder="Find a Store Near You" {...field} />
+                                                                            <Input
+                                                                                placeholder="Find a Store Near You"
+                                                                                {...field}
+                                                                            />
                                                                         </FormControl>
                                                                         <FormMessage />
                                                                     </FormItem>
                                                                 )}
                                                             />
                                                             <FormField
-                                                                control={contentForm.control}
+                                                                control={
+                                                                    contentForm.control
+                                                                }
                                                                 name="hero_subtitle"
-                                                                render={({ field }) => (
+                                                                render={({
+                                                                    field,
+                                                                }) => (
                                                                     <FormItem>
-                                                                        <FormLabel>Hero Subtitle</FormLabel>
+                                                                        <FormLabel>
+                                                                            Hero
+                                                                            Subtitle
+                                                                        </FormLabel>
                                                                         <FormControl>
-                                                                            <Textarea rows={3} placeholder="Visit one of our showrooms..." {...field} />
+                                                                            <Textarea
+                                                                                rows={
+                                                                                    3
+                                                                                }
+                                                                                placeholder="Visit one of our showrooms..."
+                                                                                {...field}
+                                                                            />
                                                                         </FormControl>
                                                                         <FormMessage />
                                                                     </FormItem>
@@ -792,13 +1058,24 @@ export default function StoresPage({ stores, content }: Props) {
                                                         </div>
 
                                                         <FormField
-                                                            control={contentForm.control}
+                                                            control={
+                                                                contentForm.control
+                                                            }
                                                             name="locations_section_title"
-                                                            render={({ field }) => (
+                                                            render={({
+                                                                field,
+                                                            }) => (
                                                                 <FormItem>
-                                                                    <FormLabel>Locations Section Title</FormLabel>
+                                                                    <FormLabel>
+                                                                        Locations
+                                                                        Section
+                                                                        Title
+                                                                    </FormLabel>
                                                                     <FormControl>
-                                                                        <Input placeholder="All Locations" {...field} />
+                                                                        <Input
+                                                                            placeholder="All Locations"
+                                                                            {...field}
+                                                                        />
                                                                     </FormControl>
                                                                     <FormMessage />
                                                                 </FormItem>
@@ -808,108 +1085,230 @@ export default function StoresPage({ stores, content }: Props) {
                                                         <div className="space-y-4">
                                                             <div className="flex items-center justify-between">
                                                                 <div>
-                                                                    <FormLabel>Store Services</FormLabel>
-                                                                    <FormDescription>These cards appear under "What to Expect at Our Stores"</FormDescription>
+                                                                    <FormLabel>
+                                                                        Store
+                                                                        Services
+                                                                    </FormLabel>
+                                                                    <FormDescription>
+                                                                        These
+                                                                        cards
+                                                                        appear
+                                                                        under
+                                                                        "What to
+                                                                        Expect
+                                                                        at Our
+                                                                        Stores"
+                                                                    </FormDescription>
                                                                 </div>
-                                                                <Button type="button" variant="outline" onClick={() => appendService({ icon: 'check', title: '', description: '' })}>
-                                                                    <Plus className="h-4 w-4 mr-2" />
+                                                                <Button
+                                                                    type="button"
+                                                                    variant="outline"
+                                                                    onClick={() =>
+                                                                        appendService(
+                                                                            {
+                                                                                icon: 'check',
+                                                                                title: '',
+                                                                                description:
+                                                                                    '',
+                                                                            },
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Plus className="mr-2 h-4 w-4" />
                                                                     Add Service
                                                                 </Button>
                                                             </div>
 
-                                                            {serviceFields.length === 0 && (
-                                                                <div className="text-center py-8 border-2 border-dashed rounded-lg">
-                                                                    <p className="text-muted-foreground mb-2">No services yet</p>
-                                                                    <Button type="button" variant="outline" onClick={() => appendService({ icon: 'check', title: '', description: '' })}>
-                                                                        <Plus className="h-4 w-4 mr-2" />
-                                                                        Add First Service
+                                                            {serviceFields.length ===
+                                                                0 && (
+                                                                <div className="rounded-lg border-2 border-dashed py-8 text-center">
+                                                                    <p className="mb-2 text-muted-foreground">
+                                                                        No
+                                                                        services
+                                                                        yet
+                                                                    </p>
+                                                                    <Button
+                                                                        type="button"
+                                                                        variant="outline"
+                                                                        onClick={() =>
+                                                                            appendService(
+                                                                                {
+                                                                                    icon: 'check',
+                                                                                    title: '',
+                                                                                    description:
+                                                                                        '',
+                                                                                },
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <Plus className="mr-2 h-4 w-4" />
+                                                                        Add
+                                                                        First
+                                                                        Service
                                                                     </Button>
                                                                 </div>
                                                             )}
 
-                                                            {serviceFields.map((field, index) => (
-                                                                <motion.div
-                                                                    key={field.id}
-                                                                    initial={{ opacity: 0 }}
-                                                                    animate={{ opacity: 1 }}
-                                                                    className="p-4 border rounded-lg space-y-4"
-                                                                >
-                                                                    <div className="flex items-center justify-between">
-                                                                        <div className="flex items-center gap-2">
-                                                                            <GripVertical className="h-5 w-5 text-muted-foreground" />
-                                                                            <span className="font-medium">Service {index + 1}</span>
+                                                            {serviceFields.map(
+                                                                (
+                                                                    field,
+                                                                    index,
+                                                                ) => (
+                                                                    <motion.div
+                                                                        key={
+                                                                            field.id
+                                                                        }
+                                                                        initial={{
+                                                                            opacity: 0,
+                                                                        }}
+                                                                        animate={{
+                                                                            opacity: 1,
+                                                                        }}
+                                                                        className="space-y-4 rounded-lg border p-4"
+                                                                    >
+                                                                        <div className="flex items-center justify-between">
+                                                                            <div className="flex items-center gap-2">
+                                                                                <GripVertical className="h-5 w-5 text-muted-foreground" />
+                                                                                <span className="font-medium">
+                                                                                    Service{' '}
+                                                                                    {index +
+                                                                                        1}
+                                                                                </span>
+                                                                            </div>
+                                                                            <Button
+                                                                                type="button"
+                                                                                variant="ghost"
+                                                                                size="icon"
+                                                                                onClick={() =>
+                                                                                    removeService(
+                                                                                        index,
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <Trash2 className="h-4 w-4 text-destructive" />
+                                                                            </Button>
                                                                         </div>
-                                                                        <Button type="button" variant="ghost" size="icon" onClick={() => removeService(index)}>
-                                                                            <Trash2 className="h-4 w-4 text-destructive" />
-                                                                        </Button>
-                                                                    </div>
-                                                                    <div className="grid gap-4 sm:grid-cols-2">
+                                                                        <div className="grid gap-4 sm:grid-cols-2">
+                                                                            <FormField
+                                                                                control={
+                                                                                    contentForm.control
+                                                                                }
+                                                                                name={`store_services.${index}.icon`}
+                                                                                render={({
+                                                                                    field,
+                                                                                }) => (
+                                                                                    <FormItem>
+                                                                                        <FormLabel>
+                                                                                            Icon
+                                                                                        </FormLabel>
+                                                                                        <FormControl>
+                                                                                            <Input
+                                                                                                placeholder="check"
+                                                                                                {...field}
+                                                                                            />
+                                                                                        </FormControl>
+                                                                                        <FormMessage />
+                                                                                    </FormItem>
+                                                                                )}
+                                                                            />
+                                                                            <FormField
+                                                                                control={
+                                                                                    contentForm.control
+                                                                                }
+                                                                                name={`store_services.${index}.title`}
+                                                                                render={({
+                                                                                    field,
+                                                                                }) => (
+                                                                                    <FormItem>
+                                                                                        <FormLabel>
+                                                                                            Title
+                                                                                        </FormLabel>
+                                                                                        <FormControl>
+                                                                                            <Input
+                                                                                                placeholder="Quality Guarantee"
+                                                                                                {...field}
+                                                                                            />
+                                                                                        </FormControl>
+                                                                                        <FormMessage />
+                                                                                    </FormItem>
+                                                                                )}
+                                                                            />
+                                                                        </div>
                                                                         <FormField
-                                                                            control={contentForm.control}
-                                                                            name={`store_services.${index}.icon`}
-                                                                            render={({ field }) => (
+                                                                            control={
+                                                                                contentForm.control
+                                                                            }
+                                                                            name={`store_services.${index}.description`}
+                                                                            render={({
+                                                                                field,
+                                                                            }) => (
                                                                                 <FormItem>
-                                                                                    <FormLabel>Icon</FormLabel>
+                                                                                    <FormLabel>
+                                                                                        Description
+                                                                                    </FormLabel>
                                                                                     <FormControl>
-                                                                                        <Input placeholder="check" {...field} />
+                                                                                        <Textarea
+                                                                                            rows={
+                                                                                                3
+                                                                                            }
+                                                                                            placeholder="Describe this service"
+                                                                                            {...field}
+                                                                                        />
                                                                                     </FormControl>
                                                                                     <FormMessage />
                                                                                 </FormItem>
                                                                             )}
                                                                         />
-                                                                        <FormField
-                                                                            control={contentForm.control}
-                                                                            name={`store_services.${index}.title`}
-                                                                            render={({ field }) => (
-                                                                                <FormItem>
-                                                                                    <FormLabel>Title</FormLabel>
-                                                                                    <FormControl>
-                                                                                        <Input placeholder="Quality Guarantee" {...field} />
-                                                                                    </FormControl>
-                                                                                    <FormMessage />
-                                                                                </FormItem>
-                                                                            )}
-                                                                        />
-                                                                    </div>
-                                                                    <FormField
-                                                                        control={contentForm.control}
-                                                                        name={`store_services.${index}.description`}
-                                                                        render={({ field }) => (
-                                                                            <FormItem>
-                                                                                <FormLabel>Description</FormLabel>
-                                                                                <FormControl>
-                                                                                    <Textarea rows={3} placeholder="Describe this service" {...field} />
-                                                                                </FormControl>
-                                                                                <FormMessage />
-                                                                            </FormItem>
-                                                                        )}
-                                                                    />
-                                                                </motion.div>
-                                                            ))}
+                                                                    </motion.div>
+                                                                ),
+                                                            )}
                                                         </div>
 
                                                         <div className="grid gap-4 sm:grid-cols-2">
                                                             <FormField
-                                                                control={contentForm.control}
+                                                                control={
+                                                                    contentForm.control
+                                                                }
                                                                 name="cta_title"
-                                                                render={({ field }) => (
+                                                                render={({
+                                                                    field,
+                                                                }) => (
                                                                     <FormItem>
-                                                                        <FormLabel>CTA Title</FormLabel>
+                                                                        <FormLabel>
+                                                                            CTA
+                                                                            Title
+                                                                        </FormLabel>
                                                                         <FormControl>
-                                                                            <Input placeholder="Can't Visit a Store?" {...field} />
+                                                                            <Input
+                                                                                placeholder="Can't Visit a Store?"
+                                                                                {...field}
+                                                                            />
                                                                         </FormControl>
                                                                         <FormMessage />
                                                                     </FormItem>
                                                                 )}
                                                             />
                                                             <FormField
-                                                                control={contentForm.control}
+                                                                control={
+                                                                    contentForm.control
+                                                                }
                                                                 name="cta_subtitle"
-                                                                render={({ field }) => (
+                                                                render={({
+                                                                    field,
+                                                                }) => (
                                                                     <FormItem>
-                                                                        <FormLabel>CTA Subtitle</FormLabel>
+                                                                        <FormLabel>
+                                                                            CTA
+                                                                            Subtitle
+                                                                        </FormLabel>
                                                                         <FormControl>
-                                                                            <Textarea rows={3} placeholder="Shop our entire collection online..." {...field} />
+                                                                            <Textarea
+                                                                                rows={
+                                                                                    3
+                                                                                }
+                                                                                placeholder="Shop our entire collection online..."
+                                                                                {...field}
+                                                                            />
                                                                         </FormControl>
                                                                         <FormMessage />
                                                                     </FormItem>
@@ -918,9 +1317,15 @@ export default function StoresPage({ stores, content }: Props) {
                                                         </div>
 
                                                         <div className="flex justify-end">
-                                                            <Button type="submit" disabled={isSubmitting}>
-                                                                <Save className="h-4 w-4 mr-2" />
-                                                                Save Page Content
+                                                            <Button
+                                                                type="submit"
+                                                                disabled={
+                                                                    isSubmitting
+                                                                }
+                                                            >
+                                                                <Save className="mr-2 h-4 w-4" />
+                                                                Save Page
+                                                                Content
                                                             </Button>
                                                         </div>
                                                     </form>
@@ -929,7 +1334,12 @@ export default function StoresPage({ stores, content }: Props) {
                                         </Card>
                                     </TabsContent>
 
-                                    <Input placeholder="Add custom feature" value={customFeature} onChange={(e) => setCustomFeature(e.target.value)}
+                                    <Input
+                                        placeholder="Add custom feature"
+                                        value={customFeature}
+                                        onChange={(e) =>
+                                            setCustomFeature(e.target.value)
+                                        }
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter') {
                                                 e.preventDefault();
@@ -937,20 +1347,37 @@ export default function StoresPage({ stores, content }: Props) {
                                             }
                                         }}
                                     />
-                                    <Button type="button" variant="outline" onClick={addCustomFeature}>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={addCustomFeature}
+                                    >
                                         Add
                                     </Button>
                                 </div>
-                                {selectedFeatures.filter(f => !commonFeatures.includes(f)).length > 0 && (
-                                    <div className="flex flex-wrap gap-2 mt-2">
+                                {selectedFeatures.filter(
+                                    (f) => !commonFeatures.includes(f),
+                                ).length > 0 && (
+                                    <div className="mt-2 flex flex-wrap gap-2">
                                         {selectedFeatures
-                                            .filter(f => !commonFeatures.includes(f))
+                                            .filter(
+                                                (f) =>
+                                                    !commonFeatures.includes(f),
+                                            )
                                             .map((feature) => (
-                                                <Badge key={feature} variant="default" className="gap-1">
+                                                <Badge
+                                                    key={feature}
+                                                    variant="default"
+                                                    className="gap-1"
+                                                >
                                                     {feature}
                                                     <X
                                                         className="h-3 w-3 cursor-pointer"
-                                                        onClick={() => toggleFeature(feature)}
+                                                        onClick={() =>
+                                                            toggleFeature(
+                                                                feature,
+                                                            )
+                                                        }
                                                     />
                                                 </Badge>
                                             ))}
@@ -972,7 +1399,13 @@ export default function StoresPage({ stores, content }: Props) {
                                                     min={0}
                                                     max={5}
                                                     {...field}
-                                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                            parseFloat(
+                                                                e.target.value,
+                                                            ) || 0,
+                                                        )
+                                                    }
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -990,7 +1423,13 @@ export default function StoresPage({ stores, content }: Props) {
                                                     type="number"
                                                     min={0}
                                                     {...field}
-                                                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                            parseInt(
+                                                                e.target.value,
+                                                            ) || 0,
+                                                        )
+                                                    }
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -1006,15 +1445,20 @@ export default function StoresPage({ stores, content }: Props) {
                                     render={({ field }) => (
                                         <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
                                             <div className="space-y-0.5">
-                                                <FormLabel>Currently Open</FormLabel>
+                                                <FormLabel>
+                                                    Currently Open
+                                                </FormLabel>
                                                 <FormDescription>
-                                                    Is the store currently open for business?
+                                                    Is the store currently open
+                                                    for business?
                                                 </FormDescription>
                                             </div>
                                             <FormControl>
                                                 <Switch
                                                     checked={field.value}
-                                                    onCheckedChange={field.onChange}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
                                                 />
                                             </FormControl>
                                         </FormItem>
@@ -1028,13 +1472,16 @@ export default function StoresPage({ stores, content }: Props) {
                                             <div className="space-y-0.5">
                                                 <FormLabel>Active</FormLabel>
                                                 <FormDescription>
-                                                    Show this store on the website?
+                                                    Show this store on the
+                                                    website?
                                                 </FormDescription>
                                             </div>
                                             <FormControl>
                                                 <Switch
                                                     checked={field.value}
-                                                    onCheckedChange={field.onChange}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
                                                 />
                                             </FormControl>
                                         </FormItem>
@@ -1043,11 +1490,19 @@ export default function StoresPage({ stores, content }: Props) {
                             </div>
 
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : selectedStore ? 'Update Store' : 'Add Store'}
+                                    {isSubmitting
+                                        ? 'Saving...'
+                                        : selectedStore
+                                          ? 'Update Store'
+                                          : 'Add Store'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -1056,12 +1511,17 @@ export default function StoresPage({ stores, content }: Props) {
             </Dialog>
 
             {/* Delete Confirmation Dialog */}
-            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <AlertDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Store</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete "{selectedStore?.name}"? This action cannot be undone.
+                            Are you sure you want to delete "
+                            {selectedStore?.name}"? This action cannot be
+                            undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

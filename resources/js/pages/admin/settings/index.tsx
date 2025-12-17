@@ -1,28 +1,31 @@
-import { useState, useRef } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router } from '@inertiajs/react';
 import {
-    Settings,
-    Store,
-    Mail,
-    Phone,
-    MapPin,
+    DollarSign,
     Facebook,
     Instagram,
-    Twitter,
     Linkedin,
-    DollarSign,
+    Mail,
+    MapPin,
+    Phone,
+    Settings,
+    Store,
     Truck,
-    Palette,
+    Twitter,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Form,
     FormControl,
@@ -32,7 +35,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -40,9 +43,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -132,22 +137,31 @@ export default function SettingsIndex({ settings }: Props) {
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
     const [faviconPreview, setFaviconPreview] = useState<string | null>(null);
 
-    const resolveImageUrl = (path: string | null | undefined, fallback: string) => {
+    const resolveImageUrl = (
+        path: string | null | undefined,
+        fallback: string,
+    ) => {
         if (!path) return fallback;
         if (/^https?:\/\//i.test(path)) return path;
         if (path.startsWith('/')) return path;
         return `/storage/${path}`;
     };
 
-    const logoDisplay = logoPreview ?? resolveImageUrl(settings.site_logo, '/logo.png');
-    const faviconDisplay = faviconPreview ?? resolveImageUrl(settings.site_favicon, '/favicon-32x32.png');
+    const logoDisplay =
+        logoPreview ?? resolveImageUrl(settings.site_logo, '/logo.png');
+    const faviconDisplay =
+        faviconPreview ??
+        resolveImageUrl(settings.site_favicon, '/favicon-32x32.png');
 
     const generalForm = useForm({
         resolver: zodResolver(generalSchema),
         defaultValues: {
             site_name: settings.site_name || 'Luxe E-Club',
-            site_tagline: settings.site_tagline || 'Premium E-Club for Modern Living',
-            site_description: settings.site_description || 'Discover our curated collection of high-quality e-club for your home. From living room to bedroom, we have everything you need.',
+            site_tagline:
+                settings.site_tagline || 'Premium E-Club for Modern Living',
+            site_description:
+                settings.site_description ||
+                'Discover our curated collection of high-quality e-club for your home. From living room to bedroom, we have everything you need.',
         },
     });
 
@@ -156,19 +170,28 @@ export default function SettingsIndex({ settings }: Props) {
         defaultValues: {
             contact_email: settings.contact_email || 'info@luxee-club.com',
             contact_phone: settings.contact_phone || '+1 (555) 123-4567',
-            contact_address: settings.contact_address || '123 Design Avenue, Creative District, NY 10001',
-            contact_hours: settings.contact_hours || 'Mon-Fri: 9:00 AM - 6:00 PM',
+            contact_address:
+                settings.contact_address ||
+                '123 Design Avenue, Creative District, NY 10001',
+            contact_hours:
+                settings.contact_hours || 'Mon-Fri: 9:00 AM - 6:00 PM',
         },
     });
 
     const socialForm = useForm({
         resolver: zodResolver(socialSchema),
         defaultValues: {
-            social_facebook: settings.social_facebook || 'https://facebook.com/luxee-club',
-            social_instagram: settings.social_instagram || 'https://instagram.com/luxee-club',
-            social_twitter: settings.social_twitter || 'https://twitter.com/luxee-club',
-            social_linkedin: settings.social_linkedin || 'https://linkedin.com/company/luxee-club',
-            social_youtube: settings.social_youtube || 'https://youtube.com/c/luxee-club',
+            social_facebook:
+                settings.social_facebook || 'https://facebook.com/luxee-club',
+            social_instagram:
+                settings.social_instagram || 'https://instagram.com/luxee-club',
+            social_twitter:
+                settings.social_twitter || 'https://twitter.com/luxee-club',
+            social_linkedin:
+                settings.social_linkedin ||
+                'https://linkedin.com/company/luxee-club',
+            social_youtube:
+                settings.social_youtube || 'https://youtube.com/c/luxee-club',
         },
     });
 
@@ -198,7 +221,10 @@ export default function SettingsIndex({ settings }: Props) {
         },
     });
 
-    const handleSaveSettings = (section: string, values: Record<string, unknown>) => {
+    const handleSaveSettings = (
+        section: string,
+        values: Record<string, unknown>,
+    ) => {
         setIsSubmitting(true);
 
         const formData = new FormData();
@@ -238,7 +264,9 @@ export default function SettingsIndex({ settings }: Props) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
                 >
-                    <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        Settings
+                    </h1>
                     <p className="text-muted-foreground">
                         Manage your store settings and configuration.
                     </p>
@@ -249,15 +277,23 @@ export default function SettingsIndex({ settings }: Props) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.1 }}
                 >
-                    <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+                    <Tabs
+                        value={activeTab}
+                        onValueChange={setActiveTab}
+                        className="space-y-6"
+                    >
                         <TabsList className="grid w-full grid-cols-5">
                             <TabsTrigger value="general" className="gap-2">
                                 <Store className="h-4 w-4" />
-                                <span className="hidden sm:inline">General</span>
+                                <span className="hidden sm:inline">
+                                    General
+                                </span>
                             </TabsTrigger>
                             <TabsTrigger value="contact" className="gap-2">
                                 <Mail className="h-4 w-4" />
-                                <span className="hidden sm:inline">Contact</span>
+                                <span className="hidden sm:inline">
+                                    Contact
+                                </span>
                             </TabsTrigger>
                             <TabsTrigger value="social" className="gap-2">
                                 <Facebook className="h-4 w-4" />
@@ -269,7 +305,9 @@ export default function SettingsIndex({ settings }: Props) {
                             </TabsTrigger>
                             <TabsTrigger value="features" className="gap-2">
                                 <Settings className="h-4 w-4" />
-                                <span className="hidden sm:inline">Features</span>
+                                <span className="hidden sm:inline">
+                                    Features
+                                </span>
                             </TabsTrigger>
                         </TabsList>
 
@@ -279,23 +317,41 @@ export default function SettingsIndex({ settings }: Props) {
                                 <CardHeader>
                                     <CardTitle>General Settings</CardTitle>
                                     <CardDescription>
-                                        Configure your store's basic information and branding.
+                                        Configure your store's basic information
+                                        and branding.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
                                     <Form {...generalForm}>
-                                        <form onSubmit={generalForm.handleSubmit((values) => handleSaveSettings('general', values))} className="space-y-6">
+                                        <form
+                                            onSubmit={generalForm.handleSubmit(
+                                                (values) =>
+                                                    handleSaveSettings(
+                                                        'general',
+                                                        values,
+                                                    ),
+                                            )}
+                                            className="space-y-6"
+                                        >
                                             <FormField
                                                 control={generalForm.control}
                                                 name="site_name"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Site Name</FormLabel>
+                                                        <FormLabel>
+                                                            Site Name
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="My E-Club Store" {...field} />
+                                                            <Input
+                                                                placeholder="My E-Club Store"
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormDescription>
-                                                            The name of your store displayed in the header and title.
+                                                            The name of your
+                                                            store displayed in
+                                                            the header and
+                                                            title.
                                                         </FormDescription>
                                                         <FormMessage />
                                                     </FormItem>
@@ -306,12 +362,19 @@ export default function SettingsIndex({ settings }: Props) {
                                                 name="site_tagline"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Tagline</FormLabel>
+                                                        <FormLabel>
+                                                            Tagline
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Premium E-Club for Modern Living" {...field} />
+                                                            <Input
+                                                                placeholder="Premium E-Club for Modern Living"
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormDescription>
-                                                            A short description that appears below your logo.
+                                                            A short description
+                                                            that appears below
+                                                            your logo.
                                                         </FormDescription>
                                                         <FormMessage />
                                                     </FormItem>
@@ -322,7 +385,9 @@ export default function SettingsIndex({ settings }: Props) {
                                                 name="site_description"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Site Description</FormLabel>
+                                                        <FormLabel>
+                                                            Site Description
+                                                        </FormLabel>
                                                         <FormControl>
                                                             <Textarea
                                                                 placeholder="Describe your store for search engines..."
@@ -330,7 +395,8 @@ export default function SettingsIndex({ settings }: Props) {
                                                             />
                                                         </FormControl>
                                                         <FormDescription>
-                                                            Used for SEO meta description.
+                                                            Used for SEO meta
+                                                            description.
                                                         </FormDescription>
                                                         <FormMessage />
                                                     </FormItem>
@@ -338,38 +404,75 @@ export default function SettingsIndex({ settings }: Props) {
                                             />
                                             <div className="grid gap-4 sm:grid-cols-2">
                                                 <FormField
-                                                    control={generalForm.control}
+                                                    control={
+                                                        generalForm.control
+                                                    }
                                                     name="site_logo"
-                                                    render={({ field: { onChange, value, ...field } }) => (
+                                                    render={({
+                                                        field: {
+                                                            onChange,
+                                                            value,
+                                                            ...field
+                                                        },
+                                                    }) => (
                                                         <FormItem>
-                                                            <FormLabel>Logo</FormLabel>
+                                                            <FormLabel>
+                                                                Logo
+                                                            </FormLabel>
                                                             <FormControl>
                                                                 <Input
                                                                     type="file"
                                                                     accept="image/*"
-                                                                    onChange={(e) => {
-                                                                        const file = e.target.files?.[0];
-                                                                        onChange(file);
-                                                                        if (file) {
-                                                                            const reader = new FileReader();
-                                                                            reader.onload = (e) => {
-                                                                                setLogoPreview(e.target?.result as string);
-                                                                            };
-                                                                            reader.readAsDataURL(file);
+                                                                    onChange={(
+                                                                        e,
+                                                                    ) => {
+                                                                        const file =
+                                                                            e
+                                                                                .target
+                                                                                .files?.[0];
+                                                                        onChange(
+                                                                            file,
+                                                                        );
+                                                                        if (
+                                                                            file
+                                                                        ) {
+                                                                            const reader =
+                                                                                new FileReader();
+                                                                            reader.onload =
+                                                                                (
+                                                                                    e,
+                                                                                ) => {
+                                                                                    setLogoPreview(
+                                                                                        e
+                                                                                            .target
+                                                                                            ?.result as string,
+                                                                                    );
+                                                                                };
+                                                                            reader.readAsDataURL(
+                                                                                file,
+                                                                            );
                                                                         } else {
-                                                                            setLogoPreview(null);
+                                                                            setLogoPreview(
+                                                                                null,
+                                                                            );
                                                                         }
                                                                     }}
                                                                 />
                                                             </FormControl>
                                                             {logoDisplay && (
-                                                                <div className="mt-2 p-2 bg-muted/50 rounded-lg">
+                                                                <div className="mt-2 rounded-lg bg-muted/50 p-2">
                                                                     <img
-                                                                        src={logoDisplay}
+                                                                        src={
+                                                                            logoDisplay
+                                                                        }
                                                                         alt="Current logo"
                                                                         className="h-12 object-contain"
                                                                     />
-                                                                    {logoPreview && <span className="text-xs text-muted-foreground ml-2">(New)</span>}
+                                                                    {logoPreview && (
+                                                                        <span className="ml-2 text-xs text-muted-foreground">
+                                                                            (New)
+                                                                        </span>
+                                                                    )}
                                                                 </div>
                                                             )}
                                                             <FormMessage />
@@ -377,38 +480,75 @@ export default function SettingsIndex({ settings }: Props) {
                                                     )}
                                                 />
                                                 <FormField
-                                                    control={generalForm.control}
+                                                    control={
+                                                        generalForm.control
+                                                    }
                                                     name="site_favicon"
-                                                    render={({ field: { onChange, value, ...field } }) => (
+                                                    render={({
+                                                        field: {
+                                                            onChange,
+                                                            value,
+                                                            ...field
+                                                        },
+                                                    }) => (
                                                         <FormItem>
-                                                            <FormLabel>Favicon</FormLabel>
+                                                            <FormLabel>
+                                                                Favicon
+                                                            </FormLabel>
                                                             <FormControl>
                                                                 <Input
                                                                     type="file"
                                                                     accept="image/*"
-                                                                    onChange={(e) => {
-                                                                        const file = e.target.files?.[0];
-                                                                        onChange(file);
-                                                                        if (file) {
-                                                                            const reader = new FileReader();
-                                                                            reader.onload = (e) => {
-                                                                                setFaviconPreview(e.target?.result as string);
-                                                                            };
-                                                                            reader.readAsDataURL(file);
+                                                                    onChange={(
+                                                                        e,
+                                                                    ) => {
+                                                                        const file =
+                                                                            e
+                                                                                .target
+                                                                                .files?.[0];
+                                                                        onChange(
+                                                                            file,
+                                                                        );
+                                                                        if (
+                                                                            file
+                                                                        ) {
+                                                                            const reader =
+                                                                                new FileReader();
+                                                                            reader.onload =
+                                                                                (
+                                                                                    e,
+                                                                                ) => {
+                                                                                    setFaviconPreview(
+                                                                                        e
+                                                                                            .target
+                                                                                            ?.result as string,
+                                                                                    );
+                                                                                };
+                                                                            reader.readAsDataURL(
+                                                                                file,
+                                                                            );
                                                                         } else {
-                                                                            setFaviconPreview(null);
+                                                                            setFaviconPreview(
+                                                                                null,
+                                                                            );
                                                                         }
                                                                     }}
                                                                 />
                                                             </FormControl>
                                                             {faviconDisplay && (
-                                                                <div className="mt-2 p-2 bg-muted/50 rounded-lg">
+                                                                <div className="mt-2 rounded-lg bg-muted/50 p-2">
                                                                     <img
-                                                                        src={faviconDisplay}
+                                                                        src={
+                                                                            faviconDisplay
+                                                                        }
                                                                         alt="Current favicon"
                                                                         className="h-8 object-contain"
                                                                     />
-                                                                    {faviconPreview && <span className="text-xs text-muted-foreground ml-2">(New)</span>}
+                                                                    {faviconPreview && (
+                                                                        <span className="ml-2 text-xs text-muted-foreground">
+                                                                            (New)
+                                                                        </span>
+                                                                    )}
                                                                 </div>
                                                             )}
                                                             <FormMessage />
@@ -417,8 +557,13 @@ export default function SettingsIndex({ settings }: Props) {
                                                 />
                                             </div>
                                             <div className="flex justify-end">
-                                                <Button type="submit" disabled={isSubmitting}>
-                                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                                <Button
+                                                    type="submit"
+                                                    disabled={isSubmitting}
+                                                >
+                                                    {isSubmitting
+                                                        ? 'Saving...'
+                                                        : 'Save Changes'}
                                                 </Button>
                                             </div>
                                         </form>
@@ -433,15 +578,27 @@ export default function SettingsIndex({ settings }: Props) {
                                 <CardHeader>
                                     <CardTitle>Contact Information</CardTitle>
                                     <CardDescription>
-                                        Your store's contact details shown to customers.
+                                        Your store's contact details shown to
+                                        customers.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
                                     <Form {...contactForm}>
-                                        <form onSubmit={contactForm.handleSubmit((values) => handleSaveSettings('contact', values))} className="space-y-6">
+                                        <form
+                                            onSubmit={contactForm.handleSubmit(
+                                                (values) =>
+                                                    handleSaveSettings(
+                                                        'contact',
+                                                        values,
+                                                    ),
+                                            )}
+                                            className="space-y-6"
+                                        >
                                             <div className="grid gap-4 sm:grid-cols-2">
                                                 <FormField
-                                                    control={contactForm.control}
+                                                    control={
+                                                        contactForm.control
+                                                    }
                                                     name="contact_email"
                                                     render={({ field }) => (
                                                         <FormItem>
@@ -450,14 +607,20 @@ export default function SettingsIndex({ settings }: Props) {
                                                                 Email Address
                                                             </FormLabel>
                                                             <FormControl>
-                                                                <Input type="email" placeholder="contact@store.com" {...field} />
+                                                                <Input
+                                                                    type="email"
+                                                                    placeholder="contact@store.com"
+                                                                    {...field}
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
                                                     )}
                                                 />
                                                 <FormField
-                                                    control={contactForm.control}
+                                                    control={
+                                                        contactForm.control
+                                                    }
                                                     name="contact_phone"
                                                     render={({ field }) => (
                                                         <FormItem>
@@ -466,7 +629,10 @@ export default function SettingsIndex({ settings }: Props) {
                                                                 Phone Number
                                                             </FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="+1 (555) 123-4567" {...field} />
+                                                                <Input
+                                                                    placeholder="+1 (555) 123-4567"
+                                                                    {...field}
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -497,17 +663,27 @@ export default function SettingsIndex({ settings }: Props) {
                                                 name="contact_hours"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Business Hours</FormLabel>
+                                                        <FormLabel>
+                                                            Business Hours
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Mon-Fri: 9AM-6PM" {...field} />
+                                                            <Input
+                                                                placeholder="Mon-Fri: 9AM-6PM"
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
                                                 )}
                                             />
                                             <div className="flex justify-end">
-                                                <Button type="submit" disabled={isSubmitting}>
-                                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                                <Button
+                                                    type="submit"
+                                                    disabled={isSubmitting}
+                                                >
+                                                    {isSubmitting
+                                                        ? 'Saving...'
+                                                        : 'Save Changes'}
                                                 </Button>
                                             </div>
                                         </form>
@@ -527,7 +703,16 @@ export default function SettingsIndex({ settings }: Props) {
                                 </CardHeader>
                                 <CardContent>
                                     <Form {...socialForm}>
-                                        <form onSubmit={socialForm.handleSubmit((values) => handleSaveSettings('social', values))} className="space-y-6">
+                                        <form
+                                            onSubmit={socialForm.handleSubmit(
+                                                (values) =>
+                                                    handleSaveSettings(
+                                                        'social',
+                                                        values,
+                                                    ),
+                                            )}
+                                            className="space-y-6"
+                                        >
                                             <div className="grid gap-4 sm:grid-cols-2">
                                                 <FormField
                                                     control={socialForm.control}
@@ -539,7 +724,10 @@ export default function SettingsIndex({ settings }: Props) {
                                                                 Facebook
                                                             </FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="https://facebook.com/..." {...field} />
+                                                                <Input
+                                                                    placeholder="https://facebook.com/..."
+                                                                    {...field}
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -555,7 +743,10 @@ export default function SettingsIndex({ settings }: Props) {
                                                                 Instagram
                                                             </FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="https://instagram.com/..." {...field} />
+                                                                <Input
+                                                                    placeholder="https://instagram.com/..."
+                                                                    {...field}
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -571,7 +762,10 @@ export default function SettingsIndex({ settings }: Props) {
                                                                 Twitter / X
                                                             </FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="https://twitter.com/..." {...field} />
+                                                                <Input
+                                                                    placeholder="https://twitter.com/..."
+                                                                    {...field}
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -587,7 +781,10 @@ export default function SettingsIndex({ settings }: Props) {
                                                                 LinkedIn
                                                             </FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="https://linkedin.com/..." {...field} />
+                                                                <Input
+                                                                    placeholder="https://linkedin.com/..."
+                                                                    {...field}
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -595,8 +792,13 @@ export default function SettingsIndex({ settings }: Props) {
                                                 />
                                             </div>
                                             <div className="flex justify-end">
-                                                <Button type="submit" disabled={isSubmitting}>
-                                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                                <Button
+                                                    type="submit"
+                                                    disabled={isSubmitting}
+                                                >
+                                                    {isSubmitting
+                                                        ? 'Saving...'
+                                                        : 'Save Changes'}
                                                 </Button>
                                             </div>
                                         </form>
@@ -611,12 +813,22 @@ export default function SettingsIndex({ settings }: Props) {
                                 <CardHeader>
                                     <CardTitle>Store Configuration</CardTitle>
                                     <CardDescription>
-                                        Configure currency, tax, and shipping settings.
+                                        Configure currency, tax, and shipping
+                                        settings.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
                                     <Form {...storeForm}>
-                                        <form onSubmit={storeForm.handleSubmit((values) => handleSaveSettings('store', values))} className="space-y-6">
+                                        <form
+                                            onSubmit={storeForm.handleSubmit(
+                                                (values) =>
+                                                    handleSaveSettings(
+                                                        'store',
+                                                        values,
+                                                    ),
+                                            )}
+                                            className="space-y-6"
+                                        >
                                             <div className="grid gap-4 sm:grid-cols-2">
                                                 <FormField
                                                     control={storeForm.control}
@@ -627,18 +839,43 @@ export default function SettingsIndex({ settings }: Props) {
                                                                 <DollarSign className="h-4 w-4" />
                                                                 Currency Code
                                                             </FormLabel>
-                                                            <Select value={field.value} onValueChange={field.onChange}>
+                                                            <Select
+                                                                value={
+                                                                    field.value
+                                                                }
+                                                                onValueChange={
+                                                                    field.onChange
+                                                                }
+                                                            >
                                                                 <FormControl>
                                                                     <SelectTrigger>
                                                                         <SelectValue />
                                                                     </SelectTrigger>
                                                                 </FormControl>
                                                                 <SelectContent>
-                                                                    <SelectItem value="USD">USD - US Dollar</SelectItem>
-                                                                    <SelectItem value="EUR">EUR - Euro</SelectItem>
-                                                                    <SelectItem value="GBP">GBP - British Pound</SelectItem>
-                                                                    <SelectItem value="CAD">CAD - Canadian Dollar</SelectItem>
-                                                                    <SelectItem value="AUD">AUD - Australian Dollar</SelectItem>
+                                                                    <SelectItem value="USD">
+                                                                        USD - US
+                                                                        Dollar
+                                                                    </SelectItem>
+                                                                    <SelectItem value="EUR">
+                                                                        EUR -
+                                                                        Euro
+                                                                    </SelectItem>
+                                                                    <SelectItem value="GBP">
+                                                                        GBP -
+                                                                        British
+                                                                        Pound
+                                                                    </SelectItem>
+                                                                    <SelectItem value="CAD">
+                                                                        CAD -
+                                                                        Canadian
+                                                                        Dollar
+                                                                    </SelectItem>
+                                                                    <SelectItem value="AUD">
+                                                                        AUD -
+                                                                        Australian
+                                                                        Dollar
+                                                                    </SelectItem>
                                                                 </SelectContent>
                                                             </Select>
                                                             <FormMessage />
@@ -650,9 +887,14 @@ export default function SettingsIndex({ settings }: Props) {
                                                     name="currency_symbol"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>Currency Symbol</FormLabel>
+                                                            <FormLabel>
+                                                                Currency Symbol
+                                                            </FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="$" {...field} />
+                                                                <Input
+                                                                    placeholder="$"
+                                                                    {...field}
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -667,12 +909,23 @@ export default function SettingsIndex({ settings }: Props) {
                                                 name="tax_rate"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Tax Rate (%)</FormLabel>
+                                                        <FormLabel>
+                                                            Tax Rate (%)
+                                                        </FormLabel>
                                                         <FormControl>
-                                                            <Input type="number" min="0" max="100" step="0.01" placeholder="0.00" {...field} />
+                                                            <Input
+                                                                type="number"
+                                                                min="0"
+                                                                max="100"
+                                                                step="0.01"
+                                                                placeholder="0.00"
+                                                                {...field}
+                                                            />
                                                         </FormControl>
                                                         <FormDescription>
-                                                            Applied to all orders (e.g., 8.25 for 8.25%)
+                                                            Applied to all
+                                                            orders (e.g., 8.25
+                                                            for 8.25%)
                                                         </FormDescription>
                                                         <FormMessage />
                                                     </FormItem>
@@ -689,10 +942,17 @@ export default function SettingsIndex({ settings }: Props) {
                                                         <FormItem>
                                                             <FormLabel className="flex items-center gap-2">
                                                                 <Truck className="h-4 w-4" />
-                                                                Standard Shipping Cost
+                                                                Standard
+                                                                Shipping Cost
                                                             </FormLabel>
                                                             <FormControl>
-                                                                <Input type="number" min="0" step="0.01" placeholder="0.00" {...field} />
+                                                                <Input
+                                                                    type="number"
+                                                                    min="0"
+                                                                    step="0.01"
+                                                                    placeholder="0.00"
+                                                                    {...field}
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -703,12 +963,24 @@ export default function SettingsIndex({ settings }: Props) {
                                                     name="free_shipping_threshold"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>Free Shipping Threshold</FormLabel>
+                                                            <FormLabel>
+                                                                Free Shipping
+                                                                Threshold
+                                                            </FormLabel>
                                                             <FormControl>
-                                                                <Input type="number" min="0" step="0.01" placeholder="0.00" {...field} />
+                                                                <Input
+                                                                    type="number"
+                                                                    min="0"
+                                                                    step="0.01"
+                                                                    placeholder="0.00"
+                                                                    {...field}
+                                                                />
                                                             </FormControl>
                                                             <FormDescription>
-                                                                Minimum order for free shipping (0 to disable)
+                                                                Minimum order
+                                                                for free
+                                                                shipping (0 to
+                                                                disable)
                                                             </FormDescription>
                                                             <FormMessage />
                                                         </FormItem>
@@ -716,8 +988,13 @@ export default function SettingsIndex({ settings }: Props) {
                                                 />
                                             </div>
                                             <div className="flex justify-end">
-                                                <Button type="submit" disabled={isSubmitting}>
-                                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                                <Button
+                                                    type="submit"
+                                                    disabled={isSubmitting}
+                                                >
+                                                    {isSubmitting
+                                                        ? 'Saving...'
+                                                        : 'Save Changes'}
                                                 </Button>
                                             </div>
                                         </form>
@@ -732,27 +1009,47 @@ export default function SettingsIndex({ settings }: Props) {
                                 <CardHeader>
                                     <CardTitle>Feature Toggles</CardTitle>
                                     <CardDescription>
-                                        Enable or disable various store features.
+                                        Enable or disable various store
+                                        features.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
                                     <Form {...featuresForm}>
-                                        <form onSubmit={featuresForm.handleSubmit((values) => handleSaveSettings('features', values))} className="space-y-6">
+                                        <form
+                                            onSubmit={featuresForm.handleSubmit(
+                                                (values) =>
+                                                    handleSaveSettings(
+                                                        'features',
+                                                        values,
+                                                    ),
+                                            )}
+                                            className="space-y-6"
+                                        >
                                             <FormField
                                                 control={featuresForm.control}
                                                 name="show_newsletter"
                                                 render={({ field }) => (
                                                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                                                         <div className="space-y-0.5">
-                                                            <FormLabel className="text-base">Newsletter Signup</FormLabel>
+                                                            <FormLabel className="text-base">
+                                                                Newsletter
+                                                                Signup
+                                                            </FormLabel>
                                                             <FormDescription>
-                                                                Show newsletter subscription form in the footer.
+                                                                Show newsletter
+                                                                subscription
+                                                                form in the
+                                                                footer.
                                                             </FormDescription>
                                                         </div>
                                                         <FormControl>
                                                             <Switch
-                                                                checked={field.value}
-                                                                onCheckedChange={field.onChange}
+                                                                checked={
+                                                                    field.value
+                                                                }
+                                                                onCheckedChange={
+                                                                    field.onChange
+                                                                }
                                                             />
                                                         </FormControl>
                                                     </FormItem>
@@ -764,15 +1061,23 @@ export default function SettingsIndex({ settings }: Props) {
                                                 render={({ field }) => (
                                                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                                                         <div className="space-y-0.5">
-                                                            <FormLabel className="text-base">Product Reviews</FormLabel>
+                                                            <FormLabel className="text-base">
+                                                                Product Reviews
+                                                            </FormLabel>
                                                             <FormDescription>
-                                                                Allow customers to leave reviews on products.
+                                                                Allow customers
+                                                                to leave reviews
+                                                                on products.
                                                             </FormDescription>
                                                         </div>
                                                         <FormControl>
                                                             <Switch
-                                                                checked={field.value}
-                                                                onCheckedChange={field.onChange}
+                                                                checked={
+                                                                    field.value
+                                                                }
+                                                                onCheckedChange={
+                                                                    field.onChange
+                                                                }
                                                             />
                                                         </FormControl>
                                                     </FormItem>
@@ -782,27 +1087,40 @@ export default function SettingsIndex({ settings }: Props) {
                                                 control={featuresForm.control}
                                                 name="maintenance_mode"
                                                 render={({ field }) => (
-                                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 border-destructive/50">
+                                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border border-destructive/50 p-4">
                                                         <div className="space-y-0.5">
                                                             <FormLabel className="text-base text-destructive">
                                                                 Maintenance Mode
                                                             </FormLabel>
                                                             <FormDescription>
-                                                                Enable to show maintenance page to visitors. Only admins can access the site.
+                                                                Enable to show
+                                                                maintenance page
+                                                                to visitors.
+                                                                Only admins can
+                                                                access the site.
                                                             </FormDescription>
                                                         </div>
                                                         <FormControl>
                                                             <Switch
-                                                                checked={field.value}
-                                                                onCheckedChange={field.onChange}
+                                                                checked={
+                                                                    field.value
+                                                                }
+                                                                onCheckedChange={
+                                                                    field.onChange
+                                                                }
                                                             />
                                                         </FormControl>
                                                     </FormItem>
                                                 )}
                                             />
                                             <div className="flex justify-end">
-                                                <Button type="submit" disabled={isSubmitting}>
-                                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                                <Button
+                                                    type="submit"
+                                                    disabled={isSubmitting}
+                                                >
+                                                    {isSubmitting
+                                                        ? 'Saving...'
+                                                        : 'Save Changes'}
                                                 </Button>
                                             </div>
                                         </form>

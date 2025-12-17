@@ -1,27 +1,32 @@
-import { useState } from 'react';
-import { Head, router, Link } from '@inertiajs/react';
-import { motion } from 'motion/react';
+import { Head, Link, router } from '@inertiajs/react';
 import {
     ArrowLeft,
-    Package,
-    Truck,
     Check,
     Clock,
-    X,
     CreditCard,
-    User,
-    MapPin,
-    Phone,
-    Mail,
-    Receipt,
     History,
+    Mail,
+    MapPin,
+    Package,
+    Phone,
+    Receipt,
+    Truck,
+    User,
+    X,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Select,
     SelectContent,
@@ -38,6 +43,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { getImageUrl } from '@/lib/utils';
 
 // Types
@@ -82,18 +88,51 @@ interface Props {
 
 // Status configurations
 const orderStatuses = [
-    { value: 'pending', label: 'Pending', icon: Clock, color: 'bg-yellow-100 text-yellow-800' },
-    { value: 'processing', label: 'Processing', icon: Package, color: 'bg-blue-100 text-blue-800' },
-    { value: 'shipped', label: 'Shipped', icon: Truck, color: 'bg-purple-100 text-purple-800' },
-    { value: 'delivered', label: 'Delivered', icon: Check, color: 'bg-green-100 text-green-800' },
-    { value: 'cancelled', label: 'Cancelled', icon: X, color: 'bg-red-100 text-red-800' },
+    {
+        value: 'pending',
+        label: 'Pending',
+        icon: Clock,
+        color: 'bg-yellow-100 text-yellow-800',
+    },
+    {
+        value: 'processing',
+        label: 'Processing',
+        icon: Package,
+        color: 'bg-blue-100 text-blue-800',
+    },
+    {
+        value: 'shipped',
+        label: 'Shipped',
+        icon: Truck,
+        color: 'bg-purple-100 text-purple-800',
+    },
+    {
+        value: 'delivered',
+        label: 'Delivered',
+        icon: Check,
+        color: 'bg-green-100 text-green-800',
+    },
+    {
+        value: 'cancelled',
+        label: 'Cancelled',
+        icon: X,
+        color: 'bg-red-100 text-red-800',
+    },
 ];
 
 const paymentStatuses = [
-    { value: 'pending', label: 'Pending', color: 'bg-yellow-100 text-yellow-800' },
+    {
+        value: 'pending',
+        label: 'Pending',
+        color: 'bg-yellow-100 text-yellow-800',
+    },
     { value: 'paid', label: 'Paid', color: 'bg-green-100 text-green-800' },
     { value: 'failed', label: 'Failed', color: 'bg-red-100 text-red-800' },
-    { value: 'refunded', label: 'Refunded', color: 'bg-gray-100 text-gray-800' },
+    {
+        value: 'refunded',
+        label: 'Refunded',
+        color: 'bg-gray-100 text-gray-800',
+    },
 ];
 
 export default function OrderShow({ order }: Props) {
@@ -118,11 +157,16 @@ export default function OrderShow({ order }: Props) {
     };
 
     const getStatusConfig = (status: string) => {
-        return orderStatuses.find(s => s.value === status) || orderStatuses[0];
+        return (
+            orderStatuses.find((s) => s.value === status) || orderStatuses[0]
+        );
     };
 
     const getPaymentStatusConfig = (status: string) => {
-        return paymentStatuses.find(s => s.value === status) || paymentStatuses[0];
+        return (
+            paymentStatuses.find((s) => s.value === status) ||
+            paymentStatuses[0]
+        );
     };
 
     const handleStatusChange = async (newStatus: string) => {
@@ -142,7 +186,7 @@ export default function OrderShow({ order }: Props) {
                     onFinish: () => {
                         setIsUpdating(false);
                     },
-                }
+                },
             );
         } catch {
             toast.error('An error occurred');
@@ -167,7 +211,7 @@ export default function OrderShow({ order }: Props) {
                     onFinish: () => {
                         setIsUpdating(false);
                     },
-                }
+                },
             );
         } catch {
             toast.error('An error occurred');
@@ -199,7 +243,9 @@ export default function OrderShow({ order }: Props) {
                                 </Link>
                             </Button>
                         </div>
-                        <h1 className="text-3xl font-bold tracking-tight">Order #{order.order_number}</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Order #{order.order_number}
+                        </h1>
                         <p className="text-muted-foreground">
                             Placed on {formatDate(order.created_at)}
                         </p>
@@ -217,7 +263,7 @@ export default function OrderShow({ order }: Props) {
 
                 <div className="grid gap-6 lg:grid-cols-3">
                     {/* Main Content */}
-                    <div className="lg:col-span-2 space-y-6">
+                    <div className="space-y-6 lg:col-span-2">
                         {/* Order Items */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -231,7 +277,9 @@ export default function OrderShow({ order }: Props) {
                                         Order Items
                                     </CardTitle>
                                     <CardDescription>
-                                        {order.items.length} item{order.items.length !== 1 ? 's' : ''} in this order
+                                        {order.items.length} item
+                                        {order.items.length !== 1 ? 's' : ''} in
+                                        this order
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
@@ -239,15 +287,27 @@ export default function OrderShow({ order }: Props) {
                                         <TableHeader>
                                             <TableRow>
                                                 <TableHead>Product</TableHead>
-                                                <TableHead className="text-center">Quantity</TableHead>
-                                                <TableHead className="text-right">Unit Price</TableHead>
-                                                <TableHead className="text-right">Total</TableHead>
+                                                <TableHead className="text-center">
+                                                    Quantity
+                                                </TableHead>
+                                                <TableHead className="text-right">
+                                                    Unit Price
+                                                </TableHead>
+                                                <TableHead className="text-right">
+                                                    Total
+                                                </TableHead>
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
                                             {order.items.map((item) => {
-                                                const imageUrl = getImageUrl(item.image) ||
-                                                    (item.product?.images?.[0] ? getImageUrl(item.product.images[0]) : null);
+                                                const imageUrl =
+                                                    getImageUrl(item.image) ||
+                                                    (item.product?.images?.[0]
+                                                        ? getImageUrl(
+                                                              item.product
+                                                                  .images[0],
+                                                          )
+                                                        : null);
 
                                                 return (
                                                     <TableRow key={item.id}>
@@ -256,8 +316,12 @@ export default function OrderShow({ order }: Props) {
                                                                 <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
                                                                     {imageUrl ? (
                                                                         <img
-                                                                            src={imageUrl}
-                                                                            alt={item.name}
+                                                                            src={
+                                                                                imageUrl
+                                                                            }
+                                                                            alt={
+                                                                                item.name
+                                                                            }
                                                                             className="h-full w-full object-cover"
                                                                         />
                                                                     ) : (
@@ -267,17 +331,33 @@ export default function OrderShow({ order }: Props) {
                                                                     )}
                                                                 </div>
                                                                 <div>
-                                                                    <p className="font-medium">{item.name}</p>
+                                                                    <p className="font-medium">
+                                                                        {
+                                                                            item.name
+                                                                        }
+                                                                    </p>
                                                                     <p className="text-sm text-muted-foreground">
-                                                                        ID: {item.product_id}
+                                                                        ID:{' '}
+                                                                        {
+                                                                            item.product_id
+                                                                        }
                                                                     </p>
                                                                 </div>
                                                             </div>
                                                         </TableCell>
-                                                        <TableCell className="text-center">{item.quantity}</TableCell>
-                                                        <TableCell className="text-right">{formatPrice(item.price)}</TableCell>
+                                                        <TableCell className="text-center">
+                                                            {item.quantity}
+                                                        </TableCell>
+                                                        <TableCell className="text-right">
+                                                            {formatPrice(
+                                                                item.price,
+                                                            )}
+                                                        </TableCell>
                                                         <TableCell className="text-right font-medium">
-                                                            {formatPrice(item.price * item.quantity)}
+                                                            {formatPrice(
+                                                                item.price *
+                                                                    item.quantity,
+                                                            )}
                                                         </TableCell>
                                                     </TableRow>
                                                 );
@@ -286,25 +366,48 @@ export default function OrderShow({ order }: Props) {
                                     </Table>
 
                                     {/* Order Totals */}
-                                    <div className="mt-6 border-t pt-4 space-y-2">
+                                    <div className="mt-6 space-y-2 border-t pt-4">
                                         <div className="flex justify-between text-sm">
-                                            <span className="text-muted-foreground">Subtotal</span>
-                                            <span>{formatPrice(order.subtotal)}</span>
+                                            <span className="text-muted-foreground">
+                                                Subtotal
+                                            </span>
+                                            <span>
+                                                {formatPrice(order.subtotal)}
+                                            </span>
                                         </div>
                                         {order.discount_amount > 0 && (
                                             <div className="flex justify-between text-sm">
-                                                <span className="text-muted-foreground">Discount</span>
-                                                <span className="text-green-600">-{formatPrice(order.discount_amount)}</span>
+                                                <span className="text-muted-foreground">
+                                                    Discount
+                                                </span>
+                                                <span className="text-green-600">
+                                                    -
+                                                    {formatPrice(
+                                                        order.discount_amount,
+                                                    )}
+                                                </span>
                                             </div>
                                         )}
                                         <div className="flex justify-between text-sm">
-                                            <span className="text-muted-foreground">Shipping</span>
-                                            <span>{order.shipping_amount > 0 ? formatPrice(order.shipping_amount) : 'Free'}</span>
+                                            <span className="text-muted-foreground">
+                                                Shipping
+                                            </span>
+                                            <span>
+                                                {order.shipping_amount > 0
+                                                    ? formatPrice(
+                                                          order.shipping_amount,
+                                                      )
+                                                    : 'Free'}
+                                            </span>
                                         </div>
                                         <Separator />
                                         <div className="flex justify-between text-lg font-semibold">
                                             <span>Total</span>
-                                            <span>{formatPrice(order.total_amount)}</span>
+                                            <span>
+                                                {formatPrice(
+                                                    order.total_amount,
+                                                )}
+                                            </span>
                                         </div>
                                     </div>
                                 </CardContent>
@@ -323,7 +426,9 @@ export default function OrderShow({ order }: Props) {
                                         <CardTitle>Order Notes</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-muted-foreground">{order.notes}</p>
+                                        <p className="text-muted-foreground">
+                                            {order.notes}
+                                        </p>
                                     </CardContent>
                                 </Card>
                             </motion.div>
@@ -347,7 +452,9 @@ export default function OrderShow({ order }: Props) {
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <div className="space-y-2">
-                                        <label className="text-sm font-medium">Order Status</label>
+                                        <label className="text-sm font-medium">
+                                            Order Status
+                                        </label>
                                         <Select
                                             value={order.status}
                                             onValueChange={handleStatusChange}
@@ -358,7 +465,10 @@ export default function OrderShow({ order }: Props) {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {orderStatuses.map((status) => (
-                                                    <SelectItem key={status.value} value={status.value}>
+                                                    <SelectItem
+                                                        key={status.value}
+                                                        value={status.value}
+                                                    >
                                                         <div className="flex items-center gap-2">
                                                             <status.icon className="h-4 w-4" />
                                                             {status.label}
@@ -370,21 +480,30 @@ export default function OrderShow({ order }: Props) {
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-sm font-medium">Payment Status</label>
+                                        <label className="text-sm font-medium">
+                                            Payment Status
+                                        </label>
                                         <Select
                                             value={order.payment_status}
-                                            onValueChange={handlePaymentStatusChange}
+                                            onValueChange={
+                                                handlePaymentStatusChange
+                                            }
                                             disabled={isUpdating}
                                         >
                                             <SelectTrigger>
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {paymentStatuses.map((status) => (
-                                                    <SelectItem key={status.value} value={status.value}>
-                                                        {status.label}
-                                                    </SelectItem>
-                                                ))}
+                                                {paymentStatuses.map(
+                                                    (status) => (
+                                                        <SelectItem
+                                                            key={status.value}
+                                                            value={status.value}
+                                                        >
+                                                            {status.label}
+                                                        </SelectItem>
+                                                    ),
+                                                )}
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -411,8 +530,12 @@ export default function OrderShow({ order }: Props) {
                                             <User className="h-5 w-5 text-primary" />
                                         </div>
                                         <div>
-                                            <p className="font-medium">{order.customer_name}</p>
-                                            <p className="text-sm text-muted-foreground">Customer</p>
+                                            <p className="font-medium">
+                                                {order.customer_name}
+                                            </p>
+                                            <p className="text-sm text-muted-foreground">
+                                                Customer
+                                            </p>
                                         </div>
                                     </div>
 
@@ -421,14 +544,20 @@ export default function OrderShow({ order }: Props) {
                                     <div className="space-y-3">
                                         <div className="flex items-center gap-2">
                                             <Mail className="h-4 w-4 text-muted-foreground" />
-                                            <a href={`mailto:${order.customer_email}`} className="text-sm hover:underline">
+                                            <a
+                                                href={`mailto:${order.customer_email}`}
+                                                className="text-sm hover:underline"
+                                            >
                                                 {order.customer_email}
                                             </a>
                                         </div>
                                         {order.customer_phone && (
                                             <div className="flex items-center gap-2">
                                                 <Phone className="h-4 w-4 text-muted-foreground" />
-                                                <a href={`tel:${order.customer_phone}`} className="text-sm hover:underline">
+                                                <a
+                                                    href={`tel:${order.customer_phone}`}
+                                                    className="text-sm hover:underline"
+                                                >
                                                     {order.customer_phone}
                                                 </a>
                                             </div>
@@ -452,7 +581,7 @@ export default function OrderShow({ order }: Props) {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-sm text-muted-foreground whitespace-pre-line">
+                                    <p className="text-sm whitespace-pre-line text-muted-foreground">
                                         {order.shipping_address}
                                     </p>
                                 </CardContent>
@@ -474,27 +603,39 @@ export default function OrderShow({ order }: Props) {
                                 </CardHeader>
                                 <CardContent className="space-y-3">
                                     <div className="flex justify-between">
-                                        <span className="text-sm text-muted-foreground">Method</span>
+                                        <span className="text-sm text-muted-foreground">
+                                            Method
+                                        </span>
                                         <span className="text-sm font-medium capitalize">
                                             {order.payment_method || 'N/A'}
                                         </span>
                                     </div>
                                     <div className="flex justify-between">
-                                        <span className="text-sm text-muted-foreground">Status</span>
+                                        <span className="text-sm text-muted-foreground">
+                                            Status
+                                        </span>
                                         <Badge className={paymentConfig.color}>
                                             {paymentConfig.label}
                                         </Badge>
                                     </div>
                                     {order.transaction_id && (
                                         <div className="flex justify-between">
-                                            <span className="text-sm text-muted-foreground">Transaction ID</span>
-                                            <span className="text-sm font-mono">{order.transaction_id}</span>
+                                            <span className="text-sm text-muted-foreground">
+                                                Transaction ID
+                                            </span>
+                                            <span className="font-mono text-sm">
+                                                {order.transaction_id}
+                                            </span>
                                         </div>
                                     )}
                                     <Separator />
                                     <div className="flex justify-between">
-                                        <span className="text-sm font-medium">Total Paid</span>
-                                        <span className="text-sm font-bold">{formatPrice(order.total_amount)}</span>
+                                        <span className="text-sm font-medium">
+                                            Total Paid
+                                        </span>
+                                        <span className="text-sm font-bold">
+                                            {formatPrice(order.total_amount)}
+                                        </span>
                                     </div>
                                 </CardContent>
                             </Card>

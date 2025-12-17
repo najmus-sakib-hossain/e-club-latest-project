@@ -27,17 +27,17 @@ export function resolveUrl(url: NonNullable<InertiaLinkProps['href']>): string {
  */
 export function getImageUrl(image: string | null | undefined): string | null {
     if (!image) return null;
-    
+
     // Full URLs - return as-is
     if (image.startsWith('http://') || image.startsWith('https://')) {
         return image;
     }
-    
+
     // Paths starting with / are already public paths - return as-is
     if (image.startsWith('/')) {
         return image;
     }
-    
+
     // Otherwise, assume it's a storage path
     return `/storage/${image}`;
 }

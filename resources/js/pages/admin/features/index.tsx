@@ -1,34 +1,46 @@
-import { useState } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router } from '@inertiajs/react';
 import {
-    Plus,
-    Pencil,
-    Trash2,
-} from 'lucide-react';
-import {
-    Truck,
-    ShieldCheck,
-    RefreshCw,
-    Headphones,
-    Star,
-    Leaf,
     Award,
     Clock,
     Gift,
+    Headphones,
     Heart,
+    Leaf,
+    Package,
+    Pencil,
+    Plus,
+    RefreshCw,
+    ShieldCheck,
+    Star,
+    Trash2,
+    Truck,
     Zap,
-    Package
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Dialog,
     DialogContent,
@@ -45,7 +57,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -53,16 +65,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import { Textarea } from '@/components/ui/textarea';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -84,9 +88,17 @@ interface Props {
 // Available icons mapping - matches the frontend feature-cards.tsx
 const iconOptions = [
     { value: 'truck', label: 'Truck (Free Shipping)', Icon: Truck },
-    { value: 'shield-check', label: 'Shield Check (Quality)', Icon: ShieldCheck },
+    {
+        value: 'shield-check',
+        label: 'Shield Check (Quality)',
+        Icon: ShieldCheck,
+    },
     { value: 'refresh-cw', label: 'Refresh (Easy Returns)', Icon: RefreshCw },
-    { value: 'headphones', label: 'Headphones (24/7 Support)', Icon: Headphones },
+    {
+        value: 'headphones',
+        label: 'Headphones (24/7 Support)',
+        Icon: Headphones,
+    },
     { value: 'star', label: 'Star (Quality)', Icon: Star },
     { value: 'leaf', label: 'Leaf (Eco)', Icon: Leaf },
     { value: 'award', label: 'Award (Premium)', Icon: Award },
@@ -98,7 +110,7 @@ const iconOptions = [
 ];
 
 const getIconComponent = (iconName: string) => {
-    const found = iconOptions.find(opt => opt.value === iconName);
+    const found = iconOptions.find((opt) => opt.value === iconName);
     return found ? found.Icon : Star;
 };
 
@@ -117,7 +129,9 @@ export default function FeaturesIndex({ features }: Props) {
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const [selectedFeature, setSelectedFeature] = useState<FeatureCard | null>(null);
+    const [selectedFeature, setSelectedFeature] = useState<FeatureCard | null>(
+        null,
+    );
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm<FeatureFormValues>({
@@ -213,7 +227,7 @@ export default function FeaturesIndex({ features }: Props) {
         });
     };
 
-    const activeFeatures = features.filter(f => f.is_active).length;
+    const activeFeatures = features.filter((f) => f.is_active).length;
 
     return (
         <AdminPageLayout>
@@ -228,9 +242,12 @@ export default function FeaturesIndex({ features }: Props) {
                     transition={{ duration: 0.3 }}
                 >
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Feature Cards</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Feature Cards
+                        </h1>
                         <p className="text-muted-foreground">
-                            Manage the feature highlights displayed on your homepage.
+                            Manage the feature highlights displayed on your
+                            homepage.
                         </p>
                     </div>
                     <Button onClick={openAddDialog} className="gap-2">
@@ -248,11 +265,15 @@ export default function FeaturesIndex({ features }: Props) {
                 >
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Features</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Total Features
+                            </CardTitle>
                             <Star className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{features.length}</div>
+                            <div className="text-2xl font-bold">
+                                {features.length}
+                            </div>
                             <p className="text-xs text-muted-foreground">
                                 All feature cards
                             </p>
@@ -260,11 +281,17 @@ export default function FeaturesIndex({ features }: Props) {
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Active Features</CardTitle>
-                            <Badge variant="default" className="text-xs">Active</Badge>
+                            <CardTitle className="text-sm font-medium">
+                                Active Features
+                            </CardTitle>
+                            <Badge variant="default" className="text-xs">
+                                Active
+                            </Badge>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{activeFeatures}</div>
+                            <div className="text-2xl font-bold">
+                                {activeFeatures}
+                            </div>
                             <p className="text-xs text-muted-foreground">
                                 Visible on homepage
                             </p>
@@ -282,33 +309,59 @@ export default function FeaturesIndex({ features }: Props) {
                         <CardHeader>
                             <CardTitle>All Feature Cards</CardTitle>
                             <CardDescription>
-                                Feature highlights that appear on your homepage to build trust with customers.
+                                Feature highlights that appear on your homepage
+                                to build trust with customers.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             {features.length === 0 ? (
-                                <div className="text-center py-12 text-muted-foreground">
-                                    <Star className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                                    <p>No feature cards yet. Create your first feature!</p>
+                                <div className="py-12 text-center text-muted-foreground">
+                                    <Star className="mx-auto mb-4 h-12 w-12 opacity-50" />
+                                    <p>
+                                        No feature cards yet. Create your first
+                                        feature!
+                                    </p>
                                 </div>
                             ) : (
                                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                                     {features
-                                        .sort((a, b) => a.sort_order - b.sort_order)
+                                        .sort(
+                                            (a, b) =>
+                                                a.sort_order - b.sort_order,
+                                        )
                                         .map((feature, index) => {
-                                            const IconComponent = getIconComponent(feature.icon);
+                                            const IconComponent =
+                                                getIconComponent(feature.icon);
                                             return (
                                                 <motion.div
                                                     key={feature.id}
-                                                    initial={{ opacity: 0, scale: 0.95 }}
-                                                    animate={{ opacity: 1, scale: 1 }}
-                                                    transition={{ duration: 0.2, delay: index * 0.05 }}
-                                                    className="group relative rounded-lg border bg-card p-6 hover:shadow-md transition-shadow"
+                                                    initial={{
+                                                        opacity: 0,
+                                                        scale: 0.95,
+                                                    }}
+                                                    animate={{
+                                                        opacity: 1,
+                                                        scale: 1,
+                                                    }}
+                                                    transition={{
+                                                        duration: 0.2,
+                                                        delay: index * 0.05,
+                                                    }}
+                                                    className="group relative rounded-lg border bg-card p-6 transition-shadow hover:shadow-md"
                                                 >
                                                     {/* Status Badge */}
                                                     <div className="absolute top-2 right-2">
-                                                        <Badge variant={feature.is_active ? 'default' : 'secondary'} className="text-xs">
-                                                            {feature.is_active ? 'Active' : 'Inactive'}
+                                                        <Badge
+                                                            variant={
+                                                                feature.is_active
+                                                                    ? 'default'
+                                                                    : 'secondary'
+                                                            }
+                                                            className="text-xs"
+                                                        >
+                                                            {feature.is_active
+                                                                ? 'Active'
+                                                                : 'Inactive'}
                                                         </Badge>
                                                     </div>
 
@@ -318,22 +371,29 @@ export default function FeaturesIndex({ features }: Props) {
                                                     </div>
 
                                                     {/* Content */}
-                                                    <h3 className="font-semibold mb-2">{feature.title}</h3>
-                                                    <p className="text-sm text-muted-foreground line-clamp-2">
+                                                    <h3 className="mb-2 font-semibold">
+                                                        {feature.title}
+                                                    </h3>
+                                                    <p className="line-clamp-2 text-sm text-muted-foreground">
                                                         {feature.description}
                                                     </p>
 
                                                     {/* Order */}
-                                                    <p className="text-xs text-muted-foreground mt-3">
-                                                        Order: {feature.sort_order}
+                                                    <p className="mt-3 text-xs text-muted-foreground">
+                                                        Order:{' '}
+                                                        {feature.sort_order}
                                                     </p>
 
                                                     {/* Actions */}
-                                                    <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                                                    <div className="absolute right-4 bottom-4 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                                                         <Button
                                                             size="icon"
                                                             variant="ghost"
-                                                            onClick={() => openEditDialog(feature)}
+                                                            onClick={() =>
+                                                                openEditDialog(
+                                                                    feature,
+                                                                )
+                                                            }
                                                         >
                                                             <Pencil className="h-4 w-4" />
                                                         </Button>
@@ -341,7 +401,11 @@ export default function FeaturesIndex({ features }: Props) {
                                                             size="icon"
                                                             variant="ghost"
                                                             className="text-destructive hover:text-destructive"
-                                                            onClick={() => openDeleteDialog(feature)}
+                                                            onClick={() =>
+                                                                openDeleteDialog(
+                                                                    feature,
+                                                                )
+                                                            }
                                                         >
                                                             <Trash2 className="h-4 w-4" />
                                                         </Button>
@@ -356,7 +420,7 @@ export default function FeaturesIndex({ features }: Props) {
                 </motion.div>
 
                 {/* Preview Section */}
-                {features.filter(f => f.is_active).length > 0 && (
+                {features.filter((f) => f.is_active).length > 0 && (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -366,28 +430,39 @@ export default function FeaturesIndex({ features }: Props) {
                             <CardHeader>
                                 <CardTitle>Homepage Preview</CardTitle>
                                 <CardDescription>
-                                    This is how your feature cards will appear on the homepage.
+                                    This is how your feature cards will appear
+                                    on the homepage.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <div className="bg-muted/30 rounded-lg p-8">
+                                <div className="rounded-lg bg-muted/30 p-8">
                                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                                         {features
-                                            .filter(f => f.is_active)
-                                            .sort((a, b) => a.sort_order - b.sort_order)
+                                            .filter((f) => f.is_active)
+                                            .sort(
+                                                (a, b) =>
+                                                    a.sort_order - b.sort_order,
+                                            )
                                             .map((feature) => {
-                                                const IconComponent = getIconComponent(feature.icon);
+                                                const IconComponent =
+                                                    getIconComponent(
+                                                        feature.icon,
+                                                    );
                                                 return (
                                                     <div
                                                         key={feature.id}
-                                                        className="flex flex-col items-center text-center p-4"
+                                                        className="flex flex-col items-center p-4 text-center"
                                                     >
                                                         <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
                                                             <IconComponent className="h-7 w-7 text-primary" />
                                                         </div>
-                                                        <h4 className="font-semibold">{feature.title}</h4>
-                                                        <p className="text-sm text-muted-foreground mt-1">
-                                                            {feature.description}
+                                                        <h4 className="font-semibold">
+                                                            {feature.title}
+                                                        </h4>
+                                                        <p className="mt-1 text-sm text-muted-foreground">
+                                                            {
+                                                                feature.description
+                                                            }
                                                         </p>
                                                     </div>
                                                 );
@@ -410,14 +485,20 @@ export default function FeaturesIndex({ features }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleCreate)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleCreate)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={form.control}
                                 name="icon"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Icon</FormLabel>
-                                        <Select value={field.value} onValueChange={field.onChange}>
+                                        <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                        >
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select an icon" />
@@ -425,7 +506,10 @@ export default function FeaturesIndex({ features }: Props) {
                                             </FormControl>
                                             <SelectContent>
                                                 {iconOptions.map((option) => (
-                                                    <SelectItem key={option.value} value={option.value}>
+                                                    <SelectItem
+                                                        key={option.value}
+                                                        value={option.value}
+                                                    >
                                                         <div className="flex items-center gap-2">
                                                             <option.Icon className="h-4 w-4" />
                                                             {option.label}
@@ -445,7 +529,10 @@ export default function FeaturesIndex({ features }: Props) {
                                     <FormItem>
                                         <FormLabel>Title</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., Free Shipping" {...field} />
+                                            <Input
+                                                placeholder="e.g., Free Shipping"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -475,7 +562,12 @@ export default function FeaturesIndex({ features }: Props) {
                                         <FormItem>
                                             <FormLabel>Sort Order</FormLabel>
                                             <FormControl>
-                                                <Input type="number" min="0" placeholder="0" {...field} />
+                                                <Input
+                                                    type="number"
+                                                    min="0"
+                                                    placeholder="0"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -488,8 +580,16 @@ export default function FeaturesIndex({ features }: Props) {
                                         <FormItem>
                                             <FormLabel>Status</FormLabel>
                                             <Select
-                                                value={field.value ? 'active' : 'inactive'}
-                                                onValueChange={(val) => field.onChange(val === 'active')}
+                                                value={
+                                                    field.value
+                                                        ? 'active'
+                                                        : 'inactive'
+                                                }
+                                                onValueChange={(val) =>
+                                                    field.onChange(
+                                                        val === 'active',
+                                                    )
+                                                }
                                             >
                                                 <FormControl>
                                                     <SelectTrigger>
@@ -497,8 +597,12 @@ export default function FeaturesIndex({ features }: Props) {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value="active">Active</SelectItem>
-                                                    <SelectItem value="inactive">Inactive</SelectItem>
+                                                    <SelectItem value="active">
+                                                        Active
+                                                    </SelectItem>
+                                                    <SelectItem value="inactive">
+                                                        Inactive
+                                                    </SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />
@@ -507,11 +611,17 @@ export default function FeaturesIndex({ features }: Props) {
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsAddDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Creating...' : 'Create Feature'}
+                                    {isSubmitting
+                                        ? 'Creating...'
+                                        : 'Create Feature'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -529,14 +639,20 @@ export default function FeaturesIndex({ features }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleUpdate)} className="space-y-4">
+                        <form
+                            onSubmit={form.handleSubmit(handleUpdate)}
+                            className="space-y-4"
+                        >
                             <FormField
                                 control={form.control}
                                 name="icon"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Icon</FormLabel>
-                                        <Select value={field.value} onValueChange={field.onChange}>
+                                        <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                        >
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select an icon" />
@@ -544,7 +660,10 @@ export default function FeaturesIndex({ features }: Props) {
                                             </FormControl>
                                             <SelectContent>
                                                 {iconOptions.map((option) => (
-                                                    <SelectItem key={option.value} value={option.value}>
+                                                    <SelectItem
+                                                        key={option.value}
+                                                        value={option.value}
+                                                    >
                                                         <div className="flex items-center gap-2">
                                                             <option.Icon className="h-4 w-4" />
                                                             {option.label}
@@ -564,7 +683,10 @@ export default function FeaturesIndex({ features }: Props) {
                                     <FormItem>
                                         <FormLabel>Title</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="e.g., Free Shipping" {...field} />
+                                            <Input
+                                                placeholder="e.g., Free Shipping"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -594,7 +716,12 @@ export default function FeaturesIndex({ features }: Props) {
                                         <FormItem>
                                             <FormLabel>Sort Order</FormLabel>
                                             <FormControl>
-                                                <Input type="number" min="0" placeholder="0" {...field} />
+                                                <Input
+                                                    type="number"
+                                                    min="0"
+                                                    placeholder="0"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -607,8 +734,16 @@ export default function FeaturesIndex({ features }: Props) {
                                         <FormItem>
                                             <FormLabel>Status</FormLabel>
                                             <Select
-                                                value={field.value ? 'active' : 'inactive'}
-                                                onValueChange={(val) => field.onChange(val === 'active')}
+                                                value={
+                                                    field.value
+                                                        ? 'active'
+                                                        : 'inactive'
+                                                }
+                                                onValueChange={(val) =>
+                                                    field.onChange(
+                                                        val === 'active',
+                                                    )
+                                                }
                                             >
                                                 <FormControl>
                                                     <SelectTrigger>
@@ -616,8 +751,12 @@ export default function FeaturesIndex({ features }: Props) {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value="active">Active</SelectItem>
-                                                    <SelectItem value="inactive">Inactive</SelectItem>
+                                                    <SelectItem value="active">
+                                                        Active
+                                                    </SelectItem>
+                                                    <SelectItem value="inactive">
+                                                        Inactive
+                                                    </SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />
@@ -626,11 +765,17 @@ export default function FeaturesIndex({ features }: Props) {
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsEditDialogOpen(false)}
+                                >
                                     Cancel
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                    {isSubmitting
+                                        ? 'Saving...'
+                                        : 'Save Changes'}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -639,12 +784,17 @@ export default function FeaturesIndex({ features }: Props) {
             </Dialog>
 
             {/* Delete Confirmation Dialog */}
-            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <AlertDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Delete Feature Card</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete "{selectedFeature?.title}"? This action cannot be undone.
+                            Are you sure you want to delete "
+                            {selectedFeature?.title}"? This action cannot be
+                            undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

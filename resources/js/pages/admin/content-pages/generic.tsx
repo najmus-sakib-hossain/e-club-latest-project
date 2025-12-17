@@ -1,22 +1,19 @@
-import { useState, useEffect } from 'react';
-import { Head, router } from '@inertiajs/react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    Save,
-    Plus,
-    Trash2,
-    GripVertical,
-    FileText,
-} from 'lucide-react';
+import { Head, router } from '@inertiajs/react';
+import { FileText, GripVertical, Plus, Save, Trash2 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useEffect, useState } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Form,
     FormControl,
@@ -24,10 +21,11 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-    FormDescription,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import { Separator } from '@/components/ui/separator';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -63,7 +61,10 @@ interface Props {
     content: Record<string, PageContentRecord>;
 }
 
-const defaultSectionContent: Record<string, Record<string, Partial<SectionFormValues>>> = {
+const defaultSectionContent: Record<
+    string,
+    Record<string, Partial<SectionFormValues>>
+> = {
     privacy: {
         hero: {
             title: 'Privacy Policy',
@@ -96,9 +97,15 @@ const sectionSchema = z.object({
 
 type SectionFormValues = z.infer<typeof sectionSchema>;
 
-export default function GenericContentPage({ pageSlug, pageConfig, content }: Props) {
+export default function GenericContentPage({
+    pageSlug,
+    pageConfig,
+    content,
+}: Props) {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [activeTab, setActiveTab] = useState(Object.keys(pageConfig.sections)[0] || 'hero');
+    const [activeTab, setActiveTab] = useState(
+        Object.keys(pageConfig.sections)[0] || 'hero',
+    );
 
     // Reset active tab when page changes (when navigating between content pages)
     useEffect(() => {
@@ -107,20 +114,24 @@ export default function GenericContentPage({ pageSlug, pageConfig, content }: Pr
 
     const handleSaveSection = (sectionKey: string, data: SectionFormValues) => {
         setIsSubmitting(true);
-        router.post(`/admin/content-pages/${pageSlug}`, {
-            sections: {
-                [sectionKey]: data,
+        router.post(
+            `/admin/content-pages/${pageSlug}`,
+            {
+                sections: {
+                    [sectionKey]: data,
+                },
             },
-        }, {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success('Section saved successfully');
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success('Section saved successfully');
+                },
+                onError: () => {
+                    toast.error('Failed to save section');
+                },
+                onFinish: () => setIsSubmitting(false),
             },
-            onError: () => {
-                toast.error('Failed to save section');
-            },
-            onFinish: () => setIsSubmitting(false),
-        });
+        );
     };
 
     return (
@@ -134,33 +145,45 @@ export default function GenericContentPage({ pageSlug, pageConfig, content }: Pr
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
                 >
-                    <h1 className="text-3xl font-bold tracking-tight">{pageConfig.title}</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        {pageConfig.title}
+                    </h1>
                     <p className="text-muted-foreground">
                         {pageConfig.description}
                     </p>
                 </motion.div>
 
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-                    <TabsList className="flex flex-wrap h-auto gap-1">
-                        {Object.entries(pageConfig.sections).map(([key, section]) => (
-                            <TabsTrigger key={key} value={key}>
-                                {section.label}
-                            </TabsTrigger>
-                        ))}
+                <Tabs
+                    value={activeTab}
+                    onValueChange={setActiveTab}
+                    className="space-y-6"
+                >
+                    <TabsList className="flex h-auto flex-wrap gap-1">
+                        {Object.entries(pageConfig.sections).map(
+                            ([key, section]) => (
+                                <TabsTrigger key={key} value={key}>
+                                    {section.label}
+                                </TabsTrigger>
+                            ),
+                        )}
                     </TabsList>
 
-                    {Object.entries(pageConfig.sections).map(([sectionKey, sectionConfig]) => (
-                        <TabsContent key={sectionKey} value={sectionKey}>
-                            <SectionEditor
-                                pageSlug={pageSlug}
-                                sectionKey={sectionKey}
-                                sectionConfig={sectionConfig}
-                                initialData={content[sectionKey] || null}
-                                onSave={(data) => handleSaveSection(sectionKey, data)}
-                                isSubmitting={isSubmitting}
-                            />
-                        </TabsContent>
-                    ))}
+                    {Object.entries(pageConfig.sections).map(
+                        ([sectionKey, sectionConfig]) => (
+                            <TabsContent key={sectionKey} value={sectionKey}>
+                                <SectionEditor
+                                    pageSlug={pageSlug}
+                                    sectionKey={sectionKey}
+                                    sectionConfig={sectionConfig}
+                                    initialData={content[sectionKey] || null}
+                                    onSave={(data) =>
+                                        handleSaveSection(sectionKey, data)
+                                    }
+                                    isSubmitting={isSubmitting}
+                                />
+                            </TabsContent>
+                        ),
+                    )}
                 </Tabs>
             </div>
         </AdminPageLayout>
@@ -177,7 +200,14 @@ interface SectionEditorProps {
     isSubmitting: boolean;
 }
 
-function SectionEditor({ pageSlug, sectionKey, sectionConfig, initialData, onSave, isSubmitting }: SectionEditorProps) {
+function SectionEditor({
+    pageSlug,
+    sectionKey,
+    sectionConfig,
+    initialData,
+    onSave,
+    isSubmitting,
+}: SectionEditorProps) {
     const hasTitle = sectionConfig.fields.includes('title');
     const hasSubtitle = sectionConfig.fields.includes('subtitle');
     const hasContent = sectionConfig.fields.includes('content');
@@ -186,9 +216,18 @@ function SectionEditor({ pageSlug, sectionKey, sectionConfig, initialData, onSav
     const form = useForm<SectionFormValues>({
         resolver: zodResolver(sectionSchema),
         defaultValues: {
-            title: initialData?.title || defaultSectionContent?.[pageSlug]?.[sectionKey]?.title || '',
-            subtitle: initialData?.subtitle || defaultSectionContent?.[pageSlug]?.[sectionKey]?.subtitle || '',
-            content: initialData?.content || defaultSectionContent?.[pageSlug]?.[sectionKey]?.content || '',
+            title:
+                initialData?.title ||
+                defaultSectionContent?.[pageSlug]?.[sectionKey]?.title ||
+                '',
+            subtitle:
+                initialData?.subtitle ||
+                defaultSectionContent?.[pageSlug]?.[sectionKey]?.subtitle ||
+                '',
+            content:
+                initialData?.content ||
+                defaultSectionContent?.[pageSlug]?.[sectionKey]?.content ||
+                '',
             items: (initialData?.items as Record<string, string>[]) || [],
         },
     });
@@ -220,7 +259,10 @@ function SectionEditor({ pageSlug, sectionKey, sectionConfig, initialData, onSav
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSave)} className="space-y-6">
+                    <form
+                        onSubmit={form.handleSubmit(onSave)}
+                        className="space-y-6"
+                    >
                         {hasTitle && (
                             <FormField
                                 control={form.control}
@@ -229,7 +271,10 @@ function SectionEditor({ pageSlug, sectionKey, sectionConfig, initialData, onSav
                                     <FormItem>
                                         <FormLabel>Title</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Section title" {...field} />
+                                            <Input
+                                                placeholder="Section title"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -243,7 +288,9 @@ function SectionEditor({ pageSlug, sectionKey, sectionConfig, initialData, onSav
                                 name="subtitle"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Subtitle / Description</FormLabel>
+                                        <FormLabel>
+                                            Subtitle / Description
+                                        </FormLabel>
                                         <FormControl>
                                             <Textarea
                                                 placeholder="Brief description..."
@@ -267,7 +314,11 @@ function SectionEditor({ pageSlug, sectionKey, sectionConfig, initialData, onSav
                                         <FormControl>
                                             <Textarea
                                                 placeholder="Enter content..."
-                                                rows={sectionConfig.richText ? 15 : 5}
+                                                rows={
+                                                    sectionConfig.richText
+                                                        ? 15
+                                                        : 5
+                                                }
                                                 {...field}
                                             />
                                         </FormControl>
@@ -290,24 +341,30 @@ function SectionEditor({ pageSlug, sectionKey, sectionConfig, initialData, onSav
                                         type="button"
                                         variant="outline"
                                         size="sm"
-                                        onClick={() => append(createEmptyItem())}
+                                        onClick={() =>
+                                            append(createEmptyItem())
+                                        }
                                     >
-                                        <Plus className="h-4 w-4 mr-2" />
+                                        <Plus className="mr-2 h-4 w-4" />
                                         Add Item
                                     </Button>
                                 </div>
 
                                 {fields.length === 0 && (
-                                    <div className="text-center py-8 border-2 border-dashed rounded-lg">
-                                        <FileText className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                                        <p className="text-muted-foreground mb-2">No items yet</p>
+                                    <div className="rounded-lg border-2 border-dashed py-8 text-center">
+                                        <FileText className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
+                                        <p className="mb-2 text-muted-foreground">
+                                            No items yet
+                                        </p>
                                         <Button
                                             type="button"
                                             variant="outline"
                                             size="sm"
-                                            onClick={() => append(createEmptyItem())}
+                                            onClick={() =>
+                                                append(createEmptyItem())
+                                            }
                                         >
-                                            <Plus className="h-4 w-4 mr-2" />
+                                            <Plus className="mr-2 h-4 w-4" />
                                             Add First Item
                                         </Button>
                                     </div>
@@ -319,11 +376,11 @@ function SectionEditor({ pageSlug, sectionKey, sectionConfig, initialData, onSav
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
-                                        className="border rounded-lg p-4 space-y-4"
+                                        className="space-y-4 rounded-lg border p-4"
                                     >
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
-                                                <GripVertical className="h-5 w-5 text-muted-foreground cursor-grab" />
+                                                <GripVertical className="h-5 w-5 cursor-grab text-muted-foreground" />
                                                 <span className="text-sm font-medium">
                                                     Item {index + 1}
                                                 </span>
@@ -340,41 +397,79 @@ function SectionEditor({ pageSlug, sectionKey, sectionConfig, initialData, onSav
                                         </div>
 
                                         <div className="grid gap-4 sm:grid-cols-2">
-                                            {sectionConfig.itemFields?.map((itemField) => (
-                                                <FormField
-                                                    key={itemField}
-                                                    control={form.control}
-                                                    name={`items.${index}.${itemField}`}
-                                                    render={({ field: formField }) => (
-                                                        <FormItem className={
-                                                            ['description', 'content', 'tips', 'coverage', 'exclusions'].includes(itemField)
-                                                                ? 'sm:col-span-2'
-                                                                : ''
-                                                        }>
-                                                            <FormLabel className="capitalize">
-                                                                {itemField.replace(/_/g, ' ')}
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                {['description', 'content', 'tips', 'coverage', 'exclusions', 'areas'].includes(itemField) ? (
-                                                                    <Textarea
-                                                                        placeholder={`Enter ${itemField.replace(/_/g, ' ')}...`}
-                                                                        rows={3}
-                                                                        value={formField.value as string || ''}
-                                                                        onChange={formField.onChange}
-                                                                    />
-                                                                ) : (
-                                                                    <Input
-                                                                        placeholder={`Enter ${itemField.replace(/_/g, ' ')}...`}
-                                                                        value={formField.value as string || ''}
-                                                                        onChange={formField.onChange}
-                                                                    />
-                                                                )}
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            ))}
+                                            {sectionConfig.itemFields?.map(
+                                                (itemField) => (
+                                                    <FormField
+                                                        key={itemField}
+                                                        control={form.control}
+                                                        name={`items.${index}.${itemField}`}
+                                                        render={({
+                                                            field: formField,
+                                                        }) => (
+                                                            <FormItem
+                                                                className={
+                                                                    [
+                                                                        'description',
+                                                                        'content',
+                                                                        'tips',
+                                                                        'coverage',
+                                                                        'exclusions',
+                                                                    ].includes(
+                                                                        itemField,
+                                                                    )
+                                                                        ? 'sm:col-span-2'
+                                                                        : ''
+                                                                }
+                                                            >
+                                                                <FormLabel className="capitalize">
+                                                                    {itemField.replace(
+                                                                        /_/g,
+                                                                        ' ',
+                                                                    )}
+                                                                </FormLabel>
+                                                                <FormControl>
+                                                                    {[
+                                                                        'description',
+                                                                        'content',
+                                                                        'tips',
+                                                                        'coverage',
+                                                                        'exclusions',
+                                                                        'areas',
+                                                                    ].includes(
+                                                                        itemField,
+                                                                    ) ? (
+                                                                        <Textarea
+                                                                            placeholder={`Enter ${itemField.replace(/_/g, ' ')}...`}
+                                                                            rows={
+                                                                                3
+                                                                            }
+                                                                            value={
+                                                                                (formField.value as string) ||
+                                                                                ''
+                                                                            }
+                                                                            onChange={
+                                                                                formField.onChange
+                                                                            }
+                                                                        />
+                                                                    ) : (
+                                                                        <Input
+                                                                            placeholder={`Enter ${itemField.replace(/_/g, ' ')}...`}
+                                                                            value={
+                                                                                (formField.value as string) ||
+                                                                                ''
+                                                                            }
+                                                                            onChange={
+                                                                                formField.onChange
+                                                                            }
+                                                                        />
+                                                                    )}
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                ),
+                                            )}
                                         </div>
                                     </motion.div>
                                 ))}
@@ -385,7 +480,7 @@ function SectionEditor({ pageSlug, sectionKey, sectionConfig, initialData, onSav
 
                         <div className="flex justify-end">
                             <Button type="submit" disabled={isSubmitting}>
-                                <Save className="h-4 w-4 mr-2" />
+                                <Save className="mr-2 h-4 w-4" />
                                 Save {sectionConfig.label}
                             </Button>
                         </div>

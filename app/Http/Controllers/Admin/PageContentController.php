@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\PageContent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -40,7 +39,7 @@ class PageContentController extends Controller
     public function update(Request $request, string $pageSlug): RedirectResponse
     {
         $sections = $request->input('sections', []);
-        
+
         foreach ($sections as $sectionKey => $sectionData) {
             $data = [
                 'title' => $sectionData['title'] ?? null,
@@ -65,7 +64,7 @@ class PageContentController extends Controller
             PageContent::setSection($pageSlug, $sectionKey, $data);
         }
 
-        return redirect()->back()->with('success', ucfirst($pageSlug) . ' page content updated successfully');
+        return redirect()->back()->with('success', ucfirst($pageSlug).' page content updated successfully');
     }
 
     /**

@@ -21,9 +21,9 @@ class AdminAuthController extends Controller
         if (Auth::check() && Auth::user()->isAdmin()) {
             return redirect('/admin');
         }
-        
+
         // If user is logged in but not admin, log them out first so they can login as admin
-        if (Auth::check() && !Auth::user()->isAdmin()) {
+        if (Auth::check() && ! Auth::user()->isAdmin()) {
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
@@ -47,14 +47,14 @@ class AdminAuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         // Check if user exists and password is correct
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
         // Check if user is an admin
-        if (!$user->isAdmin()) {
+        if (! $user->isAdmin()) {
             throw ValidationException::withMessages([
                 'email' => ['This account does not have admin access.'],
             ]);

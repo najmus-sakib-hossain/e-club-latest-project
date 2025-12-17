@@ -1,54 +1,48 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
     ChevronDown,
-    Facebook,
     Heart,
-    Instagram,
-    Menu,
-    Search,
-    ShoppingCart,
-    Twitter,
-    User,
-    X,
     LogIn,
-    UserPlus,
-    Settings,
     LogOut,
-    CalendarCheck,
-    Phone,
-    Clock,
+    Menu,
     Package,
-    Youtube,
-    Mail,
+    Search,
+    Settings,
+    ShoppingCart,
+    User,
+    UserPlus,
 } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { CartSheet } from '@/components/site/cart-sheet';
 import { SearchCommand } from '@/components/site/search-command';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useCartStore } from '@/stores/cart-store';
 import { useWishlistStore } from '@/stores/wishlist-store';
-import type { Category, NavigationMenu, SiteSettings } from '@/types/cms';
 import type { SharedData } from '@/types';
+import type { Category, NavigationMenu, SiteSettings } from '@/types/cms';
 
 interface SiteHeaderProps {
     settings?: SiteSettings;
-    categories?: Category[];
 }
 
 // Convert flat navigation tree to structured object for mega menu
-function buildNavigationStructure(navigation: NavigationMenu[]): Record<string, Record<string, string[]>> {
+function buildNavigationStructure(
+    navigation: NavigationMenu[],
+): Record<string, Record<string, string[]>> {
     const structure: Record<string, Record<string, string[]>> = {};
 
-    navigation.forEach(mainItem => {
+    navigation.forEach((mainItem) => {
         if (mainItem.type === 'main' && mainItem.children) {
             const categories: Record<string, string[]> = {};
 
-            mainItem.children.forEach(categoryItem => {
+            mainItem.children.forEach((categoryItem) => {
                 if (categoryItem.type === 'category' && categoryItem.children) {
-                    categories[categoryItem.name] = categoryItem.children.map(item => item.name);
+                    categories[categoryItem.name] = categoryItem.children.map(
+                        (item) => item.name,
+                    );
                 }
             });
 
@@ -100,25 +94,17 @@ const defaultNavigationStructure: Record<string, Record<string, string[]>> = {
         ],
     },
     'Beds & Mattresses': {
-        'Beds': [
+        Beds: [
             'King Size Beds',
             'Queen Size Beds',
             'Single Beds',
             'Bunk Beds',
             'Sofa Cum Beds',
         ],
-        'Mattresses': [
-            'Memory Foam',
-            'Spring Mattress',
-            'Orthopedic Mattress',
-        ],
-        'Bedroom E-Club': [
-            'Wardrobes',
-            'Nightstands',
-            'Dressers',
-        ],
+        Mattresses: ['Memory Foam', 'Spring Mattress', 'Orthopedic Mattress'],
+        'Bedroom E-Club': ['Wardrobes', 'Nightstands', 'Dressers'],
     },
-    'Chairs': {
+    Chairs: {
         'Office Chairs': [
             'Executive Chairs',
             'Ergonomic Chairs',
@@ -132,14 +118,9 @@ const defaultNavigationStructure: Record<string, Record<string, string[]>> = {
             'Accent Chairs',
             'Rocking Chairs',
         ],
-        'Seating': [
-            'Bar Stools',
-            'Counter Stools',
-            'Ottomans',
-            'Benches',
-        ],
+        Seating: ['Bar Stools', 'Counter Stools', 'Ottomans', 'Benches'],
     },
-    'Sofas': {
+    Sofas: {
         'Living Room Sofas': [
             'Sectional Sofas',
             'L-Shaped Sofas',
@@ -147,31 +128,23 @@ const defaultNavigationStructure: Record<string, Record<string, string[]>> = {
             'Loveseats',
             'Sleeper Sofas',
         ],
-        'Materials': [
-            'Leather Sofas',
-            'Fabric Sofas',
-            'Velvet Sofas',
-        ],
+        Materials: ['Leather Sofas', 'Fabric Sofas', 'Velvet Sofas'],
     },
-    'Storage': {
+    Storage: {
         'Living Room Storage': [
             'TV Units',
             'Bookshelves',
             'Display Cabinets',
             'Shoe Racks',
         ],
-        'Office Storage': [
-            'Filing Cabinets',
-            'Office Shelves',
-            'Lockers',
-        ],
+        'Office Storage': ['Filing Cabinets', 'Office Shelves', 'Lockers'],
         'Bedroom Storage': [
             'Wardrobes',
             'Chest of Drawers',
             'Closet Organizers',
         ],
     },
-    'Series': {
+    Series: {
         'Popular Series': [
             'Modern Collection',
             'Classic Collection',
@@ -179,23 +152,18 @@ const defaultNavigationStructure: Record<string, Record<string, string[]>> = {
             'Industrial Series',
         ],
     },
-    'Others': {
-        'Accessories': [
-            'Mirrors',
-            'Rugs',
-            'Lighting',
-            'Decor',
-        ],
-        'Outdoor': [
-            'Garden E-Club',
-            'Patio Sets',
-            'Outdoor Chairs',
-        ],
-    }
+    Others: {
+        Accessories: ['Mirrors', 'Rugs', 'Lighting', 'Decor'],
+        Outdoor: ['Garden E-Club', 'Patio Sets', 'Outdoor Chairs'],
+    },
 };
 
-export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
-    const { auth, navigation, siteSettings: sharedSettings } = usePage<SharedData>().props;
+export function SiteHeader({ settings }: SiteHeaderProps) {
+    const {
+        auth,
+        navigation,
+        siteSettings: sharedSettings,
+    } = usePage<SharedData>().props;
     const user = auth?.user;
     const isAuthenticated = !!user;
 
@@ -203,22 +171,20 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
     const effectiveSettings = settings || sharedSettings;
 
     // Build navigation structure from database or use default
-    const navigationStructure = navigation && navigation.length > 0
-        ? buildNavigationStructure(navigation)
-        : defaultNavigationStructure;
+    const navigationStructure =
+        navigation && navigation.length > 0
+            ? buildNavigationStructure(navigation)
+            : defaultNavigationStructure;
 
     const navItems = Object.keys(navigationStructure);
 
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
-    const [meetingMenuOpen, setMeetingMenuOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
-    const [announcementVisible, setAnnouncementVisible] = useState(true);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const userMenuRef = useRef<HTMLDivElement>(null);
-    const meetingMenuRef = useRef<HTMLDivElement>(null);
 
     const cartItems = useCartStore((state) => state.items);
     const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
@@ -226,7 +192,11 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
     const wishlistCount = wishlistItems.length;
 
     // Helper to get setting values from nested structure
-    const getSetting = (group: string, key: string, fallback: string = ''): string => {
+    const getSetting = (
+        group: string,
+        key: string,
+        fallback: string = '',
+    ): string => {
         const groupSettings = effectiveSettings?.[group];
         if (groupSettings && typeof groupSettings === 'object') {
             return (groupSettings[key] as string) || fallback;
@@ -238,39 +208,104 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
     const siteName = getSetting('general', 'site_name', 'E-Club');
     const siteLogo = getSetting('general', 'site_logo', '');
     const logoSrc = siteLogo ? `/storage/${siteLogo}` : '/logo.png';
-    const headerPhone = getSetting('header', 'header_phone') || getSetting('contact', 'contact_phone') || getSetting('contact', 'phone', '');
-    const headerEmail = getSetting('header', 'header_email') || getSetting('contact', 'contact_email') || getSetting('contact', 'email', '');
-    const headerAnnouncement = getSetting('header', 'header_announcement', '');
-    const headerAnnouncementEnabled = getSetting('header', 'header_announcement_enabled', '1') === '1';
-    const socialFacebook = getSetting('social', 'social_facebook') || getSetting('social', 'facebook');
-    const socialInstagram = getSetting('social', 'social_instagram') || getSetting('social', 'instagram');
-    const socialTwitter = getSetting('social', 'social_twitter') || getSetting('social', 'twitter');
-    const socialYoutube = getSetting('social', 'social_youtube') || getSetting('social', 'youtube');
+    // const headerPhone =
+    //     getSetting('header', 'header_phone') ||
+    //     getSetting('contact', 'contact_phone') ||
+    //     getSetting('contact', 'phone', '');
+    // const headerEmail =
+    //     getSetting('header', 'header_email') ||
+    //     getSetting('contact', 'contact_email') ||
+    //     getSetting('contact', 'email', '');
+    // const headerAnnouncement = getSetting('header', 'header_announcement', '');
+    // const headerAnnouncementEnabled =
+    //     getSetting('header', 'header_announcement_enabled', '1') === '1';
+    // const socialFacebook =
+    //     getSetting('social', 'social_facebook') ||
+    //     getSetting('social', 'facebook');
+    // const socialInstagram =
+    //     getSetting('social', 'social_instagram') ||
+    //     getSetting('social', 'instagram');
+    // const socialTwitter =
+    //     getSetting('social', 'social_twitter') ||
+    //     getSetting('social', 'twitter');
+    // const socialYoutube =
+    //     getSetting('social', 'social_youtube') ||
+    //     getSetting('social', 'youtube');
 
     // Main header links settings
-    const headerAboutVisible = getSetting('header', 'header_about_visible', '1') === '1';
-    const headerAboutText = getSetting('header', 'header_about_text', 'About Us');
+    const headerAboutVisible =
+        getSetting('header', 'header_about_visible', '1') === '1';
+    const headerAboutText = getSetting(
+        'header',
+        'header_about_text',
+        'About Us',
+    );
     const headerAboutUrl = getSetting('header', 'header_about_url', '/about');
-    const headerContactVisible = getSetting('header', 'header_contact_visible', '1') === '1';
-    const headerContactText = getSetting('header', 'header_contact_text', 'Contact Us');
-    const headerContactUrl = getSetting('header', 'header_contact_url', '/contact');
-    const headerHelpVisible = getSetting('header', 'header_help_visible', '1') === '1';
-    const headerHelpText = getSetting('header', 'header_help_text', 'Help Center');
+    const headerContactVisible =
+        getSetting('header', 'header_contact_visible', '1') === '1';
+    const headerContactText = getSetting(
+        'header',
+        'header_contact_text',
+        'Contact Us',
+    );
+    const headerContactUrl = getSetting(
+        'header',
+        'header_contact_url',
+        '/contact',
+    );
+    const headerHelpVisible =
+        getSetting('header', 'header_help_visible', '1') === '1';
+    const headerHelpText = getSetting(
+        'header',
+        'header_help_text',
+        'Help Center',
+    );
     const headerHelpUrl = getSetting('header', 'header_help_url', '/help');
 
     // Meeting request settings
-    const headerMeetingVisible = getSetting('header', 'header_meeting_visible', '1') === '1';
-    const headerMeetingText = getSetting('header', 'header_meeting_text', 'Meeting Request');
-    const headerMeetingScheduleText = getSetting('header', 'header_meeting_schedule_text', 'Schedule Meeting');
-    const headerMeetingScheduleUrl = getSetting('header', 'header_meeting_schedule_url', '/meeting/schedule');
-    const headerMeetingCallbackText = getSetting('header', 'header_meeting_callback_text', 'Request Callback');
-    const headerMeetingCallbackUrl = getSetting('header', 'header_meeting_callback_url', '/meeting/callback');
-    const headerMeetingAvailabilityText = getSetting('header', 'header_meeting_availability_text', 'Check Availability');
-    const headerMeetingAvailabilityUrl = getSetting('header', 'header_meeting_availability_url', '/meeting/availability');
+    // const headerMeetingVisible =
+    //     getSetting('header', 'header_meeting_visible', '1') === '1';
+    // const headerMeetingText = getSetting(
+    //     'header',
+    //     'header_meeting_text',
+    //     'Meeting Request',
+    // );
+    // const headerMeetingScheduleText = getSetting(
+    //     'header',
+    //     'header_meeting_schedule_text',
+    //     'Schedule Meeting',
+    // );
+    // const headerMeetingScheduleUrl = getSetting(
+    //     'header',
+    //     'header_meeting_schedule_url',
+    //     '/meeting/schedule',
+    // );
+    // const headerMeetingCallbackText = getSetting(
+    //     'header',
+    //     'header_meeting_callback_text',
+    //     'Request Callback',
+    // );
+    // const headerMeetingCallbackUrl = getSetting(
+    //     'header',
+    //     'header_meeting_callback_url',
+    //     '/meeting/callback',
+    // );
+    // const headerMeetingAvailabilityText = getSetting(
+    //     'header',
+    //     'header_meeting_availability_text',
+    //     'Check Availability',
+    // );
+    // const headerMeetingAvailabilityUrl = getSetting(
+    //     'header',
+    //     'header_meeting_availability_url',
+    //     '/meeting/availability',
+    // );
 
     // Feature toggles
-    const headerWishlistVisible = getSetting('header', 'header_wishlist_visible', '1') === '1';
-    const headerCartVisible = getSetting('header', 'header_cart_visible', '1') === '1';
+    const headerWishlistVisible =
+        getSetting('header', 'header_wishlist_visible', '1') === '1';
+    const headerCartVisible =
+        getSetting('header', 'header_cart_visible', '1') === '1';
 
     const handleMouseEnter = (key: string) => {
         if (timeoutRef.current) {
@@ -368,9 +403,9 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
             )} */}
 
             {/* Main Header - White background */}
-            <div className="bg-background border-b">
+            <div className="border-b bg-background">
                 <div className="container mx-auto px-4">
-                    <div className="flex h-16 items-center justify-start lg:justify-between gap-4">
+                    <div className="flex h-16 items-center justify-start gap-4 lg:justify-between">
                         {/* Mobile Menu */}
                         <Sheet>
                             <SheetTrigger asChild className="lg:hidden">
@@ -378,37 +413,73 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                                     <Menu className="h-5 w-5" />
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="left" className="w-full overflow-y-auto">
+                            <SheetContent
+                                side="left"
+                                className="w-full overflow-y-auto"
+                            >
                                 <div className="p-4">
-                                    <Link href="/" className="flex items-center mb-6">
+                                    <Link
+                                        href="/"
+                                        className="mb-6 flex items-center"
+                                    >
                                         {/* Logo */}
-                                        <img src={logoSrc} alt={siteName} className="h-10" />
+                                        <img
+                                            src={logoSrc}
+                                            alt={siteName}
+                                            className="h-10"
+                                        />
                                     </Link>
                                     <nav className="flex flex-col gap-2">
                                         <Link
                                             href="/products"
-                                            className="text-base font-medium py-2 border-b"
+                                            className="border-b py-2 text-base font-medium"
                                         >
                                             All E-Club
                                         </Link>
                                         {navItems.map((item) => (
-                                            <div key={item} className="border-b pb-2">
-                                                <p className="font-medium py-2">{item}</p>
-                                                <div className="pl-4 space-y-1">
-                                                    {Object.entries(navigationStructure[item] || {}).map(([category, items]) => (
-                                                        <div key={category} className="mb-2">
-                                                            <p className="text-sm text-muted-foreground font-medium">{category}</p>
-                                                            {items.slice(0, 3).map((subItem) => (
-                                                                <Link
-                                                                    key={subItem}
-                                                                    href={`/products?category=${subItem.toLowerCase().replace(/\s+/g, '-')}`}
-                                                                    className="block text-sm py-1 text-muted-foreground hover:text-primary"
-                                                                >
-                                                                    {subItem}
-                                                                </Link>
-                                                            ))}
-                                                        </div>
-                                                    ))}
+                                            <div
+                                                key={item}
+                                                className="border-b pb-2"
+                                            >
+                                                <p className="py-2 font-medium">
+                                                    {item}
+                                                </p>
+                                                <div className="space-y-1 pl-4">
+                                                    {Object.entries(
+                                                        navigationStructure[
+                                                        item
+                                                        ] || {},
+                                                    ).map(
+                                                        ([category, items]) => (
+                                                            <div
+                                                                key={category}
+                                                                className="mb-2"
+                                                            >
+                                                                <p className="text-sm font-medium text-muted-foreground">
+                                                                    {category}
+                                                                </p>
+                                                                {items
+                                                                    .slice(0, 3)
+                                                                    .map(
+                                                                        (
+                                                                            subItem,
+                                                                        ) => (
+                                                                            <Link
+                                                                                key={
+                                                                                    subItem
+                                                                                }
+                                                                                href={`/products?category=${subItem.toLowerCase().replace(/\s+/g, '-')}`}
+                                                                                className="block py-1 text-sm text-muted-foreground hover:text-primary"
+                                                                            >
+                                                                                {
+                                                                                    subItem
+                                                                                }
+                                                                            </Link>
+                                                                        ),
+                                                                    )}
+                                                            </div>
+                                                        ),
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
@@ -419,20 +490,26 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
 
                         {/* Logo */}
                         <Link href="/" className="flex items-center">
-                            <img src={logoSrc} alt={siteName} className="h-10" />
+                            <img
+                                src={logoSrc}
+                                alt={siteName}
+                                className="h-10"
+                            />
                         </Link>
 
                         <div className="flex-1 lg:hidden" />
 
                         {/* Search Bar - Desktop (opens command dialog) */}
-                        <div className="hidden md:flex flex-1 max-w-md mx-4">
+                        <div className="mx-4 hidden max-w-md flex-1 md:flex">
                             <button
                                 onClick={() => setIsSearchOpen(true)}
-                                className="relative w-full flex items-center h-10 rounded-md border border-input bg-background px-4 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                                className="relative flex h-10 w-full items-center rounded-md border border-input bg-background px-4 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                             >
                                 <Search className="mr-2 h-4 w-4" />
-                                <span className="flex-1 text-left">Search products...</span>
-                                <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+                                <span className="flex-1 text-left">
+                                    Search products...
+                                </span>
+                                <kbd className="pointer-events-none hidden h-5 items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 select-none sm:flex">
                                     <span className="text-xs">⌘</span>K
                                 </kbd>
                             </button>
@@ -454,7 +531,7 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                             {headerAboutVisible && (
                                 <Link
                                     href={headerAboutUrl}
-                                    className="hidden lg:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary px-2"
+                                    className="hidden items-center gap-1.5 px-2 text-sm text-muted-foreground hover:text-primary lg:flex"
                                 >
                                     <span>{headerAboutText}</span>
                                 </Link>
@@ -464,7 +541,7 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                             {headerContactVisible && (
                                 <Link
                                     href={headerContactUrl}
-                                    className="hidden lg:flex items-center text-sm text-muted-foreground hover:text-primary px-2"
+                                    className="hidden items-center px-2 text-sm text-muted-foreground hover:text-primary lg:flex"
                                 >
                                     {headerContactText}
                                 </Link>
@@ -474,7 +551,7 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                             {headerHelpVisible && (
                                 <Link
                                     href={headerHelpUrl}
-                                    className="hidden lg:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary px-2"
+                                    className="hidden items-center gap-1.5 px-2 text-sm text-muted-foreground hover:text-primary lg:flex"
                                 >
                                     <span>{headerHelpText}</span>
                                 </Link>
@@ -530,11 +607,11 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                             {headerWishlistVisible && (
                                 <Link
                                     href="/account/wishlist"
-                                    className="relative p-2 text-muted-foreground hover:text-primary hidden sm:block"
+                                    className="relative hidden p-2 text-muted-foreground hover:text-primary sm:block"
                                 >
                                     <Heart className="h-5 w-5" />
                                     {wishlistCount > 0 && (
-                                        <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs font-medium text-destructive-foreground">
+                                        <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs font-medium text-destructive-foreground">
                                             {wishlistCount}
                                         </span>
                                     )}
@@ -543,14 +620,17 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
 
                             {/* Cart - Opens CartSheet */}
                             {headerCartVisible && (
-                                <CartSheet open={isCartOpen} onOpenChange={setIsCartOpen}>
+                                <CartSheet
+                                    open={isCartOpen}
+                                    onOpenChange={setIsCartOpen}
+                                >
                                     <button
                                         className="relative p-2"
                                         onClick={() => setIsCartOpen(true)}
                                     >
                                         <ShoppingCart className="h-5 w-5 text-muted-foreground" />
                                         {totalItems > 0 && (
-                                            <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs font-medium text-destructive-foreground">
+                                            <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs font-medium text-destructive-foreground">
                                                 {totalItems}
                                             </span>
                                         )}
@@ -565,18 +645,24 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                                 onMouseEnter={() => setUserMenuOpen(true)}
                                 onMouseLeave={() => setUserMenuOpen(false)}
                             >
-                                <button
-                                    className="flex items-center p-1 rounded-full hover:ring-2 hover:ring-primary/20 transition-all"
-                                >
+                                <button className="flex items-center rounded-full p-1 transition-all hover:ring-2 hover:ring-primary/20">
                                     {isAuthenticated ? (
                                         <Avatar className="h-8 w-8">
-                                            <AvatarImage src={user?.avatar} alt={user?.name} />
-                                            <AvatarFallback className="bg-primary text-primary-foreground text-sm font-medium">
-                                                {user?.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                                            <AvatarImage
+                                                src={user?.avatar}
+                                                alt={user?.name}
+                                            />
+                                            <AvatarFallback className="bg-primary text-sm font-medium text-primary-foreground">
+                                                {user?.name
+                                                    ?.split(' ')
+                                                    .map((n) => n[0])
+                                                    .join('')
+                                                    .toUpperCase()
+                                                    .slice(0, 2)}
                                             </AvatarFallback>
                                         </Avatar>
                                     ) : (
-                                        <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
+                                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
                                             <User className="h-4 w-4 text-muted-foreground" />
                                         </div>
                                     )}
@@ -584,14 +670,18 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
 
                                 {/* User Dropdown Menu */}
                                 {userMenuOpen && (
-                                    <div className="absolute right-0 top-full pt-2 z-50">
-                                        <div className="bg-popover text-popover-foreground rounded-lg shadow-lg border border-border py-2 min-w-[200px]">
+                                    <div className="absolute top-full right-0 z-50 pt-2">
+                                        <div className="min-w-[200px] rounded-lg border border-border bg-popover py-2 text-popover-foreground shadow-lg">
                                             {isAuthenticated ? (
                                                 <>
                                                     {/* User Info */}
-                                                    <div className="px-4 py-2 border-b border-border">
-                                                        <p className="font-medium text-foreground">{user?.name}</p>
-                                                        <p className="text-xs text-muted-foreground">{user?.email}</p>
+                                                    <div className="border-b border-border px-4 py-2">
+                                                        <p className="font-medium text-foreground">
+                                                            {user?.name}
+                                                        </p>
+                                                        <p className="text-xs text-muted-foreground">
+                                                            {user?.email}
+                                                        </p>
                                                     </div>
 
                                                     <Link
@@ -615,7 +705,7 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                                                         <Package className="h-4 w-4" />
                                                         My Orders
                                                     </Link>
-                                                    <div className="border-t border-border my-1" />
+                                                    <div className="my-1 border-t border-border" />
                                                     <Link
                                                         href="/logout"
                                                         method="post"
@@ -642,7 +732,7 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                                                         <UserPlus className="h-4 w-4" />
                                                         Create Account
                                                     </Link>
-                                                    <div className="border-t border-border my-1" />
+                                                    <div className="my-1 border-t border-border" />
                                                     <Link
                                                         href="/account"
                                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted-foreground hover:bg-muted hover:text-primary"
@@ -663,20 +753,19 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                                     </div>
                                 )}
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Secondary Navigation */}
-            <nav className="bg-primary hidden lg:block relative">
+            <nav className="relative hidden bg-primary lg:block">
                 <div className="container mx-auto px-4">
-                    <div className="flex items-center h-12">
+                    <div className="flex h-12 items-center">
                         {/* All E-Club */}
                         <Link
                             href="/products"
-                            className="px-4 h-full flex items-center text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+                            className="flex h-full items-center px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
                         >
                             All E-Club
                         </Link>
@@ -685,21 +774,25 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                         {navItems.map((item) => (
                             <div
                                 key={item}
-                                className="relative h-full flex items-center"
+                                className="relative flex h-full items-center"
                                 onMouseEnter={() => handleMouseEnter(item)}
                                 onMouseLeave={handleMouseLeave}
                             >
                                 <button
-                                    className={`px-4 h-12 flex items-center gap-1 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors ${activeDropdown === item ? 'bg-primary/90' : ''
+                                    className={`flex h-12 items-center gap-1 px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 ${activeDropdown === item
+                                        ? 'bg-primary/90'
+                                        : ''
                                         }`}
                                 >
                                     {item}
-                                    <ChevronDown className={`h-4 w-4 transition-transform ${activeDropdown === item ? 'rotate-180' : ''}`} />
+                                    <ChevronDown
+                                        className={`h-4 w-4 transition-transform ${activeDropdown === item ? 'rotate-180' : ''}`}
+                                    />
                                 </button>
 
                                 {/* Underline indicator */}
                                 {activeDropdown === item && (
-                                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground" />
+                                    <div className="absolute right-0 bottom-0 left-0 h-0.5 bg-foreground" />
                                 )}
                             </div>
                         ))}
@@ -710,7 +803,7 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                 {activeDropdown && navigationStructure[activeDropdown] && (
                     <div
                         ref={dropdownRef}
-                        className="absolute left-0 right-0 bg-popover text-popover-foreground shadow-lg border-t border-border z-50"
+                        className="absolute right-0 left-0 z-50 border-t border-border bg-popover text-popover-foreground shadow-lg"
                         onMouseEnter={() => {
                             if (timeoutRef.current) {
                                 clearTimeout(timeoutRef.current);
@@ -720,9 +813,11 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                     >
                         <div className="container mx-auto px-4 py-8">
                             <div className="grid grid-cols-4 gap-8">
-                                {Object.entries(navigationStructure[activeDropdown]).map(([category, items]) => (
+                                {Object.entries(
+                                    navigationStructure[activeDropdown],
+                                ).map(([category, items]) => (
                                     <div key={category}>
-                                        <h3 className="font-semibold text-foreground mb-3 text-base">
+                                        <h3 className="mb-3 text-base font-semibold text-foreground">
                                             {category}
                                         </h3>
                                         <ul className="space-y-2">
@@ -730,7 +825,7 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                                                 <li key={subItem}>
                                                     <Link
                                                         href={`/products?category=${subItem.toLowerCase().replace(/\s+/g, '-')}`}
-                                                        className="text-sm text-muted-foreground hover:text-primary hover:underline transition-colors"
+                                                        className="text-sm text-muted-foreground transition-colors hover:text-primary hover:underline"
                                                     >
                                                         {subItem}
                                                     </Link>
@@ -748,10 +843,10 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
             {/* Mobile Navigation Bar */}
             <nav className="bg-primary lg:hidden">
                 <div className="container mx-auto px-4">
-                    <div className="flex items-center h-10 overflow-x-auto scrollbar-hide gap-1">
+                    <div className="scrollbar-hide flex h-10 items-center gap-1 overflow-x-auto">
                         <Link
                             href="/products"
-                            className="px-3 h-full flex items-center text-xs font-medium text-primary-foreground whitespace-nowrap"
+                            className="flex h-full items-center px-3 text-xs font-medium whitespace-nowrap text-primary-foreground"
                         >
                             All
                         </Link>
@@ -759,7 +854,7 @@ export function SiteHeader({ settings, categories = [] }: SiteHeaderProps) {
                             <Link
                                 key={item}
                                 href={`/products?type=${item.toLowerCase().replace(/\s+/g, '-')}`}
-                                className="px-3 h-full flex items-center text-xs font-medium text-primary-foreground whitespace-nowrap"
+                                className="flex h-full items-center px-3 text-xs font-medium whitespace-nowrap text-primary-foreground"
                             >
                                 {item.split(' ')[0]}
                             </Link>

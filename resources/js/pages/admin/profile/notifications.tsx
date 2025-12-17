@@ -1,23 +1,28 @@
-import { Head, router, usePage } from '@inertiajs/react';
-import { useState } from 'react';
-import { motion } from 'motion/react';
-import { z } from 'zod';
-import { useForm as useHookForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Head, router, usePage } from '@inertiajs/react';
 import {
     Bell,
-    Mail,
-    Smartphone,
     Globe,
-    ShoppingCart,
+    Mail,
     MessageSquare,
-    Star,
     Package,
+    ShoppingCart,
+    Smartphone,
+    Star,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useState } from 'react';
+import { useForm as useHookForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import AdminPageLayout from '@/layouts/admin-page-layout';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     Form,
     FormControl,
@@ -27,9 +32,9 @@ import {
     FormLabel,
 } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
-import { Separator } from '@/components/ui/separator';
-import { toast } from 'sonner';
+import AdminPageLayout from '@/layouts/admin-page-layout';
 import type { SharedData } from '@/types';
+import { toast } from 'sonner';
 
 // Types
 interface NotificationSettings {
@@ -112,14 +117,19 @@ export default function Notifications({ notifications }: Props) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
                 >
-                    <h1 className="text-3xl font-bold tracking-tight">Notifications</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        Notifications
+                    </h1>
                     <p className="text-muted-foreground">
                         Manage how you receive notifications and alerts.
                     </p>
                 </motion.div>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+                    <form
+                        onSubmit={form.handleSubmit(handleSubmit)}
+                        className="space-y-6"
+                    >
                         {/* Email Notifications */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -133,7 +143,8 @@ export default function Notifications({ notifications }: Props) {
                                         Email Notifications
                                     </CardTitle>
                                     <CardDescription>
-                                        Choose which emails you'd like to receive.
+                                        Choose which emails you'd like to
+                                        receive.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-6">
@@ -148,13 +159,17 @@ export default function Notifications({ notifications }: Props) {
                                                         Order Updates
                                                     </FormLabel>
                                                     <FormDescription>
-                                                        Receive emails when orders are placed, shipped, or delivered.
+                                                        Receive emails when
+                                                        orders are placed,
+                                                        shipped, or delivered.
                                                     </FormDescription>
                                                 </div>
                                                 <FormControl>
                                                     <Switch
                                                         checked={field.value}
-                                                        onCheckedChange={field.onChange}
+                                                        onCheckedChange={
+                                                            field.onChange
+                                                        }
                                                     />
                                                 </FormControl>
                                             </FormItem>
@@ -172,13 +187,16 @@ export default function Notifications({ notifications }: Props) {
                                                         New Reviews
                                                     </FormLabel>
                                                     <FormDescription>
-                                                        Get notified when customers leave reviews.
+                                                        Get notified when
+                                                        customers leave reviews.
                                                     </FormDescription>
                                                 </div>
                                                 <FormControl>
                                                     <Switch
                                                         checked={field.value}
-                                                        onCheckedChange={field.onChange}
+                                                        onCheckedChange={
+                                                            field.onChange
+                                                        }
                                                     />
                                                 </FormControl>
                                             </FormItem>
@@ -196,13 +214,17 @@ export default function Notifications({ notifications }: Props) {
                                                         Inventory Alerts
                                                     </FormLabel>
                                                     <FormDescription>
-                                                        Receive alerts when products are running low.
+                                                        Receive alerts when
+                                                        products are running
+                                                        low.
                                                     </FormDescription>
                                                 </div>
                                                 <FormControl>
                                                     <Switch
                                                         checked={field.value}
-                                                        onCheckedChange={field.onChange}
+                                                        onCheckedChange={
+                                                            field.onChange
+                                                        }
                                                     />
                                                 </FormControl>
                                             </FormItem>
@@ -220,13 +242,16 @@ export default function Notifications({ notifications }: Props) {
                                                         Newsletter
                                                     </FormLabel>
                                                     <FormDescription>
-                                                        Receive product updates and marketing emails.
+                                                        Receive product updates
+                                                        and marketing emails.
                                                     </FormDescription>
                                                 </div>
                                                 <FormControl>
                                                     <Switch
                                                         checked={field.value}
-                                                        onCheckedChange={field.onChange}
+                                                        onCheckedChange={
+                                                            field.onChange
+                                                        }
                                                     />
                                                 </FormControl>
                                             </FormItem>
@@ -249,7 +274,8 @@ export default function Notifications({ notifications }: Props) {
                                         Push Notifications
                                     </CardTitle>
                                     <CardDescription>
-                                        Manage your push notification preferences.
+                                        Manage your push notification
+                                        preferences.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-6">
@@ -264,13 +290,16 @@ export default function Notifications({ notifications }: Props) {
                                                         Order Updates
                                                     </FormLabel>
                                                     <FormDescription>
-                                                        Push notifications for new orders.
+                                                        Push notifications for
+                                                        new orders.
                                                     </FormDescription>
                                                 </div>
                                                 <FormControl>
                                                     <Switch
                                                         checked={field.value}
-                                                        onCheckedChange={field.onChange}
+                                                        onCheckedChange={
+                                                            field.onChange
+                                                        }
                                                     />
                                                 </FormControl>
                                             </FormItem>
@@ -288,13 +317,16 @@ export default function Notifications({ notifications }: Props) {
                                                         New Reviews
                                                     </FormLabel>
                                                     <FormDescription>
-                                                        Push notifications for new reviews.
+                                                        Push notifications for
+                                                        new reviews.
                                                     </FormDescription>
                                                 </div>
                                                 <FormControl>
                                                     <Switch
                                                         checked={field.value}
-                                                        onCheckedChange={field.onChange}
+                                                        onCheckedChange={
+                                                            field.onChange
+                                                        }
                                                     />
                                                 </FormControl>
                                             </FormItem>
@@ -312,13 +344,16 @@ export default function Notifications({ notifications }: Props) {
                                                         Inventory Alerts
                                                     </FormLabel>
                                                     <FormDescription>
-                                                        Push notifications for low inventory.
+                                                        Push notifications for
+                                                        low inventory.
                                                     </FormDescription>
                                                 </div>
                                                 <FormControl>
                                                     <Switch
                                                         checked={field.value}
-                                                        onCheckedChange={field.onChange}
+                                                        onCheckedChange={
+                                                            field.onChange
+                                                        }
                                                     />
                                                 </FormControl>
                                             </FormItem>
@@ -356,13 +391,17 @@ export default function Notifications({ notifications }: Props) {
                                                         Browser Notifications
                                                     </FormLabel>
                                                     <FormDescription>
-                                                        Receive notifications in your browser when the dashboard is open.
+                                                        Receive notifications in
+                                                        your browser when the
+                                                        dashboard is open.
                                                     </FormDescription>
                                                 </div>
                                                 <FormControl>
                                                     <Switch
                                                         checked={field.value}
-                                                        onCheckedChange={field.onChange}
+                                                        onCheckedChange={
+                                                            field.onChange
+                                                        }
                                                     />
                                                 </FormControl>
                                             </FormItem>
@@ -380,13 +419,17 @@ export default function Notifications({ notifications }: Props) {
                                                         SMS Notifications
                                                     </FormLabel>
                                                     <FormDescription>
-                                                        Receive critical alerts via SMS (additional charges may apply).
+                                                        Receive critical alerts
+                                                        via SMS (additional
+                                                        charges may apply).
                                                     </FormDescription>
                                                 </div>
                                                 <FormControl>
                                                     <Switch
                                                         checked={field.value}
-                                                        onCheckedChange={field.onChange}
+                                                        onCheckedChange={
+                                                            field.onChange
+                                                        }
                                                     />
                                                 </FormControl>
                                             </FormItem>

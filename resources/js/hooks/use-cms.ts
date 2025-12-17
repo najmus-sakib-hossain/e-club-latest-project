@@ -1,15 +1,15 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type {
-    HomeContent,
-    HeroSlide,
     Category,
-    Product,
-    FeatureCard,
-    TrustedCompany,
-    FeaturedProduct,
-    SiteSettings,
     CustomerReview,
+    FeatureCard,
+    FeaturedProduct,
+    HeroSlide,
+    HomeContent,
+    Product,
+    SiteSettings,
+    TrustedCompany,
 } from '@/types/cms';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const API_BASE = '/api';
 
@@ -27,7 +27,9 @@ async function fetchHeroSlides(): Promise<HeroSlide[]> {
 }
 
 async function fetchCategories(type?: string): Promise<Category[]> {
-    const url = type ? `${API_BASE}/categories/${type}` : `${API_BASE}/categories`;
+    const url = type
+        ? `${API_BASE}/categories/${type}`
+        : `${API_BASE}/categories`;
     const response = await fetch(url);
     if (!response.ok) throw new Error('Failed to fetch categories');
     return response.json();
@@ -188,7 +190,7 @@ export function useSiteSettings() {
 // Hook to invalidate all home content queries
 export function useInvalidateHomeContent() {
     const queryClient = useQueryClient();
-    
+
     return () => {
         queryClient.invalidateQueries({ queryKey: queryKeys.homeContent });
         queryClient.invalidateQueries({ queryKey: queryKeys.heroSlides });

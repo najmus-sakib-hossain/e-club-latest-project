@@ -1,6 +1,9 @@
 import { motion } from 'motion/react';
 
-import { staggerContainerVariants, staggerItemVariants } from '@/lib/animations';
+import {
+    staggerContainerVariants,
+    staggerItemVariants,
+} from '@/lib/animations';
 import type { TrustedCompany } from '@/types/cms';
 
 interface TrustedCompaniesProps {
@@ -28,11 +31,11 @@ export function TrustedCompanies({ companies }: TrustedCompaniesProps) {
     };
 
     return (
-        <section className="py-16 bg-white">
+        <section className="bg-white py-16">
             <div className="container mx-auto px-4">
                 {/* Title */}
                 <motion.h2
-                    className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12"
+                    className="mb-12 text-center text-3xl font-bold text-gray-900 md:text-4xl"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -43,7 +46,7 @@ export function TrustedCompanies({ companies }: TrustedCompaniesProps) {
 
                 {/* Company Logos Grid - 8 columns on desktop */}
                 <motion.div
-                    className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6 md:gap-8 items-center justify-items-center"
+                    className="grid grid-cols-4 items-center justify-items-center gap-6 md:grid-cols-6 md:gap-8 lg:grid-cols-8"
                     variants={staggerContainerVariants}
                     initial="initial"
                     whileInView="animate"
@@ -62,7 +65,7 @@ export function TrustedCompanies({ companies }: TrustedCompaniesProps) {
                             <img
                                 src={getLogoUrl(company)}
                                 alt={company.name}
-                                className="max-h-12 md:max-h-14 lg:max-h-16 w-auto object-contain"
+                                className="max-h-12 w-auto object-contain md:max-h-14 lg:max-h-16"
                                 loading="lazy"
                                 onError={(e) => {
                                     // Fallback to placeholder if image fails to load

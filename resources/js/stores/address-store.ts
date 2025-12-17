@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist, devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 
 export interface Address {
     id: string;
@@ -15,10 +15,13 @@ export interface Address {
 
 interface AddressState {
     addresses: Address[];
-    
+
     // Actions
     addAddress: (address: Omit<Address, 'id' | 'createdAt'>) => void;
-    updateAddress: (id: string, address: Partial<Omit<Address, 'id' | 'createdAt'>>) => void;
+    updateAddress: (
+        id: string,
+        address: Partial<Omit<Address, 'id' | 'createdAt'>>,
+    ) => void;
     removeAddress: (id: string) => void;
     setDefaultAddress: (id: string) => void;
     getDefaultAddress: () => Address | undefined;
@@ -39,14 +42,18 @@ export const useAddressStore = create<AddressState>()(
                         id: generateId(),
                         createdAt: new Date().toISOString(),
                         // If this is the first address, make it default
-                        isDefault: addresses.length === 0 ? true : address.isDefault,
+                        isDefault:
+                            addresses.length === 0 ? true : address.isDefault,
                     };
-                    
+
                     // If new address is default, remove default from others
                     if (newAddress.isDefault) {
                         set({
                             addresses: [
-                                ...addresses.map((a) => ({ ...a, isDefault: false })),
+                                ...addresses.map((a) => ({
+                                    ...a,
+                                    isDefault: false,
+                                })),
                                 newAddress,
                             ],
                         });
@@ -57,20 +64,20 @@ export const useAddressStore = create<AddressState>()(
 
                 updateAddress: (id, updates) => {
                     const { addresses } = get();
-                    
+
                     // If updating to default, remove default from others
                     if (updates.isDefault) {
                         set({
                             addresses: addresses.map((a) =>
                                 a.id === id
                                     ? { ...a, ...updates }
-                                    : { ...a, isDefault: false }
+                                    : { ...a, isDefault: false },
                             ),
                         });
                     } else {
                         set({
                             addresses: addresses.map((a) =>
-                                a.id === id ? { ...a, ...updates } : a
+                                a.id === id ? { ...a, ...updates } : a,
                             ),
                         });
                     }
@@ -79,14 +86,19 @@ export const useAddressStore = create<AddressState>()(
                 removeAddress: (id) => {
                     const { addresses } = get();
                     const addressToRemove = addresses.find((a) => a.id === id);
-                    const remainingAddresses = addresses.filter((a) => a.id !== id);
-                    
+                    const remainingAddresses = addresses.filter(
+                        (a) => a.id !== id,
+                    );
+
                     // If removed address was default and there are remaining addresses,
                     // make the first one default
-                    if (addressToRemove?.isDefault && remainingAddresses.length > 0) {
+                    if (
+                        addressToRemove?.isDefault &&
+                        remainingAddresses.length > 0
+                    ) {
                         remainingAddresses[0].isDefault = true;
                     }
-                    
+
                     set({ addresses: remainingAddresses });
                 },
 
@@ -105,8 +117,8 @@ export const useAddressStore = create<AddressState>()(
             }),
             {
                 name: 'address-storage',
-            }
+            },
         ),
-        { name: 'AddressStore' }
-    )
+        { name: 'AddressStore' },
+    ),
 );
