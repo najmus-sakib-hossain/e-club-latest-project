@@ -66,7 +66,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
-import { AdminPageLayout } from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { getImageUrl } from '@/lib/utils';
 
 // Types
@@ -594,7 +594,7 @@ export default function CustomerReviewsIndex({
     );
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Customer Reviews - Admin" />
 
             <div className="flex-1 space-y-6 p-6">
@@ -822,6 +822,6 @@ export default function CustomerReviewsIndex({
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

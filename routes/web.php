@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\MeetingController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PageContentController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\PopupModalSettingController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\StoreLocationController;
@@ -446,6 +447,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/settings/footer', [SiteSettingController::class, 'footer'])->name('settings.footer');
     Route::get('/settings/navigation', [\App\Http\Controllers\Admin\NavigationMenuController::class, 'index'])->name('settings.navigation');
     Route::post('/settings', [SiteSettingController::class, 'update'])->name('settings.update');
+
+    // Popup Modal Settings
+    Route::get('/settings/popup-modal', [\App\Http\Controllers\Admin\PopupModalSettingController::class, 'index'])->name('settings.popup-modal');
+    Route::post('/settings/popup-modal', [\App\Http\Controllers\Admin\PopupModalSettingController::class, 'update'])->name('settings.popup-modal.update');
+    Route::post('/settings/popup-modal/upload', [\App\Http\Controllers\Admin\PopupModalSettingController::class, 'uploadImage'])->name('settings.popup-modal.upload');
 
     // Navigation Menu Management
     Route::prefix('navigation')->name('navigation.')->group(function () {

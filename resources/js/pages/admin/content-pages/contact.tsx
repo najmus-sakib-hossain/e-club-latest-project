@@ -60,7 +60,7 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -263,7 +263,7 @@ export default function ContactPage({ content }: Props) {
     };
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Contact Page - Admin" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -926,6 +926,6 @@ export default function ContactPage({ content }: Props) {
                     </form>
                 </Form>
             </div>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -8,9 +9,11 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
+import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
-import React from 'react';
+import { Search, ShoppingCart, User } from 'lucide-react';
+import React, { useState } from 'react';
 
 // --- Data for Dropdowns ---
 
@@ -143,12 +146,26 @@ ListItem.displayName = 'ListItem';
 
 // --- Main Header Component ---
 
-export default function Header() {
+interface HeaderProps {
+    navigationMenus?: any;
+    cartItemCount?: number;
+}
+
+export default function Header({ navigationMenus, cartItemCount = 0 }: HeaderProps) {
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Implement search functionality
+        console.log('Searching for:', searchQuery);
+        // You can navigate to search results page here
+    };
+
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-white">
-            <div className="container mx-auto flex h-20 items-center justify-between px-4">
+        <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
+            <div className="container mx-auto flex h-20 items-center justify-between gap-4 px-4">
                 {/* 1. Logo Section */}
-                <div className="mr-8 flex-shrink-0">
+                <div className="flex-shrink-0">
                     <Link href="/" className="flex items-center gap-2">
                         {/* Replace with your actual Image/SVG */}
                         <div className="flex flex-col">
@@ -339,17 +356,61 @@ export default function Header() {
                     </NavigationMenu>
                 </div>
 
-                {/* 3. Action Buttons */}
-                <div className="flex items-center gap-4">
-                    <Button
-                        variant="outline"
-                        className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                {/* 3. Action Section - Search, Cart, User */}
+                <div className="flex items-center gap-3">
+                    {/* Search Bar */}
+                    <form onSubmit={handleSearch} className="hidden md:block">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                            <Input
+                                type="search"
+                                placeholder="Search..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-48 pl-9 lg:w-64"
+                            />
+                        </div>
+                    </form>
+
+                    {/* Cart Icon with Badge */}
+                    <Link
+                        href="/cart"
+                        className="relative rounded-lg p-2 transition-colors hover:bg-gray-100"
                     >
-                        Member Login
-                    </Button>
-                    <Button className="bg-[#0e5843] text-white hover:bg-[#0b4635]">
-                        Join As Member
-                    </Button>
+                        <ShoppingCart className="h-5 w-5 text-gray-600" />
+                        {cartItemCount > 0 && (
+                            <Badge className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 p-0 text-[10px] text-white">
+                                {cartItemCount > 9 ? '9+' : cartItemCount}
+                            </Badge>
+                        )}
+                        <span className="sr-only">Shopping Cart</span>
+                    </Link>
+
+                    {/* User Icon/Profile */}
+                    <Link
+                        href="/profile"
+                        className="rounded-lg p-2 transition-colors hover:bg-gray-100"
+                    >
+                        <User className="h-5 w-5 text-gray-600" />
+                        <span className="sr-only">User Profile</span>
+                    </Link>
+
+                    {/* Action Buttons */}
+                    <div className="hidden items-center gap-2 lg:flex">
+                        <Button
+                            asChild
+                            variant="outline"
+                            className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                        >
+                            <Link href="/member-login">Member Login</Link>
+                        </Button>
+                        <Button
+                            asChild
+                            className="bg-[#0e5843] text-white hover:bg-[#0b4635]"
+                        >
+                            <Link href="/join">Join As Member</Link>
+                        </Button>
+                    </div>
                 </div>
             </div>
         </header>

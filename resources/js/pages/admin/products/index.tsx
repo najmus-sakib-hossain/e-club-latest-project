@@ -62,7 +62,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
-import { AdminPageLayout } from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { getImageUrl } from '@/lib/utils';
 
 // Types
@@ -722,7 +722,7 @@ export default function ProductsIndex({
     );
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Products - E-Club Admin" />
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -1006,6 +1006,6 @@ export default function ProductsIndex({
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

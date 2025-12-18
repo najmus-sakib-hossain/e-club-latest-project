@@ -72,7 +72,7 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -322,7 +322,7 @@ export default function FaqsPage({ categories }: Props) {
     };
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="FAQs - Admin" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -970,6 +970,6 @@ export default function FaqsPage({ categories }: Props) {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

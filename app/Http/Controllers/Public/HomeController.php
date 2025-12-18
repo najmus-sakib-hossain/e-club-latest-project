@@ -13,6 +13,7 @@ use App\Models\HomeProject;
 use App\Models\HomeSection;
 use App\Models\HomeStat;
 use App\Models\NavigationMenu;
+use App\Models\PopupModalSetting;
 use App\Models\SocialLink;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -24,6 +25,8 @@ class HomeController extends Controller
      */
     public function index(): Response
     {
+        $popupSetting = PopupModalSetting::where('is_active', true)->first();
+
         return Inertia::render('home', [
             // Navigation via HandleInertiaRequests middleware is likely cleaner,
             // but keeping specific header structure for now if it differs.
@@ -41,6 +44,13 @@ class HomeController extends Controller
             'projects' => HomeProject::getAllActive(),
             'partners' => HomePartner::getAllActive(),
             'coreValues' => HomeCoreValue::getAllActive(),
+            'popupData' => $popupSetting ? [
+                'title' => $popupSetting->title,
+                'description' => $popupSetting->description,
+                'buttonText' => $popupSetting->button_text,
+                'buttonLink' => $popupSetting->button_link,
+                'imageUrl' => $popupSetting->image_url,
+            ] : null,
         ]);
     }
 }

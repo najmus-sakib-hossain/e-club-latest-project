@@ -44,7 +44,7 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -390,7 +390,7 @@ export default function AboutPage({ content, teamMembers }: Props) {
     };
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="About Page - Admin" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -1480,6 +1480,6 @@ export default function AboutPage({ content, teamMembers }: Props) {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

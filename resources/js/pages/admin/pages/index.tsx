@@ -69,7 +69,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -277,7 +277,7 @@ export default function PagesIndex({ pages }: Props) {
     const inactivePages = pages.filter((p) => !p.is_active).length;
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Pages Management" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -1062,6 +1062,6 @@ export default function PagesIndex({ pages }: Props) {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

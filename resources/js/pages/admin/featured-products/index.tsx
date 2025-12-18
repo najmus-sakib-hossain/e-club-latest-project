@@ -69,7 +69,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { getImageUrl } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -285,7 +285,7 @@ export default function FeaturedProductsIndex({
     const activeFeatured = featuredProducts.filter((f) => f.is_active).length;
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Featured Products Management" />
 
             <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
@@ -1230,6 +1230,6 @@ export default function FeaturedProductsIndex({
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

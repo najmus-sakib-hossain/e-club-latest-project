@@ -105,7 +105,33 @@ const menuItems = [
     {
         title: 'Settings',
         icon: Settings,
-        href: '/admin/settings',
+        items: [
+            {
+                title: 'General Settings',
+                icon: ChevronsRight,
+                href: '/admin/settings',
+            },
+            {
+                title: 'Header Settings',
+                icon: ChevronsRight,
+                href: '/admin/settings/header',
+            },
+            {
+                title: 'Footer Settings',
+                icon: ChevronsRight,
+                href: '/admin/settings/footer',
+            },
+            {
+                title: 'Navigation Menu',
+                icon: ChevronsRight,
+                href: '/admin/settings/navigation',
+            },
+            {
+                title: 'Popup Modal',
+                icon: ChevronsRight,
+                href: '/admin/settings/popup-modal',
+            },
+        ],
     },
 ];
 

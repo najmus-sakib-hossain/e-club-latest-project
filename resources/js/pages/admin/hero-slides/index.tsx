@@ -60,7 +60,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { getImageUrl } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -249,7 +249,7 @@ export default function HeroSlidesIndex({ slides }: Props) {
     const activeSlides = slides.filter((s) => s.is_active).length;
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Hero Slides Management" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -1112,6 +1112,6 @@ export default function HeroSlidesIndex({ slides }: Props) {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

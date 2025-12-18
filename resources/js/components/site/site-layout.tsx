@@ -7,6 +7,7 @@ import type { Category, SiteSettings } from '@/types/cms';
 
 import Footer from '@/components/footer';
 import Header from '@/components/header';
+import { FounderMemberPopup } from '@/components/founder-member-popup';
 
 interface SiteLayoutProps {
     children: ReactNode;
@@ -14,6 +15,15 @@ interface SiteLayoutProps {
     categories?: Category[];
     navigationMenus?: any;
     footerData?: any;
+    cartItemCount?: number;
+    showPopup?: boolean;
+    popupData?: {
+        title?: string;
+        description?: string;
+        buttonText?: string;
+        buttonLink?: string;
+        imageUrl?: string;
+    };
 }
 
 export function SiteLayout({
@@ -22,10 +32,13 @@ export function SiteLayout({
     categories,
     navigationMenus,
     footerData,
+    cartItemCount = 0,
+    showPopup = false,
+    popupData,
 }: SiteLayoutProps) {
     return (
         <div className="flex min-h-screen flex-col">
-            <Header navigationMenus={navigationMenus} />
+            <Header navigationMenus={navigationMenus} cartItemCount={cartItemCount} />
             <motion.main
                 className="flex-1"
                 initial="initial"
@@ -37,6 +50,7 @@ export function SiteLayout({
             </motion.main>
             <Footer footerData={footerData} />
             <Toaster richColors position="bottom-right" closeButton />
+            {showPopup && <FounderMemberPopup {...popupData} />}
         </div>
     );
 }

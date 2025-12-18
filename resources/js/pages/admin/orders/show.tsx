@@ -43,7 +43,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { getImageUrl } from '@/lib/utils';
 
 // Types
@@ -224,7 +224,7 @@ export default function OrderShow({ order }: Props) {
     const StatusIcon = statusConfig.icon;
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title={`Order ${order.order_number}`} />
 
             <div className="space-y-6">
@@ -643,6 +643,6 @@ export default function OrderShow({ order }: Props) {
                     </div>
                 </div>
             </div>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

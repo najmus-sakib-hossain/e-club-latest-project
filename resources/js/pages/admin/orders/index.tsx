@@ -48,7 +48,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { getImageUrl } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -233,7 +233,7 @@ export default function OrdersIndex({ orders, filters = {}, stats }: Props) {
     };
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Orders Management" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -930,6 +930,6 @@ export default function OrdersIndex({ orders, filters = {}, stats }: Props) {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

@@ -50,7 +50,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -190,7 +190,7 @@ export default function CustomersIndex({
     const customersData = customers?.data || [];
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Customers Management" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -655,6 +655,6 @@ export default function CustomersIndex({
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

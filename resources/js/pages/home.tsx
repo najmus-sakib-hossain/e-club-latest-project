@@ -39,6 +39,13 @@ interface HomeProps {
     projects: HomeProject[];
     partners: HomePartner[];
     coreValues: HomeCoreValue[];
+    popupData?: {
+        title: string;
+        description: string;
+        buttonText: string;
+        buttonLink: string;
+        imageUrl: string | null;
+    } | null;
 }
 
 export default function Home(props: HomeProps) {
@@ -50,10 +57,16 @@ export default function Home(props: HomeProps) {
         coreValues,
         navigationMenus,
         footerData,
+        popupData,
     } = props;
 
     return (
-        <SiteLayout navigationMenus={navigationMenus} footerData={footerData}>
+        <SiteLayout 
+            navigationMenus={navigationMenus} 
+            footerData={footerData}
+            showPopup={!!popupData}
+            popupData={popupData || undefined}
+        >
             <Head title="Home" />
             <TopMarquee />
             <HeroSection stats={stats} />

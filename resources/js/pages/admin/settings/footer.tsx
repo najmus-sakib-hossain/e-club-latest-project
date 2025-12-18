@@ -47,7 +47,7 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { toast } from 'sonner';
 
 interface PaymentMethod {
@@ -548,7 +548,7 @@ export default function FooterSettings({ settings }: Props) {
     };
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Footer Settings" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -2521,6 +2521,6 @@ export default function FooterSettings({ settings }: Props) {
                     </Form>
                 </motion.div>
             </div>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

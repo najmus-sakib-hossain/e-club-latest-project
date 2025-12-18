@@ -57,7 +57,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -239,7 +239,7 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
     const activeCompanies = companies.filter((c) => c.is_active).length;
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Trusted Companies Management" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -878,6 +878,6 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

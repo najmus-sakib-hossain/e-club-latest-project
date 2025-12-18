@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import type { SharedData } from '@/types';
 import { toast } from 'sonner';
 
@@ -117,7 +117,7 @@ export default function Account() {
     };
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Account Settings" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -431,6 +431,6 @@ export default function Account() {
                     </Card>
                 </motion.div>
             </div>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

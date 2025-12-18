@@ -32,7 +32,7 @@ import {
     FormLabel,
 } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import type { SharedData } from '@/types';
 import { toast } from 'sonner';
 
@@ -107,7 +107,7 @@ export default function Notifications({ notifications }: Props) {
     };
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Notifications" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -453,6 +453,6 @@ export default function Notifications({ notifications }: Props) {
                     </form>
                 </Form>
             </div>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

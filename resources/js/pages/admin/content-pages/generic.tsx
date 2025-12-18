@@ -25,7 +25,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -135,7 +135,7 @@ export default function GenericContentPage({
     };
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title={`${pageConfig.title} - Admin`} />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -186,7 +186,7 @@ export default function GenericContentPage({
                     )}
                 </Tabs>
             </div>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }
 

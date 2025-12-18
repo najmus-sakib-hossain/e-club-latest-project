@@ -28,7 +28,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 
 // Mock data for billing (in real app, this would come from backend)
 const currentPlan = {
@@ -96,7 +96,7 @@ const invoices = [
 
 export default function Billing() {
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Billing" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -370,6 +370,6 @@ export default function Billing() {
                     </Card>
                 </motion.div>
             </div>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

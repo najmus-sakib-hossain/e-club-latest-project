@@ -69,7 +69,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -269,7 +269,7 @@ export default function ContactMessagesIndex({
     });
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Contact Messages" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -845,6 +845,6 @@ export default function ContactMessagesIndex({
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

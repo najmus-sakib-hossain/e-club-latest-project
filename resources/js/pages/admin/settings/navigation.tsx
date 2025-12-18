@@ -69,7 +69,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { toast } from 'sonner';
 
 interface NavigationItem {
@@ -544,7 +544,7 @@ export default function NavigationSettings({ navigation }: Props) {
     };
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Navigation Menu" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -826,6 +826,6 @@ export default function NavigationSettings({ navigation }: Props) {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }

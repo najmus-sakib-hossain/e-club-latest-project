@@ -59,7 +59,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import AdminPageLayout from '@/layouts/admin-page-layout';
+import { AdminLayout } from '@/layouts/admin-layout';
 import { toast } from 'sonner';
 
 // Types
@@ -224,7 +224,7 @@ export default function MeetingSettings({ slots }: Props) {
     };
 
     return (
-        <AdminPageLayout>
+        <AdminLayout>
             <Head title="Meeting Availability Settings" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
@@ -750,6 +750,6 @@ export default function MeetingSettings({ slots }: Props) {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </AdminPageLayout>
+        </AdminLayout>
     );
 }
