@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\ContactMessage;
 use App\Models\PageContent;
 use App\Models\SiteSetting;
@@ -17,12 +16,10 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $categories = Category::where('is_active', true)->orderBy('name')->get();
         $settings = SiteSetting::getAllGrouped();
         $pageContent = PageContent::getPageContent('contact');
 
         return Inertia::render('contact', [
-            'categories' => $categories,
             'settings' => $settings,
             'pageContent' => $pageContent,
         ]);

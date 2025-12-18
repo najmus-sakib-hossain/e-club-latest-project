@@ -358,7 +358,7 @@ export default function CommitteeMembersIndex({ members }: CommitteeMembersIndex
                                                     <div className="flex items-center gap-3">
                                                         <Avatar>
                                                             <AvatarImage
-                                                                src={getImageUrl(member.image)}
+                                                                src={getImageUrl(member.image) || undefined}
                                                                 alt={member.name}
                                                             />
                                                             <AvatarFallback>

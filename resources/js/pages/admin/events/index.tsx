@@ -311,7 +311,7 @@ export default function EventsIndex({ events }: EventsIndexProps) {
         });
         setImagePreview(event.image ? getImageUrl(event.image) : null);
         if (event.gallery && event.gallery.length > 0) {
-            setGalleryPreviews(event.gallery.map((img) => getImageUrl(img)));
+            setGalleryPreviews(event.gallery.map((img) => getImageUrl(img)).filter((url): url is string => url !== null));
         }
         setIsEditOpen(true);
     };
@@ -392,7 +392,7 @@ export default function EventsIndex({ events }: EventsIndexProps) {
                                                 <TableCell>
                                                     <div className="flex items-center gap-3">
                                                         <img
-                                                            src={getImageUrl(event.image)}
+                                                            src={getImageUrl(event.image) || undefined}
                                                             alt={event.title}
                                                             className="h-10 w-10 rounded object-cover"
                                                         />

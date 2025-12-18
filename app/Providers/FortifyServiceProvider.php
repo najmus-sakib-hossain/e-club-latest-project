@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Category;
 use App\Models\SiteSetting;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;

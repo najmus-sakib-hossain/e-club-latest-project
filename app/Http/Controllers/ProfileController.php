@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,11 +17,9 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $categories = Category::where('is_active', true)->orderBy('name')->get();
         $settings = SiteSetting::getAllGrouped();
 
         return Inertia::render('account/profile', [
-            'categories' => $categories,
             'settings' => $settings,
         ]);
     }

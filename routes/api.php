@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\CustomerReviewController;
 use App\Http\Controllers\Admin\FeatureCardController;
@@ -50,13 +49,6 @@ Route::middleware(['auth'])->prefix('admin')->name('api.admin.')->group(function
     Route::put('/hero-slides/{heroSlide}', [HeroSlideController::class, 'update'])->name('hero-slides.update');
     Route::delete('/hero-slides/{heroSlide}', [HeroSlideController::class, 'destroy'])->name('hero-slides.destroy');
     Route::post('/hero-slides/order', [HeroSlideController::class, 'updateOrder'])->name('hero-slides.order');
-
-    // Categories
-    Route::get('/categories', [CategoryController::class, 'list'])->name('categories.list');
-    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-    Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-    Route::post('/categories/order', [CategoryController::class, 'updateOrder'])->name('categories.order');
 
     // Products
     Route::get('/products', [ProductController::class, 'list'])->name('products.list');
