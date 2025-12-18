@@ -61,8 +61,8 @@ export default function Home(props: HomeProps) {
     } = props;
 
     return (
-        <SiteLayout 
-            navigationMenus={navigationMenus} 
+        <SiteLayout
+            navigationMenus={navigationMenus}
             footerData={footerData}
             showPopup={!!popupData}
             popupData={popupData || undefined}

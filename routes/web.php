@@ -2,36 +2,28 @@
 
 use App\Http\Controllers\Admin\AboutPageController;
 use App\Http\Controllers\Admin\CallbackRequestController;
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\ContactPageController;
-use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\CustomerReviewController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\FeatureCardController;
-use App\Http\Controllers\Admin\FeaturedProductController;
 use App\Http\Controllers\Admin\FooterController;
 use App\Http\Controllers\Admin\HeroSlideController;
 use App\Http\Controllers\Admin\HomePageController;
 use App\Http\Controllers\Admin\JoinPageController;
 use App\Http\Controllers\Admin\MeetingController;
-use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PageContentController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PopupModalSettingController;
-use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SiteSettingController;
-use App\Http\Controllers\Admin\StoreLocationController;
 use App\Http\Controllers\Admin\TrustedCompanyController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Category;
 use App\Models\FaqCategory;
 use App\Models\Page;
 use App\Models\PageContent;
 use App\Models\SiteSetting;
-use App\Models\StoreLocation;
 use App\Models\TeamMember;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,10 +32,47 @@ use Inertia\Inertia;
 Route::get('/', [\App\Http\Controllers\Public\HomeController::class, 'index'])->name('home');
 
 // Join as Member Page
-// Join as Member Page
 Route::get('/join', [\App\Http\Controllers\Public\JoinController::class, 'create'])->name('join');
 Route::post('/join', [\App\Http\Controllers\Public\JoinController::class, 'store'])->name('join.store');
 Route::get('/join/success', [\App\Http\Controllers\Public\JoinController::class, 'success'])->name('join.success');
+
+// Committee Routes
+Route::prefix('committee')->name('committee.')->group(function () {
+    Route::get('/advisors', [\App\Http\Controllers\Public\CommitteeController::class, 'advisors'])->name('advisors');
+    Route::get('/governing-body', [\App\Http\Controllers\Public\CommitteeController::class, 'governingBody'])->name('governing-body');
+    Route::get('/executive-body', [\App\Http\Controllers\Public\CommitteeController::class, 'executiveBody'])->name('executive-body');
+    Route::get('/founders', [\App\Http\Controllers\Public\CommitteeController::class, 'founders'])->name('founders');
+    Route::get('/alumni', [\App\Http\Controllers\Public\CommitteeController::class, 'alumni'])->name('alumni');
+    Route::get('/forums', [\App\Http\Controllers\Public\CommitteeController::class, 'forums'])->name('forums');
+    Route::get('/standing-committee', [\App\Http\Controllers\Public\CommitteeController::class, 'standingCommittee'])->name('standing-committee');
+    Route::get('/project-directors', [\App\Http\Controllers\Public\CommitteeController::class, 'projectDirectors'])->name('project-directors');
+    Route::get('/administrative-team', [\App\Http\Controllers\Public\CommitteeController::class, 'administrativeTeam'])->name('administrative-team');
+});
+
+// Membership Routes
+Route::prefix('membership')->name('membership.')->group(function () {
+    Route::get('/benefits', [\App\Http\Controllers\Public\MembershipController::class, 'benefits'])->name('benefits');
+    Route::get('/renew', [\App\Http\Controllers\Public\MembershipController::class, 'renew'])->name('renew');
+    Route::get('/directory', [\App\Http\Controllers\Public\MembershipController::class, 'directory'])->name('directory');
+});
+
+// Events Routes
+Route::prefix('events')->name('events.')->group(function () {
+    Route::get('/upcoming', [\App\Http\Controllers\Public\EventController::class, 'upcoming'])->name('upcoming');
+    Route::get('/past', [\App\Http\Controllers\Public\EventController::class, 'past'])->name('past');
+    Route::get('/request', [\App\Http\Controllers\Public\EventController::class, 'request'])->name('request');
+    Route::get('/{slug}', [\App\Http\Controllers\Public\EventController::class, 'show'])->name('show');
+});
+
+// Media Routes
+Route::prefix('media')->name('media.')->group(function () {
+    Route::get('/notices', [\App\Http\Controllers\Public\MediaController::class, 'notices'])->name('notices');
+    Route::get('/press-releases', [\App\Http\Controllers\Public\MediaController::class, 'pressReleases'])->name('press-releases');
+    Route::get('/albums', [\App\Http\Controllers\Public\MediaController::class, 'albums'])->name('albums');
+    Route::get('/newsletters', [\App\Http\Controllers\Public\MediaController::class, 'newsletters'])->name('newsletters');
+    Route::get('/blog', [\App\Http\Controllers\Public\MediaController::class, 'blog'])->name('blog');
+    Route::get('/{slug}', [\App\Http\Controllers\Public\MediaController::class, 'show'])->name('show');
+});
 
 // Admin Authentication Routes (separate from normal user auth)
 // No guest middleware - allow anyone to access admin login page
@@ -423,17 +452,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Hero Slides Management
     Route::resource('hero-slides', HeroSlideController::class);
 
-    // Categories Management
-    Route::resource('categories', CategoryController::class);
-
-    // Products Management
-    Route::resource('products', ProductController::class);
-
     // Feature Cards Management
     Route::resource('features', FeatureCardController::class);
-
-    // Featured Products Management
-    Route::resource('featured-products', FeaturedProductController::class);
 
     // Trusted Companies Management
     Route::resource('trusted-companies', TrustedCompanyController::class);
@@ -479,10 +499,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/contact', [ContactPageController::class, 'index'])->name('contact.index');
         Route::post('/contact', [ContactPageController::class, 'update'])->name('contact.update');
 
-        // Store Locations
-        Route::resource('stores', StoreLocationController::class);
-        Route::post('/stores/content', [StoreLocationController::class, 'updateContent'])->name('stores.content');
-
         // FAQs
         Route::get('/faqs', [FaqController::class, 'index'])->name('faqs.index');
         Route::post('/faqs/categories', [FaqController::class, 'storeCategory'])->name('faqs.categories.store');
@@ -496,14 +512,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/{pageSlug}', [PageContentController::class, 'edit'])->name('generic.edit');
         Route::post('/{pageSlug}', [PageContentController::class, 'update'])->name('generic.update');
     });
-
-    // Orders Management
-    Route::resource('orders', OrderController::class)->only(['index', 'show', 'update', 'destroy']);
-    Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.status');
-    Route::put('/orders/{order}/payment-status', [OrderController::class, 'updatePaymentStatus'])->name('orders.payment-status');
-
-    // Customers Management
-    Route::resource('customers', CustomerController::class)->only(['index', 'show', 'destroy']);
 
     // Meetings Management
     Route::prefix('meetings')->name('meetings.')->group(function () {
@@ -535,6 +543,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/{message}/resolve', [ContactMessageController::class, 'resolve'])->name('resolve');
         Route::delete('/{message}', [ContactMessageController::class, 'destroy'])->name('destroy');
     });
+
+    // Committee Members Management
+    Route::resource('committee-members', \App\Http\Controllers\Admin\CommitteeMemberController::class);
+    
+    // Events Management
+    Route::resource('events', \App\Http\Controllers\Admin\EventManagementController::class);
+    
+    // Media Posts Management
+    Route::resource('media-posts', \App\Http\Controllers\Admin\MediaPostController::class);
+    
+    // Member Benefits Management
+    Route::resource('member-benefits', \App\Http\Controllers\Admin\MemberBenefitController::class);
 
     // Footer Management
     Route::prefix('footer')->name('footer.')->group(function () {

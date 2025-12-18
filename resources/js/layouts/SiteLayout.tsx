@@ -1,9 +1,9 @@
+import { FounderMemberPopup } from '@/components/founder-member-popup';
+import { Toaster } from '@/components/ui/sonner';
 import { NavigationMenu } from '@/types/cms';
 import React from 'react';
 import { SiteFooter } from './partials/SiteFooter';
 import { SiteHeader } from './partials/SiteHeader';
-import { FounderMemberPopup } from '@/components/founder-member-popup';
-import { Toaster } from '@/components/ui/sonner';
 
 export const SiteLayout = ({
     children,
@@ -28,7 +28,10 @@ export const SiteLayout = ({
 }) => (
     <div className="flex min-h-screen flex-col font-sans">
         {/* We would typically put the <Head title="Home" /> tag here, but since it's an external dependency, we omit it. */}
-        <SiteHeader navigationMenus={navigationMenus || []} cartItemCount={cartItemCount} />
+        <SiteHeader
+            navigationMenus={navigationMenus || []}
+            cartItemCount={cartItemCount}
+        />
         <main className="flex-grow">{children}</main>
         <SiteFooter footerData={footerData || {}} />
         <Toaster richColors position="bottom-right" closeButton />

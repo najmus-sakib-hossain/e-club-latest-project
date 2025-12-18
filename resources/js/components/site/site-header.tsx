@@ -22,7 +22,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useCartStore } from '@/stores/cart-store';
 import { useWishlistStore } from '@/stores/wishlist-store';
 import type { SharedData } from '@/types';
-import type { Category, NavigationMenu, SiteSettings } from '@/types/cms';
+import type { NavigationMenu, SiteSettings } from '@/types/cms';
 
 interface SiteHeaderProps {
     settings?: SiteSettings;
@@ -447,7 +447,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                                                 <div className="space-y-1 pl-4">
                                                     {Object.entries(
                                                         navigationStructure[
-                                                        item
+                                                            item
                                                         ] || {},
                                                     ).map(
                                                         ([category, items]) => (
@@ -779,10 +779,11 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                                 onMouseLeave={handleMouseLeave}
                             >
                                 <button
-                                    className={`flex h-12 items-center gap-1 px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 ${activeDropdown === item
-                                        ? 'bg-primary/90'
-                                        : ''
-                                        }`}
+                                    className={`flex h-12 items-center gap-1 px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 ${
+                                        activeDropdown === item
+                                            ? 'bg-primary/90'
+                                            : ''
+                                    }`}
                                 >
                                     {item}
                                     <ChevronDown

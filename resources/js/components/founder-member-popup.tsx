@@ -23,7 +23,7 @@ interface FounderMemberPopupProps {
 
 export function FounderMemberPopup({
     title = 'Become a Founder Member',
-    description = "Join our exclusive club and unlock a world of opportunities! Get personalized support, access to exclusive resources, and connect with like-minded professionals. Become a Founder Member today!",
+    description = 'Join our exclusive club and unlock a world of opportunities! Get personalized support, access to exclusive resources, and connect with like-minded professionals. Become a Founder Member today!',
     buttonText = 'Join Now',
     buttonLink = '/join',
     imageUrl = '/images/founder-member-popup.jpg',
@@ -61,7 +61,7 @@ export function FounderMemberPopup({
             <DialogContent className="gap-0 overflow-hidden border-none p-0 shadow-2xl sm:max-w-[900px]">
                 <button
                     onClick={handleClose}
-                    className="absolute right-4 top-4 z-10 rounded-full bg-white/90 p-1.5 shadow-lg transition-all hover:bg-white hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+                    className="absolute top-4 right-4 z-10 rounded-full bg-white/90 p-1.5 shadow-lg transition-all hover:bg-white hover:shadow-xl focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
                     aria-label="Close popup"
                 >
                     <X className="h-5 w-5 text-gray-600" />
@@ -99,7 +99,7 @@ export function FounderMemberPopup({
 
                         {/* Content */}
                         <DialogHeader className="space-y-4 text-left">
-                            <DialogTitle className="text-2xl font-bold leading-tight text-[#0e5843] md:text-3xl">
+                            <DialogTitle className="text-2xl leading-tight font-bold text-[#0e5843] md:text-3xl">
                                 {title}
                             </DialogTitle>
                             <DialogDescription className="text-base leading-relaxed text-gray-600">

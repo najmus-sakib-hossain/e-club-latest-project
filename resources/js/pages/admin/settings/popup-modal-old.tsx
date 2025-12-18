@@ -101,7 +101,7 @@ export default function PopupModalSettings({ setting }: Props) {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Popup Configuration</CardTitle>
+                        <CardTitle>Modal Configuration</CardTitle>
                         <CardDescription>
                             Customize the content and appearance of the homepage
                             popup modal
@@ -121,12 +121,12 @@ export default function PopupModalSettings({ setting }: Props) {
                                         <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                                             <div className="space-y-0.5">
                                                 <FormLabel className="text-base">
-                                                    Active
+                                                    Show Popup Modal
                                                 </FormLabel>
-                                                <div className="text-sm text-muted-foreground">
-                                                    Show this popup on the
-                                                    homepage
-                                                </div>
+                                                <FormDescription>
+                                                    Display the popup modal on
+                                                    the homepage
+                                                </FormDescription>
                                             </div>
                                             <FormControl>
                                                 <Switch
@@ -140,15 +140,25 @@ export default function PopupModalSettings({ setting }: Props) {
                                     )}
                                 />
 
-                                {/* Title - Using AdminInput */}
-                                <AdminInput
+                                {/* Title */}
+                                <FormField
                                     control={form.control}
                                     name="title"
-                                    label="Title"
-                                    placeholder="Become a Founder Member"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Title</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="Become a Founder Member"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
 
-                                {/* Description - Keeping Textarea for multiline */}
+                                {/* Description */}
                                 <FormField
                                     control={form.control}
                                     name="description"
@@ -167,33 +177,105 @@ export default function PopupModalSettings({ setting }: Props) {
                                     )}
                                 />
 
-                                {/* Button Text - Using AdminInput */}
-                                <AdminInput
+                                {/* Button Text */}
+                                <FormField
                                     control={form.control}
                                     name="button_text"
-                                    label="Button Text"
-                                    placeholder="Join Now"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Button Text</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="Join Now"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
 
-                                {/* Button Link - Using AdminInput */}
-                                <AdminInput
+                                {/* Button Link */}
+                                <FormField
                                     control={form.control}
                                     name="button_link"
-                                    label="Button Link"
-                                    placeholder="/join"
-                                    description="URL where the button should link to"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Button Link</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="/join"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormDescription>
+                                                URL where the button should link
+                                                to
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
 
-                                {/* Image Upload - Using AdminImage */}
-                                <AdminImage
+                                {/* Image Upload */}
+                                <FormField
                                     control={form.control}
                                     name="image_url"
-                                    setValue={form.setValue}
-                                    label="Popup Image"
-                                    currentImage={setting.image_url}
-                                    uploadEndpoint="/admin/settings/popup-modal/upload"
-                                    description="Upload an image to display on the left side of the popup modal (recommended: 1200x800px, max 2MB)"
-                                    maxSizeInMB={2}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Popup Image</FormLabel>
+                                            <FormControl>
+                                                <div className="space-y-4">
+                                                    {imagePreview ? (
+                                                        <div className="relative">
+                                                            <img
+                                                                src={
+                                                                    imagePreview
+                                                                }
+                                                                alt="Popup preview"
+                                                                className="h-64 w-full rounded-lg object-cover"
+                                                            />
+                                                            <Button
+                                                                type="button"
+                                                                variant="destructive"
+                                                                size="icon"
+                                                                className="absolute top-2 right-2"
+                                                                onClick={
+                                                                    handleRemoveImage
+                                                                }
+                                                            >
+                                                                <X className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12">
+                                                            <div className="text-center">
+                                                                <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                                                                <p className="mt-2 text-sm text-gray-600">
+                                                                    Click to
+                                                                    upload popup
+                                                                    image
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    <Input
+                                                        ref={fileInputRef}
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={
+                                                            handleImageUpload
+                                                        }
+                                                    />
+                                                </div>
+                                            </FormControl>
+                                            <FormDescription>
+                                                Upload an image to display on
+                                                the left side of the popup modal
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
 
                                 {/* Submit Buttons */}

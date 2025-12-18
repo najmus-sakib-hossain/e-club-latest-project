@@ -27,3 +27,10 @@ This is a big task so please create tasklist and then after planning complete th
 Good, now please format and lint all code and then please remove all furniture related code and files from this project!!! But keep the CMS content and use it in this e-club project!!! Make all files and folders names professional and also in this CMS prject please create 2 admin panel component:
 1. input.tsx -> it will be a reusable input component for admin panel forms, where it will show current value from the seeded data and updating it will update the seeded data in the database.
 2. image.tsx -> it will be a reusable image upload component for admin panel forms, where it will show current image from the seeded data and updating it will update the seeded data in the database. And please make sure to use these 2 components in all admin panel content pages where ever its possible!!!
+
+I gave you 4 screenshots for the header submenus - Please make the header 4 submenus as the screenshots I gave and we also have to make those frontend page for those submenus so please make those pages as well with dummy seeded data for now!!! The 4 submenus are:
+1. Committe
+2. Membership
+3. Events
+4. Media
+And also make admin panel page to manage the content of these 4 submenus in header admin panel and also create those separate pages to control the content of these 4 submenus related pages in admin panel as well!!!

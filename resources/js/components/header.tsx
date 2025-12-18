@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -9,7 +10,6 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import { Search, ShoppingCart, User } from 'lucide-react';
@@ -151,7 +151,10 @@ interface HeaderProps {
     cartItemCount?: number;
 }
 
-export default function Header({ navigationMenus, cartItemCount = 0 }: HeaderProps) {
+export default function Header({
+    navigationMenus,
+    cartItemCount = 0,
+}: HeaderProps) {
     const [searchQuery, setSearchQuery] = useState('');
 
     const handleSearch = (e: React.FormEvent) => {
@@ -361,7 +364,7 @@ export default function Header({ navigationMenus, cartItemCount = 0 }: HeaderPro
                     {/* Search Bar */}
                     <form onSubmit={handleSearch} className="hidden md:block">
                         <div className="relative">
-                            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                             <Input
                                 type="search"
                                 placeholder="Search..."
@@ -379,7 +382,7 @@ export default function Header({ navigationMenus, cartItemCount = 0 }: HeaderPro
                     >
                         <ShoppingCart className="h-5 w-5 text-gray-600" />
                         {cartItemCount > 0 && (
-                            <Badge className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 p-0 text-[10px] text-white">
+                            <Badge className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 p-0 text-[10px] text-white">
                                 {cartItemCount > 9 ? '9+' : cartItemCount}
                             </Badge>
                         )}

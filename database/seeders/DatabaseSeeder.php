@@ -2,16 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
 use App\Models\CustomerReview;
-use App\Models\Faq;
-use App\Models\FaqCategory;
 use App\Models\FeatureCard;
-use App\Models\FeaturedProduct;
 use App\Models\HeroSlide;
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Product;
 use App\Models\SiteSetting;
 use App\Models\TrustedCompany;
 use App\Models\User;
@@ -52,39 +45,33 @@ class DatabaseSeeder extends Seeder
             FooterSeeder::class,
             HomePageSeeder::class,
             MembershipSeeder::class,
+            CommitteeSeeder::class,
+            EventsSeeder::class,
+            MediaSeeder::class,
+            MemberBenefitSeeder::class,
         ]);
 
-        // Seed Hero Slides with Unsplash images - E-Club style
+        // Seed Hero Slides for E-Club
         $heroSlides = [
             [
-                'title' => 'L-Shaped Executive Desk',
-                'subtitle' => 'Enjoy your working days with an L-shaped executive desk.',
-                'button_text' => 'ORDER NOW',
-                'button_link' => '/products?category=executive-desks',
-                'image' => 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=1920&q=80',
-                'background_color' => '#f5f5f5',
+                'title' => 'Empowering Entrepreneurs',
+                'subtitle' => 'Join Bangladesh\'s leading entrepreneurship community',
+                'button_text' => 'JOIN NOW',
+                'button_link' => '/join',
+                'image' => 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1920&q=80',
+                'background_color' => '#0e5843',
                 'text_color' => '#ffffff',
-                'order' => 1,
+                'sort_order' => 1,
             ],
             [
-                'title' => 'Premium Leather Sofa',
-                'subtitle' => 'Experience luxury comfort with our handcrafted leather collection.',
-                'button_text' => 'SHOP NOW',
-                'button_link' => '/products?category=sofas',
-                'image' => 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1920&q=80',
-                'background_color' => '#2c3e50',
+                'title' => 'Connect & Grow Together',
+                'subtitle' => 'Network with successful business leaders and innovators',
+                'button_text' => 'LEARN MORE',
+                'button_link' => '/about',
+                'image' => 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&q=80',
+                'background_color' => '#e63946',
                 'text_color' => '#ffffff',
-                'order' => 2,
-            ],
-            [
-                'title' => 'Modern Bedroom Collection',
-                'subtitle' => 'Transform your bedroom into a peaceful sanctuary.',
-                'button_text' => 'EXPLORE',
-                'button_link' => '/products?category=beds',
-                'image' => 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=1920&q=80',
-                'background_color' => '#e8d5c4',
-                'text_color' => '#ffffff',
-                'order' => 3,
+                'sort_order' => 2,
             ],
         ];
 
@@ -95,137 +82,54 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        // Seed Categories with Unsplash images
-        $categories = [
-            // Business Collections
-            ['name' => 'Office Desks', 'slug' => 'office-desks', 'collection_type' => 'business', 'description' => 'Professional desks for your workspace', 'image' => 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800&q=80', 'order' => 1],
-            ['name' => 'Conference Tables', 'slug' => 'conference-tables', 'collection_type' => 'business', 'description' => 'Meeting and conference room e-club', 'image' => 'https://images.unsplash.com/photo-1431540015161-0bf868a2d407?w=800&q=80', 'order' => 2],
-            ['name' => 'Office Chairs', 'slug' => 'office-chairs', 'collection_type' => 'business', 'description' => 'Ergonomic chairs for comfort', 'image' => 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&q=80', 'order' => 3],
-
-            // Family Collections
-            ['name' => 'Dining Tables', 'slug' => 'dining-tables', 'collection_type' => 'family', 'description' => 'Beautiful dining sets for family meals', 'image' => 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=800&q=80', 'order' => 1],
-            ['name' => 'Sofas', 'slug' => 'sofas', 'collection_type' => 'family', 'description' => 'Comfortable sofas for living rooms', 'image' => 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80', 'order' => 2],
-            ['name' => 'Beds', 'slug' => 'beds', 'collection_type' => 'family', 'description' => 'Quality beds for restful sleep', 'image' => 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=800&q=80', 'order' => 3],
-            ['name' => 'Storage', 'slug' => 'storage', 'collection_type' => 'family', 'description' => 'Wardrobes and storage solutions', 'image' => 'https://images.unsplash.com/photo-1558997519-83ea9252edf8?w=800&q=80', 'order' => 4],
-
-            // Seating Collections
-            ['name' => 'Executive Chairs', 'slug' => 'executive-chairs', 'collection_type' => 'seating', 'description' => 'Premium executive seating', 'image' => 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&q=80', 'order' => 1],
-            ['name' => 'Lounge Chairs', 'slug' => 'lounge-chairs', 'collection_type' => 'seating', 'description' => 'Relaxing lounge seating', 'image' => 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80', 'order' => 2],
-            ['name' => 'Dining Chairs', 'slug' => 'dining-chairs', 'collection_type' => 'seating', 'description' => 'Stylish dining chairs', 'image' => 'https://images.unsplash.com/photo-1503602642458-232111445657?w=800&q=80', 'order' => 3],
-            ['name' => 'Bar Stools', 'slug' => 'bar-stools', 'collection_type' => 'seating', 'description' => 'Modern bar and counter stools', 'image' => 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800&q=80', 'order' => 4],
-        ];
-
-        foreach ($categories as $category) {
-            Category::updateOrCreate(
-                ['slug' => $category['slug']],
-                array_merge($category, ['is_active' => true])
-            );
-        }
-
-        // Seed Products with Unsplash images
-        $products = [
-            ['name' => 'Modern Executive Desk', 'slug' => 'modern-executive-desk', 'price' => 25000, 'category_slug' => 'office-desks', 'description' => 'Sleek modern desk with cable management', 'is_new_arrival' => true, 'is_featured' => true, 'is_best_seller' => false, 'images' => ['https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800&q=80']],
-            ['name' => 'Ergonomic Mesh Chair', 'slug' => 'ergonomic-mesh-chair', 'price' => 15000, 'category_slug' => 'office-chairs', 'description' => 'Breathable mesh back with lumbar support', 'is_new_arrival' => true, 'is_featured' => false, 'is_best_seller' => true, 'images' => ['https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&q=80']],
-            ['name' => 'L-Shaped Corner Desk', 'slug' => 'l-shaped-corner-desk', 'price' => 32000, 'category_slug' => 'office-desks', 'description' => 'Spacious corner desk for maximum productivity', 'is_new_arrival' => true, 'is_featured' => true, 'is_best_seller' => true, 'images' => ['https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=800&q=80']],
-            ['name' => 'Premium Leather Sofa', 'slug' => 'premium-leather-sofa', 'price' => 85000, 'category_slug' => 'sofas', 'description' => 'Genuine leather 3-seater sofa', 'is_new_arrival' => true, 'is_featured' => true, 'is_best_seller' => true, 'images' => ['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80']],
-            ['name' => 'King Size Platform Bed', 'slug' => 'king-size-platform-bed', 'price' => 45000, 'category_slug' => 'beds', 'description' => 'Modern platform bed with storage', 'is_new_arrival' => true, 'is_featured' => false, 'is_best_seller' => true, 'images' => ['https://images.unsplash.com/photo-1505693314120-0d443867891c?w=800&q=80']],
-            ['name' => 'Extendable Dining Table', 'slug' => 'extendable-dining-table', 'price' => 38000, 'category_slug' => 'dining-tables', 'description' => '6-8 seater extendable dining table', 'is_new_arrival' => true, 'is_featured' => true, 'is_best_seller' => false, 'images' => ['https://images.unsplash.com/photo-1617806118233-18e1de247200?w=800&q=80']],
-            ['name' => 'Executive Leather Chair', 'slug' => 'executive-leather-chair', 'price' => 28000, 'category_slug' => 'executive-chairs', 'description' => 'High-back executive chair with premium leather', 'is_new_arrival' => true, 'is_featured' => false, 'is_best_seller' => true, 'images' => ['https://images.unsplash.com/photo-1541558869434-2840d308329a?w=800&q=80']],
-            ['name' => 'Velvet Lounge Chair', 'slug' => 'velvet-lounge-chair', 'price' => 22000, 'category_slug' => 'lounge-chairs', 'description' => 'Luxurious velvet accent chair', 'is_new_arrival' => true, 'is_featured' => true, 'is_best_seller' => false, 'images' => ['https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80']],
-            ['name' => 'Modern Bar Stool Set', 'slug' => 'modern-bar-stool-set', 'price' => 18000, 'category_slug' => 'bar-stools', 'description' => 'Set of 2 adjustable bar stools', 'is_new_arrival' => false, 'is_featured' => false, 'is_best_seller' => true, 'images' => ['https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800&q=80']],
-            ['name' => 'Wooden Wardrobe', 'slug' => 'wooden-wardrobe', 'price' => 55000, 'category_slug' => 'storage', 'description' => 'Solid wood 3-door wardrobe', 'is_new_arrival' => false, 'is_featured' => true, 'is_best_seller' => false, 'images' => ['https://images.unsplash.com/photo-1558997519-83ea9252edf8?w=800&q=80']],
-            ['name' => 'Conference Table 10-Seater', 'slug' => 'conference-table-10-seater', 'price' => 75000, 'category_slug' => 'conference-tables', 'description' => 'Large conference table for meetings', 'is_new_arrival' => false, 'is_featured' => false, 'is_best_seller' => true, 'images' => ['https://images.unsplash.com/photo-1431540015161-0bf868a2d407?w=800&q=80']],
-            ['name' => 'Upholstered Dining Chair', 'slug' => 'upholstered-dining-chair', 'price' => 8500, 'category_slug' => 'dining-chairs', 'description' => 'Comfortable padded dining chair', 'is_new_arrival' => true, 'is_featured' => true, 'is_best_seller' => false, 'images' => ['https://images.unsplash.com/photo-1503602642458-232111445657?w=800&q=80']],
-        ];
-
-        foreach ($products as $productData) {
-            $category = Category::where('slug', $productData['category_slug'])->first();
-            if ($category) {
-                Product::updateOrCreate(
-                    ['slug' => $productData['slug']],
-                    [
-                        'name' => $productData['name'],
-                        'slug' => $productData['slug'],
-                        'description' => $productData['description'],
-                        'price' => $productData['price'],
-                        'category_id' => $category->id,
-                        'images' => $productData['images'] ?? [],
-                        'is_new_arrival' => $productData['is_new_arrival'],
-                        'is_featured' => $productData['is_featured'] ?? false,
-                        'is_best_seller' => $productData['is_best_seller'] ?? false,
-                        'is_active' => true,
-                        'stock_quantity' => rand(10, 100),
-                    ]
-                );
-            }
-        }
-
-        // Seed Featured Product with Unsplash image
-        $featuredProduct = Product::where('slug', 'premium-leather-sofa')->first();
-        if ($featuredProduct) {
-            FeaturedProduct::updateOrCreate(
-                ['product_id' => $featuredProduct->id],
-                [
-                    'title' => 'Featured This Week',
-                    'subtitle' => 'Premium Leather Collection',
-                    'description' => 'Experience luxury with our handcrafted premium leather sofa. Made with genuine Italian leather and solid wood frame for lasting comfort.',
-                    'badge_text' => 'Best Seller',
-                    'button_text' => 'Shop Now',
-                    'button_link' => '/products/premium-leather-sofa',
-                    'image' => 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80',
-                    'is_active' => true,
-                ]
-            );
-        }
-
         // Seed Customer Reviews
         $customerReviews = [
             [
-                'name' => 'Sarah Johnson',
-                'role' => 'Interior Designer',
-                'review' => 'Absolutely love the quality of e-club from this store! The executive desk I purchased is sturdy, elegant, and perfect for my home office. Customer service was exceptional.',
+                'name' => 'Rafiq Ahmed',
+                'role' => 'Young Entrepreneur',
+                'review' => 'Joining E-Club was the best decision for my startup journey! The networking opportunities and mentorship programs helped me scale my business rapidly.',
                 'rating' => 5,
-                'image' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80',
+                'image' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
                 'order' => 1,
             ],
             [
-                'name' => 'Michael Chen',
+                'name' => 'Nusrat Jahan',
                 'role' => 'Business Owner',
-                'review' => 'We furnished our entire office with products from here. The conference table and ergonomic chairs are top-notch. Our team loves the new setup!',
+                'review' => 'The community support and business workshops at E-Club have been invaluable. I\'ve grown my network and learned so much about entrepreneurship.',
                 'rating' => 5,
-                'image' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
+                'image' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80',
                 'order' => 2,
             ],
             [
-                'name' => 'Emily Williams',
-                'role' => 'Homeowner',
-                'review' => 'The leather sofa exceeded my expectations. It\'s comfortable, looks premium, and was delivered right on time. Highly recommend!',
+                'name' => 'Imran Khan',
+                'role' => 'Startup Founder',
+                'review' => 'E-Club events are fantastic! Met amazing co-founders, investors, and mentors who believed in my vision. Highly recommend to any aspiring entrepreneur.',
                 'rating' => 5,
-                'image' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80',
+                'image' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80',
                 'order' => 3,
             ],
             [
-                'name' => 'David Rahman',
-                'role' => 'Architect',
-                'review' => 'Great selection of modern e-club. The dining table set we bought is exactly what we were looking for. Quality craftsmanship!',
-                'rating' => 4,
-                'image' => 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80',
+                'name' => 'Ayesha Rahman',
+                'role' => 'Tech Entrepreneur',
+                'review' => 'The resources and guidance from E-Club helped me turn my idea into a successful tech company. The community is incredibly supportive!',
+                'rating' => 5,
+                'image' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80',
                 'order' => 4,
             ],
             [
-                'name' => 'Fatima Ahmed',
-                'role' => 'CEO, Tech Startup',
-                'review' => 'Furnished our new office space completely from this store. The team was helpful in selecting the right pieces. Everything arrived in perfect condition.',
+                'name' => 'Fahim Hassan',
+                'role' => 'Social Entrepreneur',
+                'review' => 'E-Club provides an incredible platform for entrepreneurs to connect, learn, and grow together. The workshops and networking sessions are top-notch.',
                 'rating' => 5,
-                'image' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80',
+                'image' => 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80',
                 'order' => 5,
             ],
             [
-                'name' => 'James Thompson',
-                'role' => 'Real Estate Developer',
-                'review' => 'Premium quality at reasonable prices. The bedroom e-club collection is stunning. Will definitely be a returning customer.',
+                'name' => 'Sabrina Akter',
+                'role' => 'E-commerce Founder',
+                'review' => 'From pitch competitions to mentorship programs, E-Club has everything an entrepreneur needs. My business has grown 3x since joining!',
                 'rating' => 5,
-                'image' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80',
+                'image' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80',
                 'order' => 6,
             ],
         ];
@@ -288,27 +192,27 @@ class DatabaseSeeder extends Seeder
         // Seed feature cards
         $features = [
             [
-                'title' => 'Free Shipping',
-                'description' => 'Free shipping on all orders over ৳5,000',
-                'icon' => 'truck',
+                'title' => 'Networking Events',
+                'description' => 'Connect with fellow entrepreneurs and business leaders',
+                'icon' => 'users',
                 'order' => 1,
             ],
             [
-                'title' => 'Quality Products',
-                'description' => 'Premium quality e-club with warranty',
-                'icon' => 'shield-check',
+                'title' => 'Expert Mentorship',
+                'description' => 'Get guidance from successful entrepreneurs and industry experts',
+                'icon' => 'user-check',
                 'order' => 2,
             ],
             [
-                'title' => 'Easy Returns',
-                'description' => '30-day hassle-free return policy',
-                'icon' => 'refresh-cw',
+                'title' => 'Business Workshops',
+                'description' => 'Learn through hands-on workshops and training sessions',
+                'icon' => 'book-open',
                 'order' => 3,
             ],
             [
-                'title' => '24/7 Support',
-                'description' => 'Round the clock customer support',
-                'icon' => 'headphones',
+                'title' => 'Community Support',
+                'description' => 'Join a supportive community of like-minded entrepreneurs',
+                'icon' => 'heart',
                 'order' => 4,
             ],
         ];
@@ -323,104 +227,70 @@ class DatabaseSeeder extends Seeder
         // Seed site settings
         $settings = [
             ['key' => 'site_name', 'value' => 'E-Club', 'group' => 'general'],
-            ['key' => 'site_tagline', 'value' => 'Quality E-Club for Modern Living', 'group' => 'general'],
-            ['key' => 'site_description', 'value' => 'Premium quality e-club for your home and office. We bring comfort and style to your living spaces.', 'group' => 'general'],
+            ['key' => 'site_tagline', 'value' => 'Empowering Entrepreneurs, Building Communities', 'group' => 'general'],
+            ['key' => 'site_description', 'value' => 'E-Club is a vibrant community platform for entrepreneurs to connect, learn, and grow together. Join us to access networking events, mentorship programs, and business workshops.', 'group' => 'general'],
             ['key' => 'email', 'value' => 'contact@e-club.com', 'group' => 'contact'],
             ['key' => 'phone', 'value' => '+880 1234 567890', 'group' => 'contact'],
-            ['key' => 'address', 'value' => '123 E-Club Street, Dhaka, Bangladesh', 'group' => 'contact'],
+            ['key' => 'address', 'value' => '123 Entrepreneurship Hub, Dhaka, Bangladesh', 'group' => 'contact'],
             ['key' => 'facebook', 'value' => 'https://facebook.com/e-club', 'group' => 'social'],
             ['key' => 'instagram', 'value' => 'https://instagram.com/e-club', 'group' => 'social'],
             ['key' => 'twitter', 'value' => 'https://twitter.com/e-club', 'group' => 'social'],
             ['key' => 'youtube', 'value' => 'https://youtube.com/e-club', 'group' => 'social'],
             // Header settings
-            ['key' => 'header_announcement', 'value' => '🎉 Free shipping on orders over ৳5,000! Shop Now', 'group' => 'header'],
+            ['key' => 'header_announcement', 'value' => '🎉 Join our next networking event - Register Now!', 'group' => 'header'],
             ['key' => 'header_announcement_enabled', 'value' => '1', 'group' => 'header'],
             ['key' => 'header_phone', 'value' => '+880 1234 567890', 'group' => 'header'],
             ['key' => 'header_email', 'value' => 'info@e-club.com', 'group' => 'header'],
             // Homepage settings
-            ['key' => 'new_arrivals_title', 'value' => 'New Arrivals', 'group' => 'homepage'],
-            ['key' => 'new_arrivals_subtitle', 'value' => 'Check out our latest e-club collection', 'group' => 'homepage'],
-            ['key' => 'collection_title', 'value' => 'Our Collections', 'group' => 'homepage'],
-            ['key' => 'collection_subtitle', 'value' => 'Browse e-club by category', 'group' => 'homepage'],
-            ['key' => 'best_sellers_title', 'value' => 'Best Sellers', 'group' => 'homepage'],
-            ['key' => 'best_sellers_subtitle', 'value' => 'Our most popular products loved by customers', 'group' => 'homepage'],
-            ['key' => 'featured_products_title', 'value' => 'Featured Products', 'group' => 'homepage'],
-            ['key' => 'featured_products_subtitle', 'value' => 'Handpicked e-club for your home', 'group' => 'homepage'],
-            ['key' => 'customer_reviews_title', 'value' => 'Customer Reviews', 'group' => 'homepage'],
-            ['key' => 'customer_reviews_description', 'value' => 'Real feedback from our valued customers who have experienced our products and services.', 'group' => 'homepage'],
-            ['key' => 'trusted_companies_title', 'value' => 'Trusted by Leading Companies', 'group' => 'homepage'],
-            // Footer settings - section titles
-            ['key' => 'text', 'value' => 'Your trusted source for quality e-club. We offer a wide range of modern and classic e-club for every room in your home.', 'group' => 'footer'],
+            ['key' => 'upcoming_events_title', 'value' => 'Upcoming Events', 'group' => 'homepage'],
+            ['key' => 'upcoming_events_subtitle', 'value' => 'Join our latest networking events and workshops', 'group' => 'homepage'],
+            ['key' => 'membership_types_title', 'value' => 'Membership Plans', 'group' => 'homepage'],
+            ['key' => 'membership_types_subtitle', 'value' => 'Choose the membership that fits your needs', 'group' => 'homepage'],
+            ['key' => 'customer_reviews_title', 'value' => 'Member Success Stories', 'group' => 'homepage'],
+            ['key' => 'customer_reviews_description', 'value' => 'Real testimonials from our community members who have grown their businesses with E-Club.', 'group' => 'homepage'],
+            ['key' => 'trusted_companies_title', 'value' => 'Our Partners & Sponsors', 'group' => 'homepage'],
+            ['key' => 'customer_reviews_subtitle', 'value' => 'Hear from our successful members', 'group' => 'homepage'],
+            // Footer settings
+            ['key' => 'text', 'value' => 'E-Club is your trusted community for entrepreneurship and business growth. We connect, empower, and support entrepreneurs at every stage of their journey.', 'group' => 'footer'],
             ['key' => 'follow_us_title', 'value' => 'Follow Us', 'group' => 'footer'],
             ['key' => 'quick_links_title', 'value' => 'Quick Links', 'group' => 'footer'],
-            ['key' => 'customer_service_title', 'value' => 'Customer Service', 'group' => 'footer'],
+            ['key' => 'community_title', 'value' => 'Community', 'group' => 'footer'],
             ['key' => 'information_title', 'value' => 'Information', 'group' => 'footer'],
-            ['key' => 'payment_title', 'value' => 'Secure Payment Methods', 'group' => 'footer'],
             // Footer quick links
             ['key' => 'link_home', 'value' => 'Home', 'group' => 'footer'],
-            ['key' => 'link_products', 'value' => 'All Products', 'group' => 'footer'],
-            ['key' => 'link_categories', 'value' => 'Categories', 'group' => 'footer'],
             ['key' => 'link_about', 'value' => 'About Us', 'group' => 'footer'],
+            ['key' => 'link_events', 'value' => 'Events', 'group' => 'footer'],
+            ['key' => 'link_membership', 'value' => 'Membership', 'group' => 'footer'],
             ['key' => 'link_contact', 'value' => 'Contact Us', 'group' => 'footer'],
-            // Footer customer service links
-            ['key' => 'link_account', 'value' => 'My Account', 'group' => 'footer'],
-            ['key' => 'link_order_tracking', 'value' => 'Order Tracking', 'group' => 'footer'],
-            ['key' => 'link_wishlist', 'value' => 'Wishlist', 'group' => 'footer'],
-            ['key' => 'link_shipping', 'value' => 'Shipping Policy', 'group' => 'footer'],
-            ['key' => 'link_returns', 'value' => 'Returns & Exchanges', 'group' => 'footer'],
+            // Footer community links
+            ['key' => 'link_join', 'value' => 'Join E-Club', 'group' => 'footer'],
+            ['key' => 'link_meetings', 'value' => 'Book a Meeting', 'group' => 'footer'],
+            ['key' => 'link_success_stories', 'value' => 'Success Stories', 'group' => 'footer'],
+            ['key' => 'link_partners', 'value' => 'Our Partners', 'group' => 'footer'],
             ['key' => 'link_faqs', 'value' => 'FAQs', 'group' => 'footer'],
             // Footer information links
             ['key' => 'link_privacy', 'value' => 'Privacy Policy', 'group' => 'footer'],
             ['key' => 'link_terms', 'value' => 'Terms & Conditions', 'group' => 'footer'],
-            ['key' => 'link_warranty', 'value' => 'Warranty Information', 'group' => 'footer'],
-            ['key' => 'link_care', 'value' => 'Care & Maintenance', 'group' => 'footer'],
-            ['key' => 'link_stores', 'value' => 'Store Locator', 'group' => 'footer'],
             ['key' => 'copyright_text', 'value' => '', 'group' => 'footer'],
-            // Labels for products
-            ['key' => 'badge_new', 'value' => 'New', 'group' => 'labels'],
-            ['key' => 'badge_sale', 'value' => 'Sale', 'group' => 'labels'],
-            ['key' => 'badge_best_seller', 'value' => 'Best Seller', 'group' => 'labels'],
-            ['key' => 'badge_featured', 'value' => 'Featured', 'group' => 'labels'],
-            ['key' => 'quick_add_button', 'value' => 'Quick Add', 'group' => 'labels'],
-            ['key' => 'add_to_cart_button', 'value' => 'Add to Cart', 'group' => 'labels'],
-            ['key' => 'view_details_button', 'value' => 'View Details', 'group' => 'labels'],
-            ['key' => 'shop_now_button', 'value' => 'Shop Now', 'group' => 'labels'],
-            ['key' => 'no_image_placeholder', 'value' => 'No Image', 'group' => 'labels'],
-            ['key' => 'dimensions_label', 'value' => 'Dimensions', 'group' => 'labels'],
             // About page settings
-            ['key' => 'about_hero_title', 'value' => 'Crafting Quality E-Club Since 2014', 'group' => 'about'],
-            ['key' => 'about_hero_description', 'value' => 'E-Club is Bangladesh\'s leading e-club brand, dedicated to creating beautiful, functional, and affordable e-club for homes and offices. Our journey began with a simple mission: to bring world-class e-club design to every Bangladeshi home.', 'group' => 'about'],
+            ['key' => 'about_hero_title', 'value' => 'Empowering Entrepreneurs Since 2014', 'group' => 'about'],
+            ['key' => 'about_hero_description', 'value' => 'E-Club is Bangladesh\'s leading entrepreneurship community, dedicated to connecting, supporting, and empowering entrepreneurs. Our journey began with a simple mission: to create a thriving ecosystem where entrepreneurs can learn, grow, and succeed together.', 'group' => 'about'],
             ['key' => 'about_story_title', 'value' => 'Our Story', 'group' => 'about'],
             ['key' => 'about_values_title', 'value' => 'Our Values', 'group' => 'about'],
-            ['key' => 'about_values_subtitle', 'value' => 'These core values guide everything we do and help us deliver the best to our customers.', 'group' => 'about'],
+            ['key' => 'about_values_subtitle', 'value' => 'These core values guide everything we do and help us build a strong entrepreneurial community.', 'group' => 'about'],
             ['key' => 'about_team_title', 'value' => 'Meet Our Team', 'group' => 'about'],
-            ['key' => 'about_team_subtitle', 'value' => 'The passionate people behind our success.', 'group' => 'about'],
+            ['key' => 'about_team_subtitle', 'value' => 'The passionate people behind our community.', 'group' => 'about'],
             ['key' => 'about_stats_years', 'value' => '10+', 'group' => 'about'],
-            ['key' => 'about_stats_customers', 'value' => '50,000+', 'group' => 'about'],
-            ['key' => 'about_stats_products', 'value' => '100,000+', 'group' => 'about'],
-            ['key' => 'about_stats_cities', 'value' => '64', 'group' => 'about'],
+            ['key' => 'about_stats_members', 'value' => '5,000+', 'group' => 'about'],
+            ['key' => 'about_stats_events', 'value' => '500+', 'group' => 'about'],
+            ['key' => 'about_stats_partners', 'value' => '100+', 'group' => 'about'],
             // Contact page settings
             ['key' => 'contact_page_title', 'value' => 'Get in Touch', 'group' => 'contact'],
-            ['key' => 'contact_page_subtitle', 'value' => 'Have questions about our e-club? Need help with your order? We\'re here to help! Reach out to us through any of the channels below.', 'group' => 'contact'],
+            ['key' => 'contact_page_subtitle', 'value' => 'Have questions about E-Club? Want to learn more about membership? We\'re here to help! Reach out to us through any of the channels below.', 'group' => 'contact'],
             ['key' => 'contact_form_title', 'value' => 'Send us a Message', 'group' => 'contact'],
             ['key' => 'contact_form_subtitle', 'value' => 'Fill out the form below and we\'ll get back to you as soon as possible.', 'group' => 'contact'],
-            ['key' => 'contact_hours_weekday', 'value' => 'Saturday - Thursday: 10AM - 8PM', 'group' => 'contact'],
+            ['key' => 'contact_hours_weekday', 'value' => 'Saturday - Thursday: 10AM - 6PM', 'group' => 'contact'],
             ['key' => 'contact_hours_weekend', 'value' => 'Friday: Closed', 'group' => 'contact'],
-            // Cart page settings
-            ['key' => 'cart_page_title', 'value' => 'Shopping Cart', 'group' => 'cart'],
-            ['key' => 'cart_empty_title', 'value' => 'Your cart is empty', 'group' => 'cart'],
-            ['key' => 'cart_empty_message', 'value' => 'Start shopping and add some products to your cart!', 'group' => 'cart'],
-            ['key' => 'cart_summary_title', 'value' => 'Order Summary', 'group' => 'cart'],
-            ['key' => 'cart_checkout_button', 'value' => 'Proceed to Checkout', 'group' => 'cart'],
-            ['key' => 'cart_continue_shopping', 'value' => 'Continue Shopping', 'group' => 'cart'],
-            // Checkout page settings
-            ['key' => 'checkout_page_title', 'value' => 'Checkout', 'group' => 'checkout'],
-            ['key' => 'checkout_shipping_title', 'value' => 'Shipping Information', 'group' => 'checkout'],
-            ['key' => 'checkout_payment_title', 'value' => 'Payment Method', 'group' => 'checkout'],
-            ['key' => 'checkout_order_summary_title', 'value' => 'Order Summary', 'group' => 'checkout'],
-            ['key' => 'checkout_place_order_button', 'value' => 'Place Order', 'group' => 'checkout'],
-            // Customer reviews subtitle
-            ['key' => 'customer_reviews_subtitle', 'value' => 'Real feedback from our valued customers', 'group' => 'homepage'],
         ];
 
         foreach ($settings as $setting) {
@@ -430,30 +300,30 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        // Seed FAQ categories and FAQs (admin-editable, page_slug aware)
+        // Seed FAQ categories and FAQs
         $faqCategories = [
             [
-                'name' => 'Orders & Shipping',
-                'icon' => 'Truck',
+                'name' => 'Membership',
+                'icon' => 'Users',
                 'page_slug' => 'faqs',
                 'is_active' => true,
                 'sort_order' => 1,
                 'faqs' => [
-                    ['question' => 'How long does shipping take?', 'answer' => 'Standard delivery takes 3-5 business days nationwide. Dhaka metro deliveries are often next-day.', 'sort_order' => 1],
-                    ['question' => 'Do you offer cash on delivery?', 'answer' => 'Yes, we offer COD in most major cities. Online prepayment is required for custom items.', 'sort_order' => 2],
-                    ['question' => 'Can I schedule delivery?', 'answer' => 'Yes. After checkout our team will contact you to confirm a preferred delivery window.', 'sort_order' => 3],
+                    ['question' => 'How do I become a member?', 'answer' => 'You can apply for membership through our Join page. Fill out the application form and our team will review it within 2-3 business days.', 'sort_order' => 1],
+                    ['question' => 'What are the membership benefits?', 'answer' => 'Members get access to exclusive networking events, business workshops, mentorship programs, coworking spaces, and our online community platform.', 'sort_order' => 2],
+                    ['question' => 'How much does membership cost?', 'answer' => 'We offer different membership tiers starting from student memberships to corporate packages. Visit our Membership page for detailed pricing.', 'sort_order' => 3],
                 ],
             ],
             [
-                'name' => 'Returns & Warranty',
-                'icon' => 'RefreshCw',
+                'name' => 'Events & Meetings',
+                'icon' => 'Calendar',
                 'page_slug' => 'faqs',
                 'is_active' => true,
                 'sort_order' => 2,
                 'faqs' => [
-                    ['question' => 'What is your return policy?', 'answer' => 'We accept returns within 7 days for unused items in original packaging. Custom-made items are non-returnable.', 'sort_order' => 1],
-                    ['question' => 'How do I request a warranty claim?', 'answer' => 'Email support with your order ID and photos. We cover manufacturing defects for 2 years.', 'sort_order' => 2],
-                    ['question' => 'Is assembly covered?', 'answer' => 'Assembly is included in Dhaka metro. For other areas, we provide instructions and remote support.', 'sort_order' => 3],
+                    ['question' => 'How can I attend events?', 'answer' => 'Members can book events through their dashboard. Some events are open to non-members with prior registration.', 'sort_order' => 1],
+                    ['question' => 'Can I book a meeting with a mentor?', 'answer' => 'Yes! Members can book one-on-one mentorship sessions through our meeting booking system. Select your preferred mentor and available time slot.', 'sort_order' => 2],
+                    ['question' => 'Are events held online or offline?', 'answer' => 'We host both online and offline events. Event details will specify the format when you register.', 'sort_order' => 3],
                 ],
             ],
         ];
@@ -478,118 +348,6 @@ class DatabaseSeeder extends Seeder
                         'sort_order' => $faq['sort_order'],
                     ]
                 );
-            }
-        }
-
-        // Seed sample orders with realistic Bangladesh data
-        $this->seedOrders();
-    }
-
-    /**
-     * Seed sample orders with realistic data
-     */
-    private function seedOrders(): void
-    {
-        // Only seed if no orders exist
-        if (Order::count() > 0) {
-            return;
-        }
-
-        $customers = [
-            ['name' => 'Rafiqul Islam', 'email' => 'rafiq.islam@gmail.com', 'phone' => '+880 1712-345678', 'address' => 'House 45, Road 12, Dhanmondi, Dhaka 1209'],
-            ['name' => 'Fatema Begum', 'email' => 'fatema.b@yahoo.com', 'phone' => '+880 1819-234567', 'address' => 'Apartment 8B, Green Valley, Gulshan 2, Dhaka 1212'],
-            ['name' => 'Mohammad Hasan', 'email' => 'mhasan@outlook.com', 'phone' => '+880 1677-890123', 'address' => '78/A Mirpur Road, Lalmatia, Dhaka 1207'],
-            ['name' => 'Nusrat Jahan', 'email' => 'nusrat.jahan@gmail.com', 'phone' => '+880 1912-456789', 'address' => 'Flat 4C, Tower 3, Bashundhara R/A, Dhaka 1229'],
-            ['name' => 'Kamal Uddin', 'email' => 'kamal.uddin@gmail.com', 'phone' => '+880 1521-567890', 'address' => '23 Station Road, Uttara Sector 7, Dhaka 1230'],
-            ['name' => 'Ayesha Rahman', 'email' => 'ayesha.r@hotmail.com', 'phone' => '+880 1865-678901', 'address' => 'House 12, Block F, Banani DOHS, Dhaka 1206'],
-            ['name' => 'Tariqul Islam', 'email' => 'tariq.islam@gmail.com', 'phone' => '+880 1734-789012', 'address' => '56/2 Elephant Road, Dhaka 1205'],
-            ['name' => 'Sumaiya Akter', 'email' => 'sumaiya.a@gmail.com', 'phone' => '+880 1945-890123', 'address' => 'Apartment 2A, Rose Garden, Mohammadpur, Dhaka 1207'],
-            ['name' => 'Imran Ahmed', 'email' => 'imran.ahmed@yahoo.com', 'phone' => '+880 1612-901234', 'address' => '89 New Market Road, Azimpur, Dhaka 1205'],
-            ['name' => 'Shamima Nasrin', 'email' => 'shamima.n@gmail.com', 'phone' => '+880 1778-012345', 'address' => 'House 34, Sector 11, Uttara, Dhaka 1230'],
-            ['name' => 'Jahangir Alam', 'email' => 'jahangir@gmail.com', 'phone' => '+880 1856-123456', 'address' => 'Flat 6D, Navana Tower, Gulshan 1, Dhaka 1212'],
-            ['name' => 'Rashida Khatun', 'email' => 'rashida.k@outlook.com', 'phone' => '+880 1923-234567', 'address' => '45/B Tejgaon Industrial Area, Dhaka 1208'],
-            ['name' => 'Shafiqul Haque', 'email' => 'shafiq.haque@gmail.com', 'phone' => '+880 1567-345678', 'address' => 'House 78, Road 8, Banani, Dhaka 1213'],
-            ['name' => 'Nazma Begum', 'email' => 'nazma.begum@yahoo.com', 'phone' => '+880 1889-456789', 'address' => 'Apartment 5A, Lake City, Khilkhet, Dhaka 1229'],
-            ['name' => 'Abdul Karim', 'email' => 'abdul.karim@gmail.com', 'phone' => '+880 1745-567890', 'address' => '12/3 Mirpur 10, Dhaka 1216'],
-        ];
-
-        $statuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
-        $paymentStatuses = ['pending', 'paid', 'failed'];
-        $paymentMethods = ['bkash', 'nagad', 'rocket', 'cod'];
-
-        // Get all products
-        $products = Product::all();
-
-        if ($products->isEmpty()) {
-            return;
-        }
-
-        foreach ($customers as $index => $customer) {
-            // Select random products for order (1-4 items)
-            $orderProducts = $products->random(rand(1, min(4, $products->count())));
-
-            $subtotal = 0;
-            $orderItems = [];
-
-            foreach ($orderProducts as $product) {
-                $quantity = rand(1, 3);
-                $price = $product->price;
-                $subtotal += $price * $quantity;
-
-                $orderItems[] = [
-                    'product_id' => $product->id,
-                    'name' => $product->name,
-                    'price' => $price,
-                    'quantity' => $quantity,
-                    'image' => $product->images[0] ?? null,
-                ];
-            }
-
-            $shippingAmount = $subtotal > 50000 ? 0 : 500; // Free shipping over 50,000 BDT
-            $discountAmount = $subtotal > 100000 ? round($subtotal * 0.05) : 0; // 5% discount over 100,000 BDT
-            $totalAmount = $subtotal - $discountAmount + $shippingAmount;
-
-            // Determine realistic statuses
-            $paymentMethod = $paymentMethods[array_rand($paymentMethods)];
-            $status = $statuses[array_rand($statuses)];
-
-            // COD orders can be pending payment even if delivered
-            if ($paymentMethod === 'cod') {
-                $paymentStatus = $status === 'delivered' ? 'paid' : 'pending';
-            } else {
-                // Digital payments - most should be paid
-                $paymentStatus = in_array($status, ['cancelled']) ? 'failed' : ($status === 'pending' ? $paymentStatuses[array_rand(['pending', 'paid'])] : 'paid');
-            }
-
-            // Create order
-            $order = Order::create([
-                'order_number' => sprintf('ORD-%06d', $index + 1),
-                'customer_name' => $customer['name'],
-                'customer_email' => $customer['email'],
-                'customer_phone' => $customer['phone'],
-                'shipping_address' => $customer['address'],
-                'subtotal' => $subtotal,
-                'discount_amount' => $discountAmount,
-                'shipping_amount' => $shippingAmount,
-                'total_amount' => $totalAmount,
-                'payment_method' => $paymentMethod,
-                'payment_status' => $paymentStatus,
-                'status' => $status,
-                'notes' => rand(0, 1) ? 'Please call before delivery.' : null,
-                'created_at' => now()->subDays(rand(0, 30)),
-                'updated_at' => now()->subDays(rand(0, 10)),
-            ]);
-
-            // Create order items
-            foreach ($orderItems as $item) {
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $item['product_id'],
-                    'name' => $item['name'],
-                    'price' => $item['price'],
-                    'quantity' => $item['quantity'],
-                    'image' => $item['image'],
-                ]);
             }
         }
 

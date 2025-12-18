@@ -6,8 +6,8 @@ import { pageVariants } from '@/lib/animations';
 import type { Category, SiteSettings } from '@/types/cms';
 
 import Footer from '@/components/footer';
-import Header from '@/components/header';
 import { FounderMemberPopup } from '@/components/founder-member-popup';
+import Header from '@/components/header';
 
 interface SiteLayoutProps {
     children: ReactNode;
@@ -38,7 +38,10 @@ export function SiteLayout({
 }: SiteLayoutProps) {
     return (
         <div className="flex min-h-screen flex-col">
-            <Header navigationMenus={navigationMenus} cartItemCount={cartItemCount} />
+            <Header
+                navigationMenus={navigationMenus}
+                cartItemCount={cartItemCount}
+            />
             <motion.main
                 className="flex-1"
                 initial="initial"
