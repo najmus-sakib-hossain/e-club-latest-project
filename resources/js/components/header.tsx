@@ -206,15 +206,54 @@ export default function Header({
                                     <div className="flex w-[800px] gap-0 p-0">
                                         {/* Left Grid */}
                                         <ul className="grid w-[75%] grid-cols-4 gap-4 p-6">
-                                            {committeeItems.map((item) => (
-                                                <ListItem
-                                                    key={item.title}
-                                                    title={item.title}
-                                                    href="#"
-                                                >
-                                                    {item.description}
-                                                </ListItem>
-                                            ))}
+                                            <ListItem
+                                                title="Advisors"
+                                                href="/committee/advisors"
+                                            >
+                                                Industry veterans offering strategic guidance to the E-Club.
+                                            </ListItem>
+                                            <ListItem
+                                                title="Governing Body"
+                                                href="/committee/governing-body"
+                                            >
+                                                The leadership team setting the direction for the E-Club.
+                                            </ListItem>
+                                            <ListItem
+                                                title="Executive Body"
+                                                href="/committee/executive-body"
+                                            >
+                                                Overseeing the day-to-day operations of the E-Club.
+                                            </ListItem>
+                                            <ListItem
+                                                title="Founders"
+                                                href="/committee/founders"
+                                            >
+                                                The individuals who established the E-Club.
+                                            </ListItem>
+                                            <ListItem
+                                                title="Forums"
+                                                href="/committee/forums"
+                                            >
+                                                Platforms for members to connect and discuss various topics.
+                                            </ListItem>
+                                            <ListItem
+                                                title="Standing Committee"
+                                                href="/committee/standing-committee"
+                                            >
+                                                A permanent committee with ongoing responsibilities.
+                                            </ListItem>
+                                            <ListItem
+                                                title="Project Directors"
+                                                href="/committee/project-directors"
+                                            >
+                                                Members leading specific E-Club projects.
+                                            </ListItem>
+                                            <ListItem
+                                                title="Administrative Team"
+                                                href="/committee/administrative-team"
+                                            >
+                                                The Team managing daily tasks to ensure smooth operations.
+                                            </ListItem>
                                         </ul>
                                         {/* Right Sidebar (Alumni) */}
                                         <div className="flex w-[25%] flex-col border-l bg-gray-50 p-6">
@@ -226,15 +265,30 @@ export default function Header({
                                                 governing body.
                                             </p>
                                             <div className="space-y-3">
-                                                {alumniYears.map((year) => (
-                                                    <Link
-                                                        key={year}
-                                                        href="#"
-                                                        className="block text-sm font-medium text-gray-600 underline decoration-gray-300 hover:text-[#0e5843] hover:decoration-[#0e5843]"
-                                                    >
-                                                        {year}
-                                                    </Link>
-                                                ))}
+                                                <Link
+                                                    href="/committee/alumni/2023-24"
+                                                    className="block text-sm font-medium text-gray-600 underline decoration-gray-300 hover:text-[#0e5843] hover:decoration-[#0e5843]"
+                                                >
+                                                    EC 2023-24
+                                                </Link>
+                                                <Link
+                                                    href="/committee/alumni/2022-23"
+                                                    className="block text-sm font-medium text-gray-600 underline decoration-gray-300 hover:text-[#0e5843] hover:decoration-[#0e5843]"
+                                                >
+                                                    EC 2022-23
+                                                </Link>
+                                                <Link
+                                                    href="/committee/alumni/2021-22"
+                                                    className="block text-sm font-medium text-gray-600 underline decoration-gray-300 hover:text-[#0e5843] hover:decoration-[#0e5843]"
+                                                >
+                                                    EC 2021-22
+                                                </Link>
+                                                <Link
+                                                    href="/committee/alumni/2020-21"
+                                                    className="block text-sm font-medium text-gray-600 underline decoration-gray-300 hover:text-[#0e5843] hover:decoration-[#0e5843]"
+                                                >
+                                                    EC 2020-21
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
@@ -248,15 +302,24 @@ export default function Header({
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[600px] grid-cols-3 gap-3 p-6">
-                                        {membershipItems.map((item) => (
-                                            <ListItem
-                                                key={item.title}
-                                                title={item.title}
-                                                href="#"
-                                            >
-                                                {item.description}
-                                            </ListItem>
-                                        ))}
+                                        <ListItem
+                                            title="Benefits of Membership"
+                                            href="/membership/benefits"
+                                        >
+                                            Discover the exclusive advantages of being an E-Club member.
+                                        </ListItem>
+                                        <ListItem
+                                            title="Renew Membership"
+                                            href="/membership/renew"
+                                        >
+                                            Continue your E-Club journey and access ongoing benefits.
+                                        </ListItem>
+                                        <ListItem
+                                            title="Member Directory"
+                                            href="/membership/directory"
+                                        >
+                                            Connect and collaborate with fellow E-Club members.
+                                        </ListItem>
                                     </ul>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
@@ -268,15 +331,24 @@ export default function Header({
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[600px] grid-cols-3 gap-3 p-6">
-                                        {eventItems.map((item) => (
-                                            <ListItem
-                                                key={item.title}
-                                                title={item.title}
-                                                href="#"
-                                            >
-                                                {item.description}
-                                            </ListItem>
-                                        ))}
+                                        <ListItem
+                                            title="Upcoming Events"
+                                            href="/events/upcoming"
+                                        >
+                                            Discover inspiring workshops, networking events, and more.
+                                        </ListItem>
+                                        <ListItem
+                                            title="Past Events"
+                                            href="/events/past"
+                                        >
+                                            Relive the highlights and access past event resources.
+                                        </ListItem>
+                                        <ListItem
+                                            title="Request for Event"
+                                            href="/events/request"
+                                        >
+                                            Join or suggest! Shape E-Club events together.
+                                        </ListItem>
                                     </ul>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
@@ -321,15 +393,36 @@ export default function Header({
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[800px] grid-cols-5 gap-3 p-6">
-                                        {mediaItems.map((item) => (
-                                            <ListItem
-                                                key={item.title}
-                                                title={item.title}
-                                                href="#"
-                                            >
-                                                {item.description}
-                                            </ListItem>
-                                        ))}
+                                        <ListItem
+                                            title="Notice and Updates"
+                                            href="/media/notices"
+                                        >
+                                            Stay informed on E-Club happenings and industry news.
+                                        </ListItem>
+                                        <ListItem
+                                            title="Press Releases"
+                                            href="/media/press-releases"
+                                        >
+                                            Official announcements and media coverage of the E-Club.
+                                        </ListItem>
+                                        <ListItem
+                                            title="Album"
+                                            href="/media/albums"
+                                        >
+                                            Immerse yourself in E-Club events and activities album
+                                        </ListItem>
+                                        <ListItem
+                                            title="Newsletter Archive"
+                                            href="/media/newsletters"
+                                        >
+                                            Catch up on past E-Club news and insights.
+                                        </ListItem>
+                                        <ListItem
+                                            title="Blog"
+                                            href="/media/blog"
+                                        >
+                                            Catch up on past E-Club news and insights.
+                                        </ListItem>
                                     </ul>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>

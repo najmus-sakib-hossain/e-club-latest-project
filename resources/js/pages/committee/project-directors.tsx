@@ -14,21 +14,20 @@ interface CommitteeMember {
     linkedin?: string;
 }
 
-export default function Advisors({ members }: { members: CommitteeMember[] }) {
+export default function ProjectDirectors({ members }: { members: CommitteeMember[] }) {
     return (
         <SiteLayout>
-            <Head title="Advisors - Committee" />
+            <Head title="Project Directors - Committee" />
 
             {/* Hero Section */}
             <section className="bg-gradient-to-r from-primary to-primary/80 py-16">
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center text-white">
                         <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                            Advisors
+                            Project Directors
                         </h1>
                         <p className="text-lg md:text-xl opacity-90">
-                            Industry veterans offering strategic guidance to the
-                            E-Club
+                            Members leading specific E-Club projects
                         </p>
                     </div>
                 </div>

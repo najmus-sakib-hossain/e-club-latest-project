@@ -693,7 +693,7 @@ export default function TrustedCompaniesIndex({ companies }: Props) {
                                     <img
                                         src={
                                             editImagePreview ||
-                                            getCompanyLogo(selectedCompany)!
+                                            (selectedCompany ? getCompanyLogo(selectedCompany) || '' : '')
                                         }
                                         alt={selectedCompany?.name || 'Preview'}
                                         className="max-h-20 object-contain"

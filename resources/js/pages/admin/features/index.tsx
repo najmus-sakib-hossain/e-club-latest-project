@@ -120,7 +120,7 @@ const featureSchema = z.object({
     title: z.string().min(1, 'Title is required').max(100),
     description: z.string().min(1, 'Description is required').max(255),
     is_active: z.boolean(),
-    sort_order: z.coerce.number().min(0),
+    sort_order: z.number().min(0),
 });
 
 type FeatureFormValues = z.infer<typeof featureSchema>;

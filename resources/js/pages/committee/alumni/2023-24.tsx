@@ -14,21 +14,25 @@ interface CommitteeMember {
     linkedin?: string;
 }
 
-export default function Advisors({ members }: { members: CommitteeMember[] }) {
+interface AlumniPageProps {
+    members: CommitteeMember[];
+    year: string;
+}
+
+export default function Alumni202324({ members, year }: AlumniPageProps) {
     return (
         <SiteLayout>
-            <Head title="Advisors - Committee" />
+            <Head title={`EC Alumni ${year} - Committee`} />
 
             {/* Hero Section */}
             <section className="bg-gradient-to-r from-primary to-primary/80 py-16">
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center text-white">
                         <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                            Advisors
+                            EC Alumni {year}
                         </h1>
                         <p className="text-lg md:text-xl opacity-90">
-                            Industry veterans offering strategic guidance to the
-                            E-Club
+                            Former members of the E-Club's governing body
                         </p>
                     </div>
                 </div>

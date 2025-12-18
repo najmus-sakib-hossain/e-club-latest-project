@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\CustomerReview;
+use App\Models\Faq;
+use App\Models\FaqCategory;
 use App\Models\FeatureCard;
 use App\Models\HeroSlide;
 use App\Models\SiteSetting;

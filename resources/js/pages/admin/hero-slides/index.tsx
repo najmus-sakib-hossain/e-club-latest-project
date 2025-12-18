@@ -92,7 +92,7 @@ const slideSchema = z.object({
     button_text: z.string().nullable().optional(),
     button_link: z.string().nullable().optional(),
     is_active: z.boolean(),
-    sort_order: z.coerce.number().min(0),
+    sort_order: z.number().min(0),
 });
 
 type SlideFormValues = z.infer<typeof slideSchema>;

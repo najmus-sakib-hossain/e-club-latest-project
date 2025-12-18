@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('text_color')->nullable();
             $table->boolean('is_active')->default(true);
             $table->integer('order')->default(0);
+            $table->integer('sort_order')->default(0);
             $table->timestamps();
         });
     }
