@@ -7,14 +7,13 @@ import {
     Menu,
     Package,
     Search,
-    Settings,
     ShoppingCart,
     User,
     UserPlus,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-import { CartSheet } from '@/components/site/cart-sheet';
+// import { CartSheet } from '@/components/site/cart-sheet';
 import { SearchCommand } from '@/components/site/search-command';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -618,24 +617,19 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                                 </Link>
                             )}
 
-                            {/* Cart - Opens CartSheet */}
+                            {/* Cart - Simple Link */}
                             {headerCartVisible && (
-                                <CartSheet
-                                    open={isCartOpen}
-                                    onOpenChange={setIsCartOpen}
+                                <Link
+                                    href="/cart"
+                                    className="relative p-2"
                                 >
-                                    <button
-                                        className="relative p-2"
-                                        onClick={() => setIsCartOpen(true)}
-                                    >
-                                        <ShoppingCart className="h-5 w-5 text-muted-foreground" />
-                                        {totalItems > 0 && (
-                                            <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs font-medium text-destructive-foreground">
-                                                {totalItems}
-                                            </span>
-                                        )}
-                                    </button>
-                                </CartSheet>
+                                    <ShoppingCart className="h-5 w-5 text-muted-foreground" />
+                                    {totalItems > 0 && (
+                                        <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs font-medium text-destructive-foreground">
+                                            {totalItems}
+                                        </span>
+                                    )}
+                                </Link>
                             )}
 
                             {/* User Account with Avatar Dropdown - Now at the end */}

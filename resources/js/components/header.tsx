@@ -186,7 +186,7 @@ export default function Header({
                 <div className="hidden flex-grow justify-center lg:flex">
                     <NavigationMenu>
                         <NavigationMenuList>
-                            <NavigationMenuItem>
+                            <NavigationMenuItem key="home-menu">
                                 <NavigationMenuLink asChild>
                                     <Link
                                         href="/home"
@@ -198,7 +198,7 @@ export default function Header({
                             </NavigationMenuItem>
 
                             {/* Committee Dropdown */}
-                            <NavigationMenuItem>
+                            <NavigationMenuItem key="committee-menu">
                                 <NavigationMenuTrigger>
                                     Committee
                                 </NavigationMenuTrigger>
@@ -207,48 +207,56 @@ export default function Header({
                                         {/* Left Grid */}
                                         <ul className="grid w-[75%] grid-cols-4 gap-4 p-6">
                                             <ListItem
+                                                key="advisors"
                                                 title="Advisors"
                                                 href="/committee/advisors"
                                             >
                                                 Industry veterans offering strategic guidance to the E-Club.
                                             </ListItem>
                                             <ListItem
+                                                key="governing-body"
                                                 title="Governing Body"
                                                 href="/committee/governing-body"
                                             >
                                                 The leadership team setting the direction for the E-Club.
                                             </ListItem>
                                             <ListItem
+                                                key="executive-body"
                                                 title="Executive Body"
                                                 href="/committee/executive-body"
                                             >
                                                 Overseeing the day-to-day operations of the E-Club.
                                             </ListItem>
                                             <ListItem
+                                                key="founders"
                                                 title="Founders"
                                                 href="/committee/founders"
                                             >
                                                 The individuals who established the E-Club.
                                             </ListItem>
                                             <ListItem
+                                                key="forums"
                                                 title="Forums"
                                                 href="/committee/forums"
                                             >
                                                 Platforms for members to connect and discuss various topics.
                                             </ListItem>
                                             <ListItem
+                                                key="standing-committee"
                                                 title="Standing Committee"
                                                 href="/committee/standing-committee"
                                             >
                                                 A permanent committee with ongoing responsibilities.
                                             </ListItem>
                                             <ListItem
+                                                key="project-directors"
                                                 title="Project Directors"
                                                 href="/committee/project-directors"
                                             >
                                                 Members leading specific E-Club projects.
                                             </ListItem>
                                             <ListItem
+                                                key="administrative-team"
                                                 title="Administrative Team"
                                                 href="/committee/administrative-team"
                                             >
@@ -296,25 +304,28 @@ export default function Header({
                             </NavigationMenuItem>
 
                             {/* Membership Dropdown */}
-                            <NavigationMenuItem>
+                            <NavigationMenuItem key="membership-menu">
                                 <NavigationMenuTrigger>
                                     Membership
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[600px] grid-cols-3 gap-3 p-6">
                                         <ListItem
+                                            key="benefits"
                                             title="Benefits of Membership"
                                             href="/membership/benefits"
                                         >
                                             Discover the exclusive advantages of being an E-Club member.
                                         </ListItem>
                                         <ListItem
+                                            key="renew"
                                             title="Renew Membership"
                                             href="/membership/renew"
                                         >
                                             Continue your E-Club journey and access ongoing benefits.
                                         </ListItem>
                                         <ListItem
+                                            key="directory"
                                             title="Member Directory"
                                             href="/membership/directory"
                                         >
@@ -325,25 +336,28 @@ export default function Header({
                             </NavigationMenuItem>
 
                             {/* Events Dropdown */}
-                            <NavigationMenuItem>
+                            <NavigationMenuItem key="events-menu">
                                 <NavigationMenuTrigger>
                                     Events
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[600px] grid-cols-3 gap-3 p-6">
                                         <ListItem
+                                            key="upcoming"
                                             title="Upcoming Events"
                                             href="/events/upcoming"
                                         >
                                             Discover inspiring workshops, networking events, and more.
                                         </ListItem>
                                         <ListItem
+                                            key="past"
                                             title="Past Events"
                                             href="/events/past"
                                         >
                                             Relive the highlights and access past event resources.
                                         </ListItem>
                                         <ListItem
+                                            key="request"
                                             title="Request for Event"
                                             href="/events/request"
                                         >
@@ -353,7 +367,7 @@ export default function Header({
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
 
-                            <NavigationMenuItem>
+                            <NavigationMenuItem key="projects-menu">
                                 <NavigationMenuLink asChild>
                                     <Link
                                         href="/projects"
@@ -364,7 +378,7 @@ export default function Header({
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
-                            <NavigationMenuItem>
+                            <NavigationMenuItem key="concerns-menu">
                                 <NavigationMenuLink asChild>
                                     <Link
                                         href="/concerns"
@@ -375,7 +389,7 @@ export default function Header({
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
-                            <NavigationMenuItem>
+                            <NavigationMenuItem key="partnerships-menu">
                                 <NavigationMenuLink asChild>
                                     <Link
                                         href="/partnerships"
@@ -387,37 +401,42 @@ export default function Header({
                             </NavigationMenuItem>
 
                             {/* Media Dropdown */}
-                            <NavigationMenuItem>
+                            <NavigationMenuItem key="media-menu">
                                 <NavigationMenuTrigger>
                                     Media
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[800px] grid-cols-5 gap-3 p-6">
                                         <ListItem
+                                            key="notices"
                                             title="Notice and Updates"
                                             href="/media/notices"
                                         >
                                             Stay informed on E-Club happenings and industry news.
                                         </ListItem>
                                         <ListItem
+                                            key="press-releases"
                                             title="Press Releases"
                                             href="/media/press-releases"
                                         >
                                             Official announcements and media coverage of the E-Club.
                                         </ListItem>
                                         <ListItem
+                                            key="albums"
                                             title="Album"
                                             href="/media/albums"
                                         >
                                             Immerse yourself in E-Club events and activities album
                                         </ListItem>
                                         <ListItem
+                                            key="newsletters"
                                             title="Newsletter Archive"
                                             href="/media/newsletters"
                                         >
                                             Catch up on past E-Club news and insights.
                                         </ListItem>
                                         <ListItem
+                                            key="blog"
                                             title="Blog"
                                             href="/media/blog"
                                         >
@@ -427,7 +446,7 @@ export default function Header({
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
 
-                            <NavigationMenuItem>
+                            <NavigationMenuItem key="shop-menu">
                                 <NavigationMenuLink asChild>
                                     <Link
                                         href="/shop"
@@ -438,7 +457,7 @@ export default function Header({
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
-                            <NavigationMenuItem>
+                            <NavigationMenuItem key="contact-menu">
                                 <NavigationMenuLink asChild>
                                     <Link
                                         href="/contact"

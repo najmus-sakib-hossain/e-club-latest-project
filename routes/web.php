@@ -74,6 +74,18 @@ Route::prefix('media')->name('media.')->group(function () {
     Route::get('/{slug}', [\App\Http\Controllers\Public\MediaController::class, 'show'])->name('show');
 });
 
+// Projects Routes
+Route::get('/projects', [\App\Http\Controllers\Public\ProjectController::class, 'index'])->name('projects');
+Route::get('/projects/{slug}', [\App\Http\Controllers\Public\ProjectController::class, 'show'])->name('projects.show');
+
+// Concerns Routes
+Route::get('/concerns', [\App\Http\Controllers\Public\ConcernController::class, 'index'])->name('concerns');
+Route::get('/concerns/{slug}', [\App\Http\Controllers\Public\ConcernController::class, 'show'])->name('concerns.show');
+
+// Partnerships Routes
+Route::get('/partnerships', [\App\Http\Controllers\Public\PartnershipController::class, 'index'])->name('partnerships');
+Route::get('/partnerships/{slug}', [\App\Http\Controllers\Public\PartnershipController::class, 'show'])->name('partnerships.show');
+
 // Admin Authentication Routes (separate from normal user auth)
 // No guest middleware - allow anyone to access admin login page
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
@@ -555,6 +567,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     
     // Member Benefits Management
     Route::resource('member-benefits', \App\Http\Controllers\Admin\MemberBenefitController::class);
+
+    // Projects Management
+    Route::resource('projects', \App\Http\Controllers\Admin\ProjectManagementController::class)->except(['show', 'create', 'edit']);
+    
+    // Concerns Management
+    Route::resource('concerns', \App\Http\Controllers\Admin\ConcernManagementController::class)->except(['show', 'create', 'edit']);
+    
+    // Partnerships Management
+    Route::resource('partnerships', \App\Http\Controllers\Admin\PartnershipManagementController::class)->except(['show', 'create', 'edit']);
 
     // Footer Management
     Route::prefix('footer')->name('footer.')->group(function () {
