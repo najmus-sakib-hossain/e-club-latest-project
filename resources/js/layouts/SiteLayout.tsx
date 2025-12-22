@@ -35,6 +35,6 @@ export const SiteLayout = ({
         <main className="flex-grow">{children}</main>
         <SiteFooter footerData={footerData || {}} />
         <Toaster richColors position="bottom-right" closeButton />
-        {showPopup && popupData && <FounderMemberPopup {...popupData} />}
+        {/* {showPopup && popupData && <FounderMemberPopup {...popupData} />} */}
     </div>
 );

@@ -166,24 +166,23 @@ export default function Header({
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
-            <div className="container mx-auto flex h-20 items-center justify-between gap-4 px-4">
+            <div className="flex h-16 items-center justify-between px-4 gap-2">
                 {/* 1. Logo Section */}
-                <div className="flex-shrink-0">
-                    <Link href="/" className="flex items-center gap-2">
-                        {/* Replace with your actual Image/SVG */}
-                        <div className="flex flex-col">
+                <Link href="/">
+                    {/* Replace with your actual Image/SVG */}
+                    <img className="w-24 object-contain" src="logo.png" alt="Logo" />
+                    {/* <div className="flex flex-col">
                             <span className="text-3xl leading-none font-bold text-[#0e5843]">
                                 E<span className="text-red-600">C</span>LUB
                             </span>
                             <span className="text-[0.6rem] tracking-wider text-gray-600 uppercase">
                                 Entrepreneurs Club
                             </span>
-                        </div>
-                    </Link>
-                </div>
+                        </div> */}
+                </Link>
 
                 {/* 2. Navigation Menu */}
-                <div className="hidden flex-grow justify-center lg:flex">
+                <div className="hidden flex-1 justify-start lg:flex">
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem key="home-menu">
@@ -476,13 +475,13 @@ export default function Header({
                     {/* Search Bar */}
                     <form onSubmit={handleSearch} className="hidden md:block">
                         <div className="relative">
-                            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                            <Search className="absolute top-1/2 left-1 h-4 w-4 -translate-y-1/2 text-gray-400" />
                             <Input
                                 type="search"
                                 placeholder="Search..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-48 pl-9 lg:w-64"
+                                className="w-48 lg:w-64 py-0 h-10"
                             />
                         </div>
                     </form>

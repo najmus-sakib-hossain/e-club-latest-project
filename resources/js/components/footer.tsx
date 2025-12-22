@@ -273,7 +273,7 @@ const Footer = ({ footerData }: FooterProps) => {
                                     {/* Mock QR Code */}
                                     <div className="flex h-full w-full flex-wrap content-center justify-center gap-1 bg-gray-900">
                                         <div className="relative flex h-3/4 w-3/4 items-center justify-center border-4 border-black">
-                                            <div className="h-1/2 w-1/2 bg-black"></div>
+                                            <div className="h-1/2 w-1/2 bg-white"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -393,7 +393,7 @@ const Footer = ({ footerData }: FooterProps) => {
             {/* Copyright Bar */}
             <div className="bg-[#b91c1c] py-4 text-white">
                 <div className="container mx-auto flex flex-col items-center justify-between px-4 text-xs sm:flex-row sm:text-sm">
-                    <p>© 2024. All Rights Reserved</p>
+                    <p>© 2025. All Rights Reserved to Nexkraft</p>
                     <div className="mt-2 flex items-center sm:mt-0">
                         <span className="mr-1 opacity-80">
                             Designed & Managed by
@@ -402,7 +402,7 @@ const Footer = ({ footerData }: FooterProps) => {
                             href="#"
                             className="font-bold decoration-white/50 underline-offset-4 hover:underline"
                         >
-                            Nexkraft
+                            Alphainno
                         </a>
                     </div>
                 </div>
@@ -466,7 +466,7 @@ export default function App() {
     return (
         <div className="flex min-h-screen flex-col bg-gray-100 font-sans">
             {/* Fake Header/Body to push footer down */}
-            <div className="container mx-auto flex-grow px-4 py-20 text-center">
+            {/* <div className="container mx-auto flex-grow px-4 py-20 text-center">
                 <h1 className="mb-4 text-4xl font-bold text-gray-800">
                     Scroll Down
                 </h1>
@@ -474,7 +474,7 @@ export default function App() {
                     To see the animated footer implementation.
                 </p>
                 <ArrowRight className="mx-auto mt-8 h-6 w-6 rotate-90 animate-bounce text-gray-400" />
-            </div>
+            </div> */}
 
             {/* The Footer */}
             <Footer />

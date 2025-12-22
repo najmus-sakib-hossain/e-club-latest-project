@@ -23,7 +23,7 @@ export const CoreValues = ({ values }: { values: HomeCoreValue[] }) => (
                     {values.map((val, idx) => (
                         <motion.div
                             key={val.id}
-                            className="group z-10 flex h-64 w-64 flex-col items-center justify-center rounded-full border-2 border-[#006838] bg-white p-6 shadow-xl transition-colors duration-300 hover:bg-[#006838]"
+                            className="group z-10 flex h-64 w-64 flex-col items-center justify-center rounded-full border-2 border-[#006838] bg-white p-8 text-center shadow-xl transition-colors duration-300 hover:bg-[#006838]"
                             whileHover={{ scale: 1.1 }}
                         >
                             <h3 className="mb-3 text-xl font-bold text-[#006838] transition-colors group-hover:text-white">
