@@ -45,11 +45,8 @@ export const MapSection = () => (
             </div>
 
             <div className="grid items-center gap-12 lg:grid-cols-2">
-                {/* Visual Map Representation */}
-                <div className="relative flex h-[500px] w-full items-center justify-center rounded-3xl border border-gray-100 bg-white p-4 shadow-xl">
-                    <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Dhaka_District_Locator_Map.svg/1200px-Dhaka_District_Locator_Map.svg.png')] bg-contain bg-center bg-no-repeat opacity-20" />
-
-                    {/* Mock Pins */}
+                <div className="relative flex h-[750px] w-full items-center justify-center rounded-3xl border border-gray-100 bg-white p-4 shadow-xl">
+                    {/* <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Dhaka_District_Locator_Map.svg/1200px-Dhaka_District_Locator_Map.svg.png')] bg-contain bg-center bg-no-repeat opacity-20" />
                     {[
                         {
                             name: 'Uttara',
@@ -100,7 +97,9 @@ export const MapSection = () => (
                                 fill="currentColor"
                             />
                         </motion.div>
-                    ))}
+                    ))} */}
+                    <img src="map.png" alt="Map" />
+
                 </div>
 
                 <div>
@@ -155,6 +154,7 @@ export const MapSection = () => (
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 );

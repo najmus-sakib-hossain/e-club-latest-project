@@ -271,11 +271,12 @@ const Footer = ({ footerData }: FooterProps) => {
                             <div className="flex flex-col items-center space-y-3 sm:items-end">
                                 <div className="flex h-28 w-28 items-center justify-center rounded-lg bg-white p-2">
                                     {/* Mock QR Code */}
-                                    <div className="flex h-full w-full flex-wrap content-center justify-center gap-1 bg-gray-900">
+                                    {/* <div className="flex h-full w-full flex-wrap content-center justify-center gap-1 bg-gray-900">
                                         <div className="relative flex h-3/4 w-3/4 items-center justify-center border-4 border-black">
                                             <div className="h-1/2 w-1/2 bg-white"></div>
                                         </div>
-                                    </div>
+                                    </div> */}
+                                    <img src="qr-code.png" alt="Qr Code" />
                                 </div>
                                 <Button
                                     size="sm"
@@ -313,7 +314,7 @@ const Footer = ({ footerData }: FooterProps) => {
             <Separator className="container mx-auto bg-emerald-800/30" />
 
             {/* Middle Section: Bangladesh Addresses */}
-            <div className="relative bg-[#0b3025]">
+            <div className="relative border-t border-emerald-900/30 bg-[#0b3025]">
                 <div className="container mx-auto px-4 py-12">
                     <motion.h3
                         initial={{ opacity: 0, x: -20 }}
@@ -356,7 +357,7 @@ const Footer = ({ footerData }: FooterProps) => {
             </div>
 
             {/* Bottom Section: International Addresses */}
-            <div className="border-t border-emerald-900/30 bg-[#09281f]">
+            <div className="border-t border-emerald-900/30 bg-[#0b3025]">
                 <div className="container mx-auto px-4 py-12">
                     <motion.h3
                         initial={{ opacity: 0, x: -20 }}
